@@ -1,0 +1,4 @@
+Flask>=3.0,<4
+openai>=1.0
+Werkzeug>=3.0,<4
+gunicorn>=22,<24

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: step-into-your-future-demo
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 180
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: DEMO_ACCESS_CODE
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: MAX_GENERATIONS_PER_SESSION
+        value: "2"
