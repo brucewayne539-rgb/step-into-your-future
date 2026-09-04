@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#082c4f">
+<title>Step Into Your Future — Today!</title>
+<style>
+:root{--navy:#082c4f;--blue:#1478d4;--cyan:#58c6ff;--ink:#1d2b38;--muted:#607080;--bg:#edf3f8;--line:#dbe5ee;--card:#fff;--danger:#a82737}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(#e9f2fa,#f7f9fb 38%,#edf3f8);color:var(--ink)}
+header{background:linear-gradient(135deg,#061b30,#0a3158 58%,#0c548a);color:#fff;padding:18px max(18px,env(safe-area-inset-right)) 16px max(18px,env(safe-area-inset-left));box-shadow:0 8px 28px #06233d2c}
+.school{font-size:11px;font-weight:800;letter-spacing:1.8px;color:#bfe1fb}.brand{font-size:clamp(22px,5vw,33px);font-weight:900;margin:4px 0}.brand span{color:#5bc8ff}.tag{font-size:12px;letter-spacing:1.8px}
+main{max-width:1000px;margin:18px auto;padding:0 14px 30px}.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(18px,4vw,30px);box-shadow:0 14px 34px #092d5015}
+.step{display:none}.step.active{display:block}.eyebrow{font-size:11px;font-weight:900;color:var(--blue);letter-spacing:1.8px}h1,h2{color:var(--navy)}h2{font-size:clamp(27px,5vw,38px);margin:5px 0 7px}.lead{font-size:16px;line-height:1.48;color:var(--muted)}
+.progress{height:7px;background:#d8e3ec;border-radius:10px;overflow:hidden;margin:0 0 13px}.progress div{height:100%;background:linear-gradient(90deg,#1478d4,#58c6ff);width:25%;transition:.3s}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.photo-box{background:#eef4f8;border:1px solid var(--line);border-radius:15px;padding:12px}.photo{aspect-ratio:4/5;border-radius:12px;overflow:hidden;background:#dbe6ef;display:grid;place-items:center;color:#71808d;text-align:center}.photo img{width:100%;height:100%;object-fit:cover;display:none}.camera-icon{font-size:58px}
+label{display:block;font-weight:800;color:#30485d;margin-bottom:14px}select,input[type=file]{width:100%;margin-top:7px;font-size:16px;padding:13px;border:1px solid #cbd8e2;border-radius:10px;background:white}
+button,.buttonlike{border:0;border-radius:10px;padding:13px 18px;font-size:16px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(135deg,#1069bd,#1989e8);color:#fff;box-shadow:0 7px 18px #1478d42c}.secondary{background:#173f62;color:#fff}.ghost{background:#eaf0f5;color:#25435d}.wide{width:100%;margin-top:12px}.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.privacy,.info,.error{padding:13px 15px;border-radius:9px;margin:15px 0;line-height:1.45}.privacy,.info{border-left:5px solid var(--cyan);background:#eef8ff}.error{border-left:5px solid #d13b4f;background:#fff0f2;color:#7e1827;display:none}
+.setup{background:#fff8dd;border:1px solid #f1d889;border-radius:12px;padding:15px;margin-bottom:17px}.setup input{width:100%;padding:12px;border:1px solid #d7c270;border-radius:8px;font-size:16px;margin:8px 0}
+.loader{min-height:330px;background:linear-gradient(145deg,#082c4f,#0d5c93);border-radius:16px;color:#fff;display:grid;place-items:center;text-align:center;padding:25px}.spinner{width:70px;height:70px;border:8px solid #ffffff35;border-top-color:#63cbff;border-radius:50%;animation:spin 1s linear infinite;margin:auto}@keyframes spin{to{transform:rotate(360deg)}}.small{font-size:12px;color:#71808d}
+.results{display:grid;grid-template-columns:.82fr 1.18fr;gap:18px}.future,.roadmap{border:1px solid var(--line);border-radius:15px;overflow:hidden}.future img{width:100%;display:block;background:#dce6ee}.futurecopy{padding:16px}.futurecopy h3{font-size:25px;margin:2px 0;color:var(--navy)}.roadhead{background:linear-gradient(135deg,#082c4f,#0d5c93);color:#fff;padding:16px 18px;font-weight:900;letter-spacing:1px}.roadintro{padding:12px 16px;background:#f4f9fd;color:#496477;font-size:13px;line-height:1.45;border-bottom:1px solid #e1ebf2}.roadstep{display:grid;grid-template-columns:52px 1fr;gap:13px;align-items:start;padding:15px 16px;border-bottom:1px solid #e7eef4;background:#fff}.roadstep:last-child{border-bottom:0}.roadicon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:24px;box-shadow:inset 0 0 0 1px #ffffff80}.roadstep:nth-child(3n+2) .roadicon{background:#dff3ff}.roadstep:nth-child(3n) .roadicon{background:#e8f7e8}.roadstep:nth-child(3n+1) .roadicon{background:#fff0d8}.roadtext strong{display:block;color:#123f65;font-size:16px;line-height:1.2}.roadlabel{display:inline-block;margin-bottom:4px;color:#1681d7;font-size:10px;font-weight:900;letter-spacing:1.2px}.roadstep p{margin:6px 0 0;color:#4f6273;line-height:1.5;font-size:14px}.badge{display:inline-block;background:#eaf5fd;color:#1766a6;font-size:11px;font-weight:900;padding:5px 8px;border-radius:20px;letter-spacing:.7px}
+@media(max-width:720px){.grid,.results{grid-template-columns:1fr}.future img{max-height:560px;object-fit:cover}.panel{border-radius:14px}}
+@media print{header,.progress,.noprint,.setup{display:none!important}body{background:white}main{margin:0;padding:0}.panel{border:0;box-shadow:none;padding:0}.step{display:none!important}#s4{display:block!important}.results{grid-template-columns:42% 58%;gap:10px}.futurecopy{padding:10px}.roadstep{padding:9px 11px;grid-template-columns:34px 1fr;gap:8px}.roadicon{width:32px;height:32px;font-size:17px;border-radius:9px}.roadstep p{font-size:11px}.roadtext strong{font-size:12px}.roadlabel{font-size:8px}.roadintro{font-size:10px;padding:8px 10px}}
+</style>
+</head>
+<body>
+<header><div class="school">BRANFORD HIGH SCHOOL • TEACHER PREVIEW</div><div class="brand">STEP INTO YOUR FUTURE <span>— TODAY!</span></div><div class="tag">EXPLORE • IMAGINE • PLAN • BECOME</div></header>
+<main>
+<div class="progress noprint"><div id="bar"></div></div>
+
+<section id="s1" class="panel step active">
+{% if not key_ready and not hosted %}
+<div class="setup" id="setupBox">
+<strong>One-time setup</strong><br>
+This laptop needs your OpenAI API key to create the live AI portraits. The key is stored in your local Windows profile (not in the app/OneDrive folder) and is never placed in the webpage.
+<input id="keyInput" type="password" placeholder="Paste API key here">
+<button class="secondary" id="saveKey">Save Key on This Laptop</button>
+<div class="small" style="margin-top:8px">API usage is billed separately by OpenAI. For local testing only; hosted teacher demos use a server-side key.</div>
+</div>
+{% endif %}
+{% if hosted %}<div class="info noprint"><strong>Teacher preview:</strong> This browser session can create up to {{ generations_left }} more AI portrait(s). This limit helps control demo costs.</div>{% endif %}<div class="eyebrow">STEP 1 • TODAY</div><h2>Take or choose a photo.</h2>
+<p class="lead">On your phone, tap the button and choose <strong>Take Photo</strong>. On your laptop, choose any suitable portrait.</p>
+<div class="grid">
+<div>
+<div class="privacy"><strong>For this teacher demo:</strong> the selected photo is sent to the OpenAI image service only when you press Generate. The app does not create a student database.</div>
+<label>Student / demo photo
+<input id="photoInput" type="file" accept="image/*" capture="user"></label>
+<div id="error1" class="error"></div>
+</div>
+<div class="photo-box"><div class="photo"><img id="preview"><div id="placeholder"><div class="camera-icon">📷</div>Photo preview</div></div><button id="next1" class="primary wide" disabled>Choose My Future</button></div>
+</div>
+</section>
+
+<section id="s2" class="panel step">
+<div class="eyebrow">STEP 2 • TOMORROW</div><h2>Who would you like to become?</h2>
+<div class="grid">
+<div><label>Career<select id="career">{% for c in careers %}<option>{{c}}</option>{% endfor %}</select></label>
+<label>Future age<select id="age"><option>22</option><option selected>25</option><option>28</option><option>30</option><option>35</option></select></label></div>
+<div><label>Path<select id="path"><option value="employee">Work in the profession</option><option value="owner">Own a business someday</option><option value="explore">Not sure — explore the path</option></select></label>
+<label>What matters most?<select id="priority"><option>Doing work I enjoy</option><option>Helping people</option><option>High income potential</option><option>Creativity</option><option>Job stability</option><option>Being my own boss</option></select></label></div>
+</div>
+<div class="info"><strong>This is the fun part:</strong> the next screen will send your photograph and selections to the AI image service and ask it to create a realistic, illustrative future-career portrait.</div>
+<div class="row" style="justify-content:flex-end"><button class="ghost" onclick="go(1)">Back</button><button class="primary" id="generateBtn">Generate My Future</button></div>
+</section>
+
+<section id="s3" class="panel step">
+<div class="loader"><div><div class="spinner"></div><h2 style="color:white;margin-top:22px">Creating your future…</h2><p style="color:#d3edff;line-height:1.6">Preserving your identity<br>Visualizing your future career<br>Building your roadmap</p><div class="small" style="color:#b9ddf7">A live AI image can take a little while to finish.</div></div></div>
+<div id="error3" class="error"></div>
+</section>
+
+<section id="s4" class="panel step">
+<div class="eyebrow">YOUR FUTURE IS READY!</div><h2 id="title">Your Future</h2><p class="lead" id="summary"></p>
+<div class="row noprint"><button class="secondary" onclick="window.print()">Save / Print My Future</button><button class="secondary" onclick="downloadPortrait()">Download Portrait</button><button class="primary" onclick="go(2)">Try Another Career</button><button class="ghost" onclick="location.reload()">New Photo</button></div>
+<div class="results">
+<article class="future"><img id="futureImg"><div class="futurecopy"><span class="badge">ILLUSTRATIVE AI VISUALIZATION</span><h3 id="futureCareer"></h3><div id="futureAge"></div><p class="small">This is an imaginative visualization, not a prediction of appearance or career outcome.</p></div></article>
+<article class="roadmap"><div class="roadhead">🧭 MY ROADMAP TO SUCCESS</div><div class="roadintro">A practical step-by-step path from high school preparation to training, experience, credentials and your first career opportunities.</div><div id="road"></div></article>
+</div>
+<div class="info" style="margin-top:16px"><strong>Next step:</strong> Discuss this roadmap with a counselor, teacher, family member, mentor or career professional. Education, licensing and hiring requirements can change and should be verified before making decisions.</div>
+</section>
+</main>
+<script>
+let photoFile=null;
+function go(n){document.querySelectorAll('.step').forEach(x=>x.classList.remove('active'));document.getElementById('s'+n).classList.add('active');document.getElementById('bar').style.width=(n*25)+'%';window.scrollTo({top:0,behavior:'smooth'})}
+const inp=document.getElementById('photoInput'),prev=document.getElementById('preview'),ph=document.getElementById('placeholder'),next=document.getElementById('next1');
+inp.onchange=e=>{photoFile=e.target.files[0];if(!photoFile)return;prev.src=URL.createObjectURL(photoFile);prev.style.display='block';ph.style.display='none';next.disabled=false}
+next.onclick=()=>go(2);
+const sk=document.getElementById('saveKey');
+if(sk)sk.onclick=async()=>{const key=document.getElementById('keyInput').value.trim();sk.disabled=true;const r=await fetch('/api/setup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({api_key:key})});const d=await r.json();sk.disabled=false;if(d.ok){document.getElementById('setupBox').innerHTML='<strong>✓ API key saved on this laptop.</strong>'; }else alert(d.error)}
+function downloadPortrait(){
+ const img=document.getElementById('futureImg');
+ if(!img.src)return;
+ const a=document.createElement('a');
+ const career=(document.getElementById('futureCareer').textContent||'Future Career').replace(/[^a-z0-9]+/gi,'_');
+ a.href=img.src;a.download='Step_Into_Your_Future_'+career+'.png';document.body.appendChild(a);a.click();a.remove();
+}
+document.getElementById('generateBtn').onclick=async()=>{
+ if(!photoFile){go(1);return}
+ go(3);document.getElementById('error3').style.display='none';
+ const fd=new FormData();fd.append('photo',photoFile);fd.append('career',document.getElementById('career').value);fd.append('age',document.getElementById('age').value);fd.append('path',document.getElementById('path').value);fd.append('priority',document.getElementById('priority').value);
+ try{
+  const r=await fetch('/api/generate',{method:'POST',body:fd});const d=await r.json();
+  if(!d.ok)throw new Error(d.error||'Image generation failed.');
+  document.getElementById('futureImg').src=d.image;document.getElementById('futureCareer').textContent=d.career;document.getElementById('futureAge').textContent='Visualized at approximately age '+d.age;document.getElementById('title').textContent='Age '+d.age+': '+d.career;document.getElementById('summary').textContent=d.summary;
+  const iconFor=(title,i)=>{
+   const t=title.toLowerCase();
+   if(t.includes('high school'))return '🏫';
+   if(t.includes('college')||t.includes('degree')||t.includes('education')||t.includes('program'))return '🎓';
+   if(t.includes('training')||t.includes('apprentice')||t.includes('skills'))return '🛠️';
+   if(t.includes('clinical')||t.includes('experience')||t.includes('project')||t.includes('portfolio')||t.includes('intern'))return '💼';
+   if(t.includes('licen')||t.includes('certif')||t.includes('credential')||t.includes('academy')||t.includes('exam'))return '✅';
+   if(t.includes('business')||t.includes('entrepreneur'))return '📈';
+   if(t.includes('launch')||t.includes('grow')||t.includes('hiring')||t.includes('professional path'))return '🚀';
+   return ['🎯','📚','🧰','⭐','🚀'][i%5];
+  };
+  const stageFor=i=>['START HERE','BUILD YOUR FOUNDATION','GET REAL EXPERIENCE','EARN THE CREDENTIALS','LAUNCH YOUR CAREER'][Math.min(i,4)]||'NEXT STEP';
+  const road=document.getElementById('road');road.innerHTML='';d.steps.forEach((s,i)=>{const x=document.createElement('div');x.className='roadstep';x.innerHTML='<div class="roadicon">'+iconFor(s[0],i)+'</div><div class="roadtext"><span class="roadlabel">'+stageFor(i)+'</span><strong>'+(i+1)+'. '+s[0]+'</strong><p>'+s[1]+'</p></div>';road.appendChild(x)});
+  if(d.path==='owner'){const x=document.createElement('div');x.className='roadstep';x.innerHTML='<div class="roadicon">📈</div><div class="roadtext"><span class="roadlabel">OPTIONAL FUTURE PATH</span><strong>★ Entrepreneurship / Ownership</strong><p>After gaining field experience, explore business planning, startup costs, insurance, taxes, marketing, staffing, customer service and any required state or local licenses.</p></div>';road.appendChild(x)}
+  go(4);
+ }catch(e){const box=document.getElementById('error3');box.textContent=e.message;box.style.display='block';}
+}
+</script>
+</body></html>
