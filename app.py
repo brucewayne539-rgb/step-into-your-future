@@ -422,6 +422,68 @@ CAREERS = {
     }
 }
 
+
+ROADMAP_META = {
+"Architect":("Usually 5–8+ years after high school to independent licensed practice, depending on degree and state route.",["Creative problem-solving","Math + spatial thinking","CAD/design communication","Persistence through licensure"]),
+"Electrician":("Often about 4–5 years of paid apprenticeship/training before journey-level work; licensing rules vary.",["Safety first","Hands-on problem solving","Electrical code knowledge","Reliability + customer service"]),
+"Registered Nurse":("Common entry routes are roughly 2–4 years after high school, followed by RN licensure.",["Science foundation","Calm communication","Clinical judgment","Compassion + teamwork"]),
+"Veterinarian":("Typically 8+ years after high school: undergraduate preparation plus veterinary school and licensure.",["Strong sciences","Animal-care experience","Communication with owners","Resilience + precision"]),
+"Software Developer":("Entry timing varies: college, certificate, self-directed and portfolio routes can all lead to first roles.",["Coding fundamentals","Build real projects","Debugging/problem solving","Keep learning new tools"]),
+"Teacher":("Often about 4 years for a bachelor's/teacher-preparation route, plus state certification requirements.",["Communication","Patience + adaptability","Subject knowledge","Classroom leadership"]),
+"Firefighter":("Entry can begin after high school; academy, EMT/medical, testing and department requirements vary.",["Physical readiness","Teamwork","Emergency judgment","Service mindset"]),
+"Police Officer":("Entry timing varies by agency; eligibility, testing, academy and field training are typical milestones.",["Integrity","Communication","Sound judgment","Physical + mental readiness"]),
+"TV News Reporter / Local Anchor":("Often 4 years of college plus internships/student media, though strong portfolio and experience matter greatly.",["Writing under deadline","On-camera communication","News judgment","Portfolio + networking"]),
+"Broadway Director / Actor":("There is no single clock: training can start now, while credits, auditions, portfolio and professional relationships build over years.",["Consistent training","Audition resilience","Collaboration","Create + document your work"]),
+"Chef / Restaurant Owner":("Entry can begin after high school; culinary school is optional for many, while experience and business skills build over time.",["Technique + food safety","Speed and consistency","Leadership","Cost control + hospitality"]),
+"Automotive Technician":("Often 1–2 years of technical preparation plus paid shop experience; certifications can grow throughout a career.",["Diagnostics","Hands-on precision","Electronics/technology","Customer trust"]),
+"Physical Therapist":("Typically 7 years after high school: undergraduate preparation plus a Doctor of Physical Therapy program and licensure.",["Anatomy/science","Patient communication","Clinical reasoning","Encouragement + persistence"]),
+"Plumber":("Often about 4–5 years through apprenticeship and supervised experience; licensing rules vary by state.",["Safety + code knowledge","Measurement","Troubleshooting","Reliability"]),
+"Business Administration / Manager":("Entry routes vary from direct work experience to a 2- or 4-year degree; leadership grows with results and experience.",["Communication","Organization","Data/financial literacy","Leadership"]),
+"Carpenter":("Entry can begin after high school through apprenticeship or paid training; mastery grows through years of projects.",["Measurement accuracy","Tool safety","Blueprint reading","Craftsmanship"]),
+"Graphic Designer":("Portfolio strength is crucial; college, certificate and self-directed routes can lead to entry-level work.",["Visual communication","Design software","Portfolio quality","Take feedback well"]),
+"Neurosurgeon":("A very long medical pathway—commonly well over a decade after high school including college, medical school and residency.",["Exceptional science foundation","Precision","Stamina","Teamwork + patient care"]),
+"Cybersecurity Specialist":("Entry can range from certificates and experience to a 4-year degree; hands-on labs and credentials can accelerate progress.",["Networking/IT fundamentals","Ethical problem solving","Hands-on labs","Continuous learning"]),
+"Data Scientist / AI Specialist":("Often a 4-year quantitative/technical degree; some roles favor graduate study plus a strong project portfolio.",["Math + statistics","Programming","Data storytelling","Responsible AI thinking"]),
+"Dental Hygienist":("Commonly about 2–3 years in an accredited dental-hygiene program followed by required licensing.",["Science + anatomy","Fine-motor precision","Patient communication","Preventive-care mindset"]),
+"Doctor / Physician":("Typically 11+ years after high school including college, medical school and residency; specialty training may add more.",["Strong sciences","Patient communication","Discipline","Clinical judgment"]),
+"HVAC Technician":("Often months to 2 years of technical training plus paid field experience; certifications/licensing vary by work and location.",["Mechanical troubleshooting","Electrical basics","Safety","Customer service"]),
+"Lawyer / Attorney":("Typically about 7 years after high school: bachelor's degree, law school and bar/licensing requirements.",["Reading + writing","Reasoning","Research","Advocacy + ethics"]),
+"Marketing / Advertising Professional":("Often a 4-year degree or portfolio-driven route; internships and measurable campaign experience help launch careers.",["Audience insight","Writing/storytelling","Analytics","Creative collaboration"]),
+"Medical & Health Services Manager":("Often a 4-year degree plus healthcare experience; some leadership roles favor graduate education.",["Leadership","Healthcare systems knowledge","Budget/data skills","Communication"]),
+"Nurse Practitioner":("Typically RN preparation followed by graduate APRN education, national certification and state licensure.",["Advanced clinical judgment","Patient communication","Leadership","Lifelong learning"]),
+"Occupational Therapist":("Typically undergraduate preparation plus an accredited graduate OT program, fieldwork and licensure.",["Creativity in problem solving","Anatomy/science","Empathy","Clinical observation"]),
+"Physician Assistant":("Typically a bachelor's/prerequisite pathway plus an accredited graduate PA program, clinical rotations and certification/licensure.",["Strong sciences","Patient communication","Team medicine","Clinical reasoning"]),
+"School Counselor / Mental Health Counselor":("Usually a bachelor's followed by a relevant master's program, supervised experience and state credentialing.",["Listening","Trust + confidentiality","Crisis awareness","Communication"]),
+"Web / Digital Designer":("College, certificate and self-taught routes can work; a polished portfolio of real sites/products is especially important.",["Visual design","HTML/CSS/web literacy","User-centered thinking","Portfolio + iteration"]),
+"Welder / Fabricator":("Training can begin in high school or a technical program; certifications and process specialties grow with experience.",["Safety","Steady technique","Blueprint reading","Quality control"]),
+"Engineer":("Often about 4 years for an engineering bachelor's; some specialties or licensed practice add exams and supervised experience.",["Math + physics","Design problem solving","Teamwork","Technical communication"]),
+"Accountant / Financial Manager":("Often a 4-year degree; professional credentials and experience can open advanced accounting/finance leadership roles.",["Accuracy","Financial literacy","Ethics","Analysis + communication"]),
+"Entrepreneur / Business Owner":("No single timeline: students can start building skills and small ventures now, then scale with experience and market demand.",["Solve a real problem","Know your numbers","Customer service","Adapt + persist"])
+}
+
+def rich_roadmap(career, steps):
+    out=[]
+    for i,(title,detail) in enumerate(steps):
+        t=title.lower()
+        bullets=[detail]
+        if 'high school' in t:
+            bullets += ["Meet with your school counselor to connect electives, graduation requirements and postsecondary options to this goal.","Look for a club, job-shadow, volunteer role, project or part-time experience that lets you test the career before graduating."]
+        elif any(k in t for k in ['college','degree','program','school','education','preparation']):
+            bullets += ["Compare programs for admission requirements, cost, completion time, hands-on experience and job placement—not just the school name.","Ask about scholarships, financial aid, dual-enrollment/early-college credit and other ways to reduce cost where available."]
+        elif any(k in t for k in ['apprentice','training','academy']):
+            bullets += ["Favor training that includes substantial hands-on practice with qualified instructors or experienced professionals.","Build a record of attendance, safety, reliability and skill growth—employers notice these habits."]
+        elif any(k in t for k in ['experience','clinical','portfolio','intern']):
+            bullets += ["Turn experiences into evidence: keep examples of projects, responsibilities, feedback and accomplishments for a résumé or portfolio.","Ask supervisors and mentors what separates an average beginner from someone they would enthusiastically hire again."]
+        elif any(k in t for k in ['licen','certif','credential','exam','professional path']):
+            bullets += ["Check the current Connecticut/state board, employer or professional-body requirements before choosing a program or paying for an exam.","Keep copies of completed hours, transcripts, certifications and renewal dates so credentials stay easy to verify."]
+        elif any(k in t for k in ['business','owner','entrepreneur']):
+            bullets += ["Learn estimating/pricing, budgeting, taxes, insurance, marketing and customer service in addition to the technical craft.","Gain field experience and understand the customer problem before taking on the cost and responsibility of ownership."]
+        else:
+            bullets += ["Target entry-level roles that provide mentoring, feedback and increasing responsibility.","Keep building skills, professional relationships and evidence of good work; use each early role as a launchpad for the next one."]
+        out.append({"title":title,"bullets":bullets})
+    timeline,keys=ROADMAP_META.get(career,("The timeline depends on education, training, credentials and the route you choose.",["Show up reliably","Build real skills","Ask for feedback","Keep learning"]))
+    return out,timeline,keys
+
 def load_key():
     env = os.environ.get("OPENAI_API_KEY", "").strip()
     if env:
@@ -554,6 +616,7 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             return jsonify({"ok":False,"error":"The image service returned no image data."}),502
 
         session["generation_count"] = count + 1
+        rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
         return jsonify({
             "ok":True,
             "image":"data:image/png;base64,"+b64,
@@ -561,6 +624,9 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             "age":age,
             "summary":info["summary"],
             "steps":info["steps"],
+            "rich_steps":rich_steps,
+            "timeline":timeline,
+            "keys":keys,
             "path":path,
             "priority":priority
         })
