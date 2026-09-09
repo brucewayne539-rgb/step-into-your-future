@@ -1,0 +1,15 @@
+{
+  "name": "Step Into Your Future",
+  "short_name": "My Future",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b5121b",
+  "icons": [
+    {
+      "src": "/static/app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
