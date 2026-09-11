@@ -668,17 +668,45 @@ def generate():
 
     info=CAREERS[career]
     business_note = "The person should look like an established professional and small-business owner." if path=="owner" else ""
+
+    try:
+        future_age = int(age)
+    except (TypeError, ValueError):
+        future_age = 25
+
+    if future_age <= 25:
+        age_direction = (
+            "Show clear but subtle progression from a high-school-age face into a believable young adult around age 25. "
+            "Mature the facial proportions, jaw/cheek structure, skin texture, grooming, posture, and overall professional presence enough that the person no longer looks like a teenager."
+        )
+    elif future_age <= 28:
+        age_direction = (
+            "Show a noticeable progression into the late 20s. Preserve identity, but give the face clearly adult proportions and maturity, with natural changes in facial structure, skin texture, grooming, posture, and professional presence."
+        )
+    elif future_age <= 30:
+        age_direction = (
+            "Show unmistakable progression to approximately age 30. The subject should look like the same person as a fully mature adult, not the current student simply placed in professional clothing. "
+            "Use natural adult facial structure, subtle skin and grooming changes, and a confident established-young-professional presence."
+        )
+    else:
+        age_direction = (
+            "Show clearly visible, believable progression to approximately age 35. The subject should remain unmistakably the same person, but should look meaningfully older and more mature than the original student photo. "
+            "Use natural changes in facial structure, skin texture, grooming, posture, and professional presence appropriate to the mid-30s. Do not exaggerate wrinkles, gray hair, or other signs that would make the person look substantially older than 35."
+        )
+
     prompt=f"""
 Create a realistic, respectful FUTURE-CAREER VISUALIZATION based on the person in the uploaded photograph.
 
-Preserve the person's recognizable facial identity and core facial features. Show an imaginative approximation of the SAME PERSON at approximately age {age}. The result is illustrative, not predictive.
+Preserve the person's recognizable identity, distinctive facial features, and apparent ethnicity/core identity characteristics while applying believable age progression to approximately age {age}. {age_direction}
+
+IMPORTANT: Do not simply copy the current youthful face into adult clothing. The selected future age must be visually apparent, while the result must still clearly look like the SAME PERSON. The result is illustrative, not predictive.
 
 Career: {career}
 Setting: {info['scene']}
 Student priority: {priority}
 {business_note}
 
-Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, natural flattering lighting, age-appropriate adult appearance, confident but natural expression. Keep the face faithful to the source photo. Do not add text, captions, logos, badges with readable department names, watermarks, or brand marks. Do not sexualize or glamorize the subject. Do not change apparent ethnicity or other core identity characteristics. If work clothing or safety equipment is appropriate, use realistic generic professional attire.
+Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, natural flattering lighting, age-appropriate adult appearance, confident but natural expression. Preserve recognizable identity without freezing the face at its current age. Do not add text, captions, logos, badges with readable department names, watermarks, or brand marks. Do not sexualize or glamorize the subject. If work clothing or safety equipment is appropriate, use realistic generic professional attire.
 """.strip()
 
     try:
