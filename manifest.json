@@ -1,6 +1,6 @@
 {
   "name": "Step Into Your Future",
-  "short_name": "My Future",
+  "short_name": "Step Into Your Future"
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
