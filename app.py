@@ -28,7 +28,9 @@ app = Flask(__name__)
 @app.route("/app-icon.png")
 def app_icon():
     return send_from_directory(app.root_path, "app-icon.png", mimetype="image/png")
-
+@app.route("/apple-touch-icon.png")
+def apple_touch_icon():
+    return send_from_directory(app.root_path, "app-icon.png", mimetype="image/png")
 @app.route("/manifest.json")
 def manifest():
     return send_from_directory(app.root_path, "manifest.json", mimetype="application/manifest+json")
