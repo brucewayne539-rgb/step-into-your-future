@@ -28,6 +28,10 @@ app = Flask(__name__)
 @app.route("/app-icon.png")
 def app_icon():
     return send_from_directory(app.root_path, "app-icon.png", mimetype="image/png")
+
+@app.route("/manifest.json")
+def manifest():
+    return send_from_directory(app.root_path, "manifest.json", mimetype="application/manifest+json")
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 app.config["MAX_CONTENT_LENGTH"] = 12 * 1024 * 1024
 app.config["SESSION_COOKIE_HTTPONLY"] = True
