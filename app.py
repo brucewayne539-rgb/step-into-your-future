@@ -1,6 +1,6 @@
 import os, io, base64, socket, json, traceback, secrets
 from pathlib import Path
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 
 try:
@@ -24,6 +24,10 @@ def config_file():
 CONFIG_FILE = config_file()
 
 app = Flask(__name__)
+
+@app.route("/app-icon.png")
+def app_icon():
+    return send_from_directory(app.root_path, "app-icon.png", mimetype="image/png")
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 app.config["MAX_CONTENT_LENGTH"] = 12 * 1024 * 1024
 app.config["SESSION_COOKIE_HTTPONLY"] = True
