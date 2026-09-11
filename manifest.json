@@ -7,7 +7,7 @@
   "theme_color": "#b5121b",
   "icons": [
     {
-      "src": "/step-into-your-future-icon.png",
+      "src": "/app-icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
