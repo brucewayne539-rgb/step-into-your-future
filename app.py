@@ -1,6 +1,7 @@
 import os, io, base64, socket, json, traceback, secrets
 from pathlib import Path
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_from_directory, render_template_string
+from PIL import Image, ImageOps, UnidentifiedImageError
 from werkzeug.utils import secure_filename
 
 try:
@@ -42,6 +43,9 @@ if os.environ.get("RENDER") or os.environ.get("HTTPS_ONLY") == "1":
     app.config["SESSION_COOKIE_SECURE"] = True
 
 ACCESS_CODE = (os.environ.get("DEMO_ACCESS_CODE") or "").strip()
+GHS_DATA = json.loads((APP_DIR / "ghs_data.json").read_text(encoding="utf-8"))
+GHS_CAREERS = GHS_DATA["careers"]
+
 MAX_GENERATIONS_PER_SESSION = int(os.environ.get("MAX_GENERATIONS_PER_SESSION", "2"))
 
 CAREERS = {
@@ -612,6 +616,44 @@ def local_ip():
     except Exception:
         return "127.0.0.1"
 
+
+# GHS shares the existing hosting and image service, with separate course content.
+GHS_LOGIN = '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n<title>Step Into Your Future — Teacher Demo</title>\n<style>\n*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#eaf5fd,#f7fbff);color:#0b3558;min-height:100vh;display:grid;place-items:center;padding:24px}.card{width:min(620px,100%);background:#fff;border:1px solid #d6e6f3;border-radius:24px;box-shadow:0 18px 60px #0b355822;overflow:hidden}.head{background:linear-gradient(120deg,#073f2d,#218663);padding:34px;color:#fff}.school{font-size:13px;letter-spacing:3px;font-weight:800}.brand{font-size:38px;font-weight:900;line-height:1.05;margin-top:16px}.brand span{color:#54c6ff}.body{padding:34px}.body h2{font-size:27px;margin:0 0 10px}.body p{line-height:1.55;color:#536d83}.notice{background:#eaf6ff;border-left:5px solid #40b9f4;padding:14px 16px;border-radius:12px;margin:18px 0}label{font-weight:800;display:block;margin:22px 0 8px}input{width:100%;padding:16px;border:2px solid #cfe0ed;border-radius:12px;font-size:18px}button{margin-top:16px;width:100%;padding:16px;border:0;border-radius:12px;background:#087049;color:#fff;font-size:18px;font-weight:900;cursor:pointer}.error{background:#fff0f0;color:#a32626;padding:12px 14px;border-radius:10px;margin:14px 0}.small{font-size:12px;color:#6d7f8f;margin-top:16px}\n</style></head><body>\n<div class="card"><div class="head"><div class="school">GUILFORD HIGH SCHOOL • TEACHER PREVIEW</div><div class="brand">STEP INTO YOUR FUTURE <span>— TODAY!</span></div></div><div class="body">\n<h2>Welcome to the teacher demo.</h2><p>This preview lets educators try the same career-visualization experience before any wider student rollout.</p>\n<div class="notice"><strong>Privacy:</strong> photos are sent to the AI image service only when Generate is pressed. This demo does not intentionally create a student photo database.</div>\n{% if error %}<div class="error">{{ error }}</div>{% endif %}\n<form method="post" action="/ghs/login"><label for="access_code">Teacher demo access code</label><input id="access_code" name="access_code" type="password" autocomplete="off" required><button type="submit">Enter Demo</button></form>\n<div class="small">Illustrative career visualization only — not a prediction of appearance or career outcome.</div>\n</div></div></body></html>\n'
+
+@app.route("/ghs")
+@app.route("/ghs/")
+def ghs_home():
+    if ACCESS_CODE and not session.get("demo_access"):
+        return render_template_string(GHS_LOGIN)
+    return send_from_directory(APP_DIR, "ghs.html")
+
+@app.route("/ghs/login", methods=["POST"])
+def ghs_login():
+    code = (request.form.get("access_code") or "").strip()
+    if not ACCESS_CODE or secrets.compare_digest(code, ACCESS_CODE):
+        session["demo_access"] = True
+        return redirect(url_for("ghs_home"))
+    return render_template_string(GHS_LOGIN, error="That access code is not correct."), 403
+
+@app.route("/api/ghs/status")
+def ghs_status():
+    if ACCESS_CODE and not session.get("demo_access"):
+        return jsonify(ok=False, error="Enter the teacher demo access code at /ghs."), 401
+    return jsonify(ok=True, ready=bool(load_key()) and OpenAI is not None,
+                   generations_left=max(0, MAX_GENERATIONS_PER_SESSION-int(session.get("generation_count", 0))),
+                   limit=MAX_GENERATIONS_PER_SESSION)
+
+@app.after_request
+def private_generation_responses(response):
+    if request.path.startswith("/api/") or request.path.startswith("/ghs"):
+        response.headers["Cache-Control"] = "no-store"
+    return response
+
+@app.errorhandler(413)
+def oversized_photo(error):
+    return jsonify(ok=False, error="Photo is too large. Choose a JPEG, PNG or WebP photo smaller than 12 MB."), 413
+
+
 @app.route("/")
 def home():
     if ACCESS_CODE and not session.get("demo_access"):
@@ -637,7 +679,7 @@ def logout():
 
 @app.route("/api/setup", methods=["POST"])
 def setup():
-    if os.environ.get("OPENAI_API_KEY"):
+    if os.environ.get("OPENAI_API_KEY") or os.environ.get("RENDER"):
         return jsonify({"ok":False,"error":"The hosted demo API key is managed securely on the server."}),403
     data=request.get_json(silent=True) or {}
     key=(data.get("api_key") or "").strip()
@@ -646,6 +688,7 @@ def setup():
     save_key(key)
     return jsonify({"ok":True})
 
+@app.route("/api/ghs/generate", methods=["POST"])
 @app.route("/api/generate", methods=["POST"])
 def generate():
     if ACCESS_CODE and not session.get("demo_access"):
@@ -659,6 +702,8 @@ def generate():
     if OpenAI is None:
         return jsonify({"ok":False,"error":"The OpenAI Python package is not installed. Run START_APP.bat again."}),500
 
+    is_ghs = request.path == "/api/ghs/generate"
+    career_data = GHS_CAREERS if is_ghs else CAREERS
     photo=request.files.get("photo")
     career=(request.form.get("career") or "").strip()
     grade=(request.form.get("grade") or "9").strip()
@@ -667,16 +712,38 @@ def generate():
     priority=(request.form.get("priority") or "Doing work I enjoy").strip()
     if not photo or not career:
         return jsonify({"ok":False,"error":"Please provide a photo and choose a career."}),400
-    if career not in CAREERS:
+    if career not in career_data:
         return jsonify({"ok":False,"error":"Unknown career selection."}),400
     if grade not in BHS_GRADE_LABELS:
         return jsonify({"ok":False,"error":"Please choose your current grade."}),400
 
+    if age not in {"22", "25", "28", "30", "35"}:
+        return jsonify(ok=False, error="Please select one of the available future ages."), 400
+    if path not in {"employee", "owner", "explore"}:
+        return jsonify(ok=False, error="Please select a valid career path."), 400
+    if priority not in {"Doing work I enjoy", "Helping people", "High income potential", "Creativity", "Job stability", "Being my own boss"}:
+        return jsonify(ok=False, error="Please select one of the available priorities."), 400
     raw=photo.read()
     if len(raw)>12*1024*1024:
         return jsonify({"ok":False,"error":"Photo is too large. Please use an image under 12 MB."}),400
 
-    info=CAREERS[career]
+    # Decode actual image bytes, correct phone rotation, and strip location/EXIF metadata.
+    try:
+        with Image.open(io.BytesIO(raw)) as source:
+            if source.format not in {"JPEG", "PNG", "WEBP"}:
+                raise ValueError("unsupported image")
+            if source.width * source.height > 24_000_000:
+                raise ValueError("too many pixels")
+            source.load()
+            normalized = ImageOps.exif_transpose(source).convert("RGB")
+            normalized.thumbnail((2048, 2048))
+            cleaned = io.BytesIO()
+            normalized.save(cleaned, format="PNG")
+            raw = cleaned.getvalue()
+    except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
+        return jsonify(ok=False, error="Choose a valid JPEG, PNG or WebP photo, up to 24 megapixels."), 400
+
+    info=career_data[career]
     business_note = "The person should look like an established professional and small-business owner." if path=="owner" else ""
 
     try:
@@ -684,7 +751,13 @@ def generate():
     except (TypeError, ValueError):
         future_age = 25
 
-    if future_age <= 25:
+    if future_age == 22:
+        age_direction = (
+            "Show believable progression to approximately age 22, a young adult in the early twenties. "
+            "Preserve recognizable identity, with subtle adult facial development and natural grooming. "
+            "Do not age the person to 25, 30 or 35."
+        )
+    elif future_age <= 25:
         age_direction = (
             "Show clear but subtle progression from a high-school-age face into a believable young adult around age 25. "
             "Mature the facial proportions, jaw/cheek structure, skin texture, grooming, posture, and overall professional presence enough that the person no longer looks like a teenager."
@@ -720,9 +793,9 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
 """.strip()
 
     try:
-        client=OpenAI(api_key=key)
+        client=OpenAI(api_key=key, timeout=150.0, max_retries=0)
         bio=io.BytesIO(raw)
-        bio.name=secure_filename(photo.filename or "student.jpg") or "student.jpg"
+        bio.name="portrait-reference.png"
 
         result=client.images.edit(
             model="gpt-image-2",
@@ -731,13 +804,15 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             size="1024x1536",
             quality="medium",
         )
-        item=result.data[0]
+        item=result.data[0] if result.data else None
         b64=getattr(item,"b64_json",None)
         if not b64:
             return jsonify({"ok":False,"error":"The image service returned no image data."}),502
 
         session["generation_count"] = count + 1
         rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
+        if is_ghs:
+            timeline, keys = GHS_DATA["meta"][career]
         return jsonify({
             "ok":True,
             "image":"data:image/png;base64,"+b64,
@@ -751,15 +826,25 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             "path":path,
             "priority":priority,
             "grade":grade,
-            "bhs":bhs_for_grade(career, grade)
+            "school":"GHS" if is_ghs else "BHS",
+            "generations_left":max(0, MAX_GENERATIONS_PER_SESSION-count-1),
+            **({} if is_ghs else {"bhs":bhs_for_grade(career, grade)})
         })
     except Exception as e:
-        msg=str(e)
-        if "billing" in msg.lower() or "quota" in msg.lower():
-            msg="The API account appears to need billing/credits or has reached a usage limit."
-        elif "api key" in msg.lower() or "authentication" in msg.lower() or "401" in msg:
-            msg="The API key was rejected. Please check the key in Setup."
-        return jsonify({"ok":False,"error":msg[:500]}),500
+        # Keep provider diagnostics/credentials out of student-facing responses.
+        category = type(e).__name__
+        app.logger.warning("Portrait generation failed (%s)", category)
+        if category in {"AuthenticationError", "PermissionDeniedError"}:
+            msg="The image service is not authorized. Ask the teacher to check the server's API key and model access."
+        elif category == "RateLimitError":
+            msg="The image service has reached a usage or billing limit. Ask the teacher to check the API account."
+        elif category in {"APITimeoutError", "APIConnectionError"}:
+            msg="The image service did not finish the connection in time. No automatic retry was sent; a submitted request may still be billed. Please check with the teacher before trying again."
+        elif category == "BadRequestError":
+            msg="The image service could not use this request. Try a clear individual portrait or ask the teacher to check the image-service settings."
+        else:
+            msg="The portrait could not be completed. Your selections are still here. Please ask the teacher before trying again."
+        return jsonify(ok=False, error=msg), 502
 
 if __name__=="__main__":
     ip=local_ip()

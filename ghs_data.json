@@ -1,0 +1,1434 @@
+{
+  "careers": {
+    "Architect": {
+      "summary": "Design buildings and spaces by combining creativity, math, technology, codes and collaboration.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Geometry, Algebra II/Precalculus, Physics, art/design, drafting/CAD and strong writing/presentation skills."
+        ],
+        [
+          "College / Architecture Curriculum",
+          "Typical architecture coursework: design studio, architectural history, structures, building systems, environmental systems, CAD/BIM and professional practice."
+        ],
+        [
+          "Experience",
+          "Build a design portfolio and complete architecture/design internships or approved professional experience."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Follow the professional degree + experience + licensing-exam route required where you plan to practice."
+        ],
+        [
+          "Career Launch",
+          "Begin in an architecture/design firm, develop a specialty and work toward independent licensure."
+        ]
+      ],
+      "scene": "a modern architectural studio with drawings, scale models, blueprints, and a contemporary building visible through windows"
+    },
+    "Electrician": {
+      "summary": "Install, troubleshoot and maintain electrical systems in homes, businesses, industry and new construction.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Algebra, Physics, electronics, measurement, technical/shop courses, blueprint reading and safety."
+        ],
+        [
+          "Apprenticeship / Technical Curriculum",
+          "Typical apprenticeship coursework: electrical theory, National Electrical Code, wiring methods, blueprint reading, motors/controls, troubleshooting and jobsite safety."
+        ],
+        [
+          "Experience",
+          "Complete paid supervised on-the-job apprenticeship hours while progressing through classroom instruction."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Meet state requirements for the appropriate electrical credential or license; exact rules vary by state."
+        ],
+        [
+          "Career Launch",
+          "Work in residential, commercial or industrial electrical systems; later move into estimating, supervision or business ownership."
+        ]
+      ],
+      "scene": "a clean commercial electrical work site, wearing appropriate professional electrician work clothing and safety equipment, with tools and electrical panels in the background"
+    },
+    "Registered Nurse": {
+      "summary": "Provide direct patient care, coordinate treatment, and educate patients and families.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Biology, Chemistry, Anatomy & Physiology, Algebra/Statistics, Health and strong English communication."
+        ],
+        [
+          "College / Nursing Curriculum",
+          "Typical ADN/BSN coursework: anatomy & physiology, microbiology, pharmacology, pathophysiology, nursing fundamentals, medical-surgical nursing, pediatrics, maternity, mental health and community health."
+        ],
+        [
+          "Experience",
+          "Complete supervised clinical rotations in hospitals, clinics and other approved healthcare settings."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Graduate from an approved nursing program, pass the NCLEX-RN and meet state licensure requirements."
+        ],
+        [
+          "Career Launch",
+          "Begin as an RN, then develop a specialty in hospital, clinic, school, community or other nursing settings."
+        ]
+      ],
+      "scene": "a bright modern hospital or medical center, wearing professional nursing scrubs with no visible logos, in a realistic clinical environment"
+    },
+    "Veterinarian": {
+      "summary": "Diagnose and treat animals while advising owners about health, prevention and care.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Biology, Chemistry, Physics, math and animal-care or science experiences."
+        ],
+        [
+          "College + Veterinary School Curriculum",
+          "College prerequisites commonly include biology, chemistry, organic chemistry, physics and math. DVM study includes anatomy, physiology, microbiology, pathology, pharmacology, diagnostics, surgery and clinical rotations."
+        ],
+        [
+          "Experience",
+          "Accumulate documented animal/veterinary experience and complete supervised clinical rotations in veterinary school."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Earn a DVM and satisfy national/state veterinary licensing requirements."
+        ],
+        [
+          "Career Launch",
+          "Work in companion-animal, large-animal, specialty, public-health, research or mixed practice."
+        ]
+      ],
+      "scene": "a welcoming modern veterinary clinic, wearing professional veterinary clothing, with a friendly dog nearby and medical equipment subtly in the background"
+    },
+    "Software Developer": {
+      "summary": "Design and build software, websites, apps and digital systems.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Algebra II, Computer Science, Web Development, Statistics, technology courses and strong problem solving."
+        ],
+        [
+          "College / Software Curriculum",
+          "Typical coursework: programming, object-oriented design, data structures, algorithms, databases, operating systems, networks, software engineering, web/mobile development and cloud fundamentals."
+        ],
+        [
+          "Experience",
+          "Build a portfolio of working projects, use version control, and pursue internships, hackathons or open-source work."
+        ],
+        [
+          "Credentials / Qualifications",
+          "A degree can help, but strong portfolios, internships and validated technical skills also matter; no universal license is required."
+        ],
+        [
+          "Career Launch",
+          "Apply for junior developer, QA/automation, web or software-engineering roles and keep expanding your project portfolio."
+        ]
+      ],
+      "scene": "a modern software development workspace with code on monitors, collaborative technology office setting, professional casual clothing"
+    },
+    "Teacher": {
+      "summary": "Help students learn, think, communicate and grow in a general education classroom.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Build strong English communication plus depth in the subject or age group you may want to teach; add psychology/human-behavior, public-speaking and tutoring/mentoring experiences where possible."
+        ],
+        [
+          "College / Educator-Preparation Curriculum",
+          "Typical educator-preparation coursework: foundations of education, child/adolescent development, educational psychology, instructional methods, classroom management, assessment, inclusive education and subject-area teaching methods."
+        ],
+        [
+          "Experience",
+          "Complete classroom observations, field experiences and a supervised student-teaching placement."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Earn the required degree/approved educator-preparation credential and meet state certification requirements for your grade/subject area."
+        ],
+        [
+          "Career Launch",
+          "Apply to schools/districts, complete induction/mentoring requirements and continue professional learning."
+        ]
+      ],
+      "scene": "a bright contemporary general education high school classroom, standing near student desks and a whiteboard, dressed as a professional educator, with students engaged in a class lesson"
+    },
+    "Special Education Teacher": {
+      "summary": "Help students with disabilities learn, build independence and reach individualized academic, social and transition goals.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize English communication, psychology/human behavior, strong subject foundations and supervised peer-support or adaptive-program experiences."
+        ],
+        [
+          "College / Special-Education Curriculum",
+          "Typical coursework: exceptional learners, IEP development, assessment, behavior supports, assistive technology, literacy/numeracy interventions, inclusive instruction, collaboration and special-education law/ethics."
+        ],
+        [
+          "Experience",
+          "Complete supervised field placements and student teaching with students who have varied learning and support needs."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Complete an approved special-education teacher-preparation program and meet state certification/endorsement requirements."
+        ],
+        [
+          "Career Launch",
+          "Begin in resource, inclusion, life-skills or other special-education settings and continue specialty training."
+        ]
+      ],
+      "scene": "a bright contemporary special education classroom in a high school, dressed as a professional educator, supporting a small group of students with accessible learning materials and assistive technology visible in a respectful inclusive setting"
+    },
+    "Firefighter": {
+      "summary": "Respond to fires, medical emergencies, rescues and community safety needs.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Health, Biology/Chemistry, PE/fitness, technical courses, English communication and service/leadership."
+        ],
+        [
+          "Fire Academy / EMS Curriculum",
+          "Typical academy topics: fire behavior, suppression, ladders, search/rescue, building construction, hazardous materials, incident command, equipment operation and emergency medical response."
+        ],
+        [
+          "Experience",
+          "Seek approved cadet/volunteer/community-service exposure where available and maintain strong physical conditioning."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Departments commonly require academy certification and often EMT credentials; exact hiring standards vary by department/state."
+        ],
+        [
+          "Career Launch",
+          "Compete for municipal or regional firefighter positions, then add specialty/rescue/EMS certifications over time."
+        ]
+      ],
+      "scene": "outside a modern fire station beside a fire engine, wearing clean professional firefighter turnout gear with helmet held at the side, no active emergency or flames"
+    },
+    "Police Officer": {
+      "summary": "Protect the community, respond to emergencies, investigate incidents and work with residents.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Civics, Law, English, Psychology/Human Behavior, Forensic Science and physical fitness."
+        ],
+        [
+          "College / Police-Academy Curriculum",
+          "Relevant college study may include criminal justice, psychology, sociology, writing and law. Police academy training typically covers criminal law/procedure, report writing, de-escalation, emergency driving, defensive tactics and community policing."
+        ],
+        [
+          "Experience",
+          "Build a record of service, communication and responsibility; explore approved public-safety internships/cadet opportunities where available."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Meet department hiring standards and complete the required state/agency police academy and certification process."
+        ],
+        [
+          "Career Launch",
+          "Begin patrol training, then pursue specialties such as investigations, community policing, school resource, traffic or leadership."
+        ]
+      ],
+      "scene": "a professional community-policing setting outside a civic building, wearing a generic police uniform with no real department insignia, calm non-confrontational scene"
+    },
+    "TV News Reporter / Local Anchor": {
+      "summary": "Research, report and explain news stories clearly on camera and across digital platforms.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize English, journalism-style writing, Digital Cinematography, Civics/current events, media literacy and public speaking."
+        ],
+        [
+          "College / Journalism Curriculum",
+          "Typical journalism/broadcast coursework: reporting and news writing, media law/ethics, broadcast production, digital storytelling, video editing, interviewing, public-affairs reporting and investigative methods."
+        ],
+        [
+          "Experience",
+          "Create a reel/portfolio, report on real school/community stories and pursue newsroom, station or digital-media internships."
+        ],
+        [
+          "Credentials / Qualifications",
+          "No universal license; employers look closely at reporting skill, writing, on-camera performance, ethics and a strong demo reel."
+        ],
+        [
+          "Career Launch",
+          "Start in local/digital reporting, producing or multimedia journalism and build toward anchoring or specialty beats."
+        ]
+      ],
+      "scene": "a polished local television newsroom and anchor desk, professional broadcast attire, studio cameras and screens in the background with generic graphics and no real station logo"
+    },
+    "Broadway Director / Actor": {
+      "summary": "Build a professional life in theatre through acting, directing, auditions, rehearsal and production experience.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Theatre, Script Analysis, English, music/dance when relevant, technical theatre and frequent live-performance experience."
+        ],
+        [
+          "College / Theatre Curriculum",
+          "Typical theatre coursework: acting, voice/speech, movement, directing, script analysis, theatre history, stagecraft/design, audition technique and production practicum."
+        ],
+        [
+          "Experience",
+          "Perform, direct or crew as many productions as possible; build an audition portfolio and relationships with working theatre artists."
+        ],
+        [
+          "Credentials / Qualifications",
+          "A degree is common but not mandatory; professional success depends heavily on auditions, credits, training, portfolio and network."
+        ],
+        [
+          "Career Launch",
+          "Pursue regional/community/professional productions, assistant-directing, workshops and auditions while building credits."
+        ]
+      ],
+      "scene": "inside a beautiful professional Broadway-style theatre during rehearsal, stage lights glowing, dressed in stylish theatre-professional clothing, with stage and empty seats visible"
+    },
+    "Chef / Restaurant Owner": {
+      "summary": "Create food, lead kitchen teams and potentially build a restaurant or food business.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize math, business, accounting, marketing, Health, nutrition/food-safety learning and part-time food-service experience."
+        ],
+        [
+          "Culinary / Hospitality Curriculum",
+          "Typical culinary or hospitality study: culinary fundamentals, sanitation/food safety, baking, nutrition, menu planning, food cost control, purchasing, hospitality operations, accounting and entrepreneurship."
+        ],
+        [
+          "Experience",
+          "Work in real kitchens/restaurants, learn multiple stations and observe both front-of-house and back-of-house operations."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Food-safety credentials may be required; culinary degrees/certificates are optional but can accelerate skill development."
+        ],
+        [
+          "Career Launch",
+          "Begin in kitchen/restaurant operations, advance to supervisory roles, then develop a business plan before ownership."
+        ]
+      ],
+      "scene": "a beautiful modern restaurant kitchen, wearing professional chef attire, plated food and culinary workspace visible, clean and realistic"
+    },
+    "Automotive Technician": {
+      "summary": "Diagnose, repair and maintain cars and light trucks using mechanical and computerized systems.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Algebra, Physics, Electronics, Automotive/technology courses, computer diagnostics and safe tool use."
+        ],
+        [
+          "Automotive-Technology Curriculum",
+          "Typical training: engine systems, brakes, steering/suspension, electrical/electronic systems, HVAC, drivability, scan-tool diagnostics and shop safety."
+        ],
+        [
+          "Experience",
+          "Complete hands-on lab/shop work and pursue dealership, independent-shop or fleet internships/apprenticeships."
+        ],
+        [
+          "Credentials / Qualifications",
+          "ASE certifications are widely valued; manufacturer-specific training can add specialized credentials."
+        ],
+        [
+          "Career Launch",
+          "Start as an entry-level/lube or apprentice technician and progress into diagnostic specialties, master technician or shop leadership."
+        ]
+      ],
+      "scene": "a clean modern automotive service center beside a vehicle on a lift, wearing professional technician workwear, diagnostic equipment visible"
+    },
+    "Physical Therapist": {
+      "summary": "Help people restore movement, strength and function after injury or illness.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Biology, Chemistry, Anatomy & Physiology, Physics, Statistics and health/fitness science."
+        ],
+        [
+          "College + DPT Curriculum",
+          "Pre-PT study commonly includes biology, chemistry, physics, anatomy/physiology and statistics. DPT coursework includes kinesiology, neuroscience, biomechanics, pathology, therapeutic exercise, examination/intervention and clinical practice."
+        ],
+        [
+          "Experience",
+          "Gain observation hours where programs require/recommend them and complete full-time clinical rotations during DPT training."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Earn a Doctor of Physical Therapy degree, pass the NPTE and meet state licensure requirements."
+        ],
+        [
+          "Career Launch",
+          "Begin in outpatient, hospital, rehab, sports, pediatric, school or other PT settings and later specialize if desired."
+        ]
+      ],
+      "scene": "a bright modern physical therapy clinic with rehabilitation equipment, dressed as a healthcare professional, calm positive environment"
+    },
+    "Plumber": {
+      "summary": "Install, repair and maintain water, drainage and piping systems in homes, businesses and construction projects.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Algebra/Geometry, Physics, drafting, construction/shop courses, measurement and jobsite safety."
+        ],
+        [
+          "Apprenticeship / Plumbing Curriculum",
+          "Typical apprenticeship topics: pipefitting, water supply, drainage/waste/vent systems, gas systems, plumbing code, blueprint reading, applied math and safety."
+        ],
+        [
+          "Experience",
+          "Complete paid supervised apprenticeship hours on residential/commercial jobs while completing classroom instruction."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Meet state/local requirements for apprentice, journeyperson and/or contractor licensing as applicable."
+        ],
+        [
+          "Career Launch",
+          "Work in service, construction or industrial plumbing; later move into estimating, supervision or business ownership."
+        ]
+      ],
+      "scene": "a clean residential or commercial plumbing work site, wearing professional trade workwear and safety equipment, with piping, tools and fixtures visible"
+    },
+    "Business Administration / Manager": {
+      "summary": "Plan, organize and lead people, budgets and operations so an organization can reach its goals.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize English, Algebra/Statistics, Business, Accounting, Economics, Marketing and leadership experiences."
+        ],
+        [
+          "College / Business Curriculum",
+          "Typical business coursework: management, accounting, finance, marketing, economics, operations, human resources, business law, analytics and organizational behavior."
+        ],
+        [
+          "Experience",
+          "Use internships, school leadership, part-time work and project management to practice supervising people and solving operational problems."
+        ],
+        [
+          "Credentials / Qualifications",
+          "A bachelor’s degree is common for many management-track roles; specific industries may value additional certifications."
+        ],
+        [
+          "Career Launch",
+          "Begin in operations, sales, finance, HR or management-training roles and build toward team/department leadership."
+        ]
+      ],
+      "scene": "a modern business office or conference room, dressed in professional business attire, leading a collaborative team meeting with charts and laptops visible"
+    },
+    "Carpenter": {
+      "summary": "Build, install and repair structures and finishes using wood and other construction materials.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Geometry, measurement, drafting, woodworking, construction technology and jobsite safety."
+        ],
+        [
+          "Apprenticeship / Carpentry Curriculum",
+          "Typical training: blueprint reading, framing, finish carpentry, materials, layout/measurement, estimating, tool operation and OSHA/jobsite safety."
+        ],
+        [
+          "Experience",
+          "Build hands-on experience through shop classes, construction projects and paid apprenticeship or contractor employment."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Formal apprenticeship is valuable; contractor licensing/certification requirements depend on location and scope of work."
+        ],
+        [
+          "Career Launch",
+          "Work in residential/commercial carpentry, then specialize in framing, finish work, cabinetry, renovation or supervision."
+        ]
+      ],
+      "scene": "a bright active construction or custom woodworking site, wearing professional carpenter workwear and safety gear, with framing, quality tools and plans visible"
+    },
+    "Graphic Designer": {
+      "summary": "Create visual communications for print, digital media, brands, campaigns, products and organizations.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Foundations in Design, Digital Imaging, Graphic Media, photography/art and strong writing/communication."
+        ],
+        [
+          "College / Design Curriculum",
+          "Typical design coursework: design principles, typography, color theory, branding, illustration, digital imaging, layout, UX basics, portfolio development and professional practice."
+        ],
+        [
+          "Experience",
+          "Build a strong portfolio from real projects, school/community clients, internships and personal design work."
+        ],
+        [
+          "Credentials / Qualifications",
+          "No universal license; portfolio quality and software/design skill are usually more important than certifications alone."
+        ],
+        [
+          "Career Launch",
+          "Apply for junior graphic, brand, production or digital-design roles and continue building a specialized portfolio."
+        ]
+      ],
+      "scene": "a stylish contemporary graphic design studio, professional creative attire, large monitor showing abstract design layouts with no readable brand names, sketchbook and design tools nearby"
+    },
+    "Neurosurgeon": {
+      "summary": "Diagnose and surgically treat complex conditions affecting the brain, spine and nervous system.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize advanced Biology, Chemistry, Physics, Calculus/Statistics, Anatomy & Physiology and strong reading/writing."
+        ],
+        [
+          "College + Medical-School Curriculum",
+          "Pre-med coursework typically includes biology, general/organic chemistry, biochemistry, physics, calculus/statistics and psychology/sociology. Medical school adds anatomy, neuroanatomy, physiology, pathology, pharmacology and clinical rotations."
+        ],
+        [
+          "Experience",
+          "Build healthcare/research exposure, then complete medical-school clinical rotations followed by a highly intensive neurosurgery residency."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Earn an MD/DO, pass medical licensing exams, complete neurosurgery residency and meet board/state requirements."
+        ],
+        [
+          "Career Launch",
+          "Practice as a hospital/academic/private neurosurgeon, often with further subspecialty fellowship training."
+        ]
+      ],
+      "scene": "a state-of-the-art neurosurgery operating room or surgical planning suite, wearing appropriate sterile surgical attire, sophisticated medical imaging visible, calm professional non-graphic scene"
+    },
+    "Cybersecurity Specialist": {
+      "summary": "Protect computers, networks and information from attacks, misuse and security failures.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Computer Science, networking/electronics, Algebra, Web Development and hands-on system troubleshooting."
+        ],
+        [
+          "College / Cybersecurity Curriculum",
+          "Typical coursework: networking, Linux, programming, security fundamentals, cryptography, digital forensics, cloud security, ethical hacking, incident response and risk management."
+        ],
+        [
+          "Experience",
+          "Build labs/home projects, compete in cyber challenges and pursue IT/help-desk/security internships."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Industry certifications such as Security+, Network+ or vendor/cloud credentials can complement a degree and experience."
+        ],
+        [
+          "Career Launch",
+          "Start in IT support, SOC/security analyst, network/security or junior cyber roles and specialize over time."
+        ]
+      ],
+      "scene": "a modern cybersecurity operations center with multiple monitors showing generic network and security dashboards, professional technology workplace, no hacking imagery or readable private data"
+    },
+    "Data Scientist / AI Specialist": {
+      "summary": "Use statistics, programming and machine learning to find patterns in data and build useful predictive or AI systems.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Algebra II, Precalculus/Calculus, Statistics, Computer Science/Python and strong analytical writing."
+        ],
+        [
+          "College / Data-AI Curriculum",
+          "Typical coursework: calculus, linear algebra, probability/statistics, programming, data structures, databases, machine learning, AI, data visualization and experimental methods."
+        ],
+        [
+          "Experience",
+          "Build data projects, model portfolios and internships using real datasets; learn to explain results clearly to nontechnical audiences."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Bachelor’s degrees are common; advanced AI/research roles may prefer graduate study. No universal professional license."
+        ],
+        [
+          "Career Launch",
+          "Start in data analyst, junior data scientist, ML/AI engineering or analytics roles and deepen a technical specialty."
+        ]
+      ],
+      "scene": "a sophisticated data science and artificial intelligence workspace, professional casual attire, large displays with generic charts, models and data visualizations"
+    },
+    "Dental Hygienist": {
+      "summary": "Provide preventive oral-health care, clean teeth, assess patients and teach healthy dental habits.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Biology, Chemistry, Anatomy & Physiology, Health and strong interpersonal communication."
+        ],
+        [
+          "Dental-Hygiene Curriculum",
+          "Typical accredited-program coursework: oral anatomy, radiography, periodontology, dental materials, pharmacology, preventive dentistry, community dental health and supervised clinical practice."
+        ],
+        [
+          "Experience",
+          "Complete extensive supervised dental-hygiene clinical hours with real patients in an accredited program."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Graduate from an accredited dental-hygiene program and meet national/state examination and licensure requirements."
+        ],
+        [
+          "Career Launch",
+          "Work in dental practices, public health, education or specialty settings and add expanded-function credentials where available."
+        ]
+      ],
+      "scene": "a bright modern dental office, wearing professional clinical attire and protective equipment, standing beside a dental chair in a clean non-procedural setting"
+    },
+    "Doctor / Physician": {
+      "summary": "Diagnose illness, provide treatment and guide patients in maintaining or restoring health.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Biology, Chemistry, Physics, Calculus/Statistics, Anatomy & Physiology and strong English communication."
+        ],
+        [
+          "College + Medical-School Curriculum",
+          "Pre-med coursework commonly includes biology, general/organic chemistry, biochemistry, physics, calculus/statistics and psychology/sociology. Medical school includes anatomy, physiology, pathology, pharmacology, diagnostics and clinical rotations."
+        ],
+        [
+          "Experience",
+          "Build healthcare/service/research exposure, then complete clinical rotations and residency in a medical specialty."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Earn an MD/DO, pass required licensing exams, complete residency and meet state/board requirements."
+        ],
+        [
+          "Career Launch",
+          "Practice in a chosen specialty after residency; some physicians add fellowship subspecialty training."
+        ]
+      ],
+      "scene": "a bright modern medical center, wearing professional physician attire with a white coat and no logos, calmly reviewing a patient chart or medical image"
+    },
+    "HVAC Technician": {
+      "summary": "Install, maintain and repair heating, ventilation, air-conditioning and refrigeration systems.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Algebra, Physics, Electronics & Engineering, measurement, technical/shop courses and safety."
+        ],
+        [
+          "HVAC Technical Curriculum",
+          "Typical training: refrigeration cycles, electrical controls, heating/cooling systems, airflow, blueprint reading, diagnostics, EPA refrigerant rules and jobsite safety."
+        ],
+        [
+          "Experience",
+          "Complete hands-on lab work and employer/apprenticeship experience troubleshooting real HVAC systems."
+        ],
+        [
+          "Credentials / Qualifications",
+          "EPA Section 608 certification is commonly required for refrigerant work; state/local trade licenses vary."
+        ],
+        [
+          "Career Launch",
+          "Begin as an HVAC installer/service apprentice and progress into diagnostics, controls, commercial systems or supervision."
+        ]
+      ],
+      "scene": "a clean commercial HVAC service setting, wearing professional technician workwear and safety equipment, with modern heating and cooling equipment and diagnostic tools visible"
+    },
+    "Lawyer / Attorney": {
+      "summary": "Advise clients, interpret laws, research issues and advocate in negotiations, transactions or court proceedings.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize English, History/Civics, Law, debate/public speaking, Economics and research-heavy writing."
+        ],
+        [
+          "College + Law-School Curriculum",
+          "College can be any rigorous major emphasizing reading/writing/research. Typical first-year law courses include contracts, torts, civil procedure, criminal law, constitutional law, property and legal research/writing, followed by electives and clinics."
+        ],
+        [
+          "Experience",
+          "Build research, debate, service and internship experience; in law school use clinics, moot court and summer legal placements."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Earn a JD from an approved law school and satisfy bar-admission requirements in the jurisdiction where you plan to practice."
+        ],
+        [
+          "Career Launch",
+          "Begin in a firm, government, nonprofit, corporate or public-interest legal role and develop a practice area."
+        ]
+      ],
+      "scene": "a polished law office or courthouse conference setting, wearing professional legal attire, law books and case materials visible, no readable client information"
+    },
+    "Marketing / Advertising Professional": {
+      "summary": "Connect products, services and causes with audiences through research, strategy, storytelling and campaigns.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize English, Marketing/Business, Digital Imaging/Graphic Media, Statistics and presentation skills."
+        ],
+        [
+          "College / Marketing Curriculum",
+          "Typical coursework: marketing principles, consumer behavior, market research, digital/social media, advertising, branding, sales, analytics and campaign strategy."
+        ],
+        [
+          "Experience",
+          "Create real campaigns, social/content projects and a portfolio; pursue internships with businesses, agencies or nonprofits."
+        ],
+        [
+          "Credentials / Qualifications",
+          "A degree is common; platform/analytics certifications can strengthen a portfolio but no universal license exists."
+        ],
+        [
+          "Career Launch",
+          "Start in marketing coordination, content, social media, account service, sales or analytics and grow toward strategy/management."
+        ]
+      ],
+      "scene": "a creative marketing agency or brand strategy meeting, professional modern attire, presentation boards and generic campaign visuals in the background"
+    },
+    "Medical & Health Services Manager": {
+      "summary": "Lead the business and operational side of healthcare organizations, departments and services.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Biology/Anatomy, Business, Accounting, Statistics, English communication and technology."
+        ],
+        [
+          "College / Health-Administration Curriculum",
+          "Typical coursework: healthcare systems, health policy, healthcare finance/accounting, HR, operations, health informatics, quality improvement, statistics, law/ethics and management."
+        ],
+        [
+          "Experience",
+          "Seek healthcare-office, hospital, clinic or administrative internships and learn how patient-care organizations operate."
+        ],
+        [
+          "Credentials / Qualifications",
+          "A bachelor’s degree is common; larger/senior roles may prefer graduate study such as MHA/MBA/MPH."
+        ],
+        [
+          "Career Launch",
+          "Begin in clinic/hospital administration, operations, scheduling, quality, finance or health-information roles and advance into management."
+        ]
+      ],
+      "scene": "a modern hospital administrative office or healthcare leadership meeting, professional business attire, clinical facility visible through glass in the background"
+    },
+    "Nurse Practitioner": {
+      "summary": "Provide advanced nursing care, assess patients and diagnose and manage many health conditions within state scope-of-practice rules.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Biology, Chemistry, Anatomy & Physiology, Statistics, Health and strong English communication."
+        ],
+        [
+          "Nursing + Graduate APRN Curriculum",
+          "First complete RN preparation (anatomy, microbiology, pharmacology, nursing/clinicals). Graduate NP study adds advanced pathophysiology, advanced pharmacology, advanced health assessment, diagnostics, population health and specialty clinical rotations."
+        ],
+        [
+          "Experience",
+          "Build RN clinical experience and complete advanced supervised NP clinical hours in the chosen population specialty."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Earn required graduate nursing preparation, national NP certification and state APRN licensure/authority requirements."
+        ],
+        [
+          "Career Launch",
+          "Practice in primary care or a specialty population area, often in clinics, hospitals or integrated-care settings."
+        ]
+      ],
+      "scene": "a bright contemporary clinic, wearing professional advanced-practice nursing attire, reviewing a tablet in a calm patient-care setting with no visible logos"
+    },
+    "Occupational Therapist": {
+      "summary": "Help people develop or regain the everyday skills they need for school, work, home and independent living.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Biology, Anatomy & Physiology, Psychology/Human Behavior, Statistics, art/design and helping experiences."
+        ],
+        [
+          "College + OT Graduate Curriculum",
+          "Typical OT study: anatomy, neuroscience, kinesiology, psychosocial practice, activity analysis, pediatrics, adult rehabilitation, assistive technology, research and fieldwork."
+        ],
+        [
+          "Experience",
+          "Complete observation/volunteer experiences and extensive supervised fieldwork during an accredited OT program."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Earn an accredited OT graduate degree, pass the NBCOT exam and meet state licensure requirements."
+        ],
+        [
+          "Career Launch",
+          "Work in hospitals, rehab, schools, pediatrics, mental health, skilled nursing or community settings."
+        ]
+      ],
+      "scene": "a warm modern occupational therapy clinic with adaptive and rehabilitation equipment, professional healthcare attire, positive non-procedural setting"
+    },
+    "Physician Assistant": {
+      "summary": "Provide medical care on healthcare teams by evaluating patients, diagnosing conditions and helping manage treatment.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Biology, Chemistry, Anatomy & Physiology, Statistics and strong communication."
+        ],
+        [
+          "College + PA-School Curriculum",
+          "College prerequisites commonly include biology, chemistry, anatomy/physiology and statistics. PA programs typically cover anatomy, physiology, pathophysiology, pharmacology, diagnostics, clinical medicine, procedures and multi-specialty rotations."
+        ],
+        [
+          "Experience",
+          "Build the patient-care experience expected by target PA programs and complete intensive supervised clinical rotations."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Graduate from an accredited PA program, pass the PANCE and meet state licensure requirements."
+        ],
+        [
+          "Career Launch",
+          "Practice on a physician-led/collaborative healthcare team in primary care, surgery, emergency medicine or another specialty."
+        ]
+      ],
+      "scene": "a modern hospital or outpatient clinic, wearing professional medical attire, confidently collaborating with a healthcare team in a calm setting"
+    },
+    "School Counselor / Mental Health Counselor": {
+      "summary": "Support people with academic, career, social-emotional or mental-health goals through counseling and guidance.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Human Behavior/Psychology, English, Statistics, Health and supervised peer-helping/service experiences."
+        ],
+        [
+          "College + Counseling Graduate Curriculum",
+          "Typical path: undergraduate psychology/human-development coursework followed by a counseling master’s with counseling theories, lifespan development, ethics, group counseling, assessment, career counseling, crisis intervention and practicum/internship."
+        ],
+        [
+          "Experience",
+          "Gain supervised helping experience and complete the practicum/internship hours required by the counseling program/credential."
+        ],
+        [
+          "Credentials / Qualifications",
+          "School-counselor certification and mental-health counselor licensure have different state requirements; graduate preparation is typically required."
+        ],
+        [
+          "Career Launch",
+          "Work in schools, agencies, clinics or community mental-health settings and build specialty expertise."
+        ]
+      ],
+      "scene": "a welcoming school counseling or professional counseling office, calm supportive atmosphere, professional attire, books and planning materials visible"
+    },
+    "Web / Digital Designer": {
+      "summary": "Design useful, attractive websites and digital experiences by combining visual design, user needs and technology.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Web Development, Digital Imaging, Graphic Media, Computer Science and design/art fundamentals."
+        ],
+        [
+          "College / Web-UX Curriculum",
+          "Typical coursework: HTML/CSS/JavaScript, responsive design, UX/UI, interaction design, typography, visual systems, accessibility, prototyping and portfolio development."
+        ],
+        [
+          "Experience",
+          "Build and publish real websites/apps, test them with users and create a portfolio showing both design process and finished work."
+        ],
+        [
+          "Credentials / Qualifications",
+          "No universal license; employers care strongly about portfolio, technical fluency, accessibility awareness and collaboration."
+        ],
+        [
+          "Career Launch",
+          "Start in web design, front-end, production design or UX/UI support roles and develop a specialty."
+        ]
+      ],
+      "scene": "a modern UX and web design studio, professional creative attire, large screens showing generic website wireframes and colorful interface layouts with no readable brands"
+    },
+    "Welder / Fabricator": {
+      "summary": "Join and shape metal to build, repair and manufacture structures, equipment and products.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Metalworking, Geometry, drafting, Physics, measurement and shop safety."
+        ],
+        [
+          "Welding / Fabrication Curriculum",
+          "Typical training: SMAW, GMAW/MIG, GTAW/TIG, cutting processes, blueprint reading, metallurgy, fabrication, measurement, weld symbols and safety."
+        ],
+        [
+          "Experience",
+          "Accumulate supervised booth/shop hours and real fabrication experience; practice to code-quality standards."
+        ],
+        [
+          "Credentials / Qualifications",
+          "AWS or employer-specific welding certifications can verify process/position skills; requirements vary by industry."
+        ],
+        [
+          "Career Launch",
+          "Work in structural, manufacturing, pipe, marine, automotive or custom fabrication and add specialty certifications."
+        ]
+      ],
+      "scene": "a professional metal fabrication shop, wearing complete welding protective equipment with welding helmet raised, metalwork and fabrication tables visible, no active sparks near the face"
+    },
+    "Engineer": {
+      "summary": "Use math, science and design to solve practical problems and create systems, products, structures or technology.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Algebra II, Trigonometry/Precalculus/Calculus, Physics, Chemistry, CAD/drafting and programming where useful."
+        ],
+        [
+          "College / Engineering Curriculum",
+          "Typical engineering core: calculus, differential equations, physics, chemistry, statics/dynamics, materials, computing/circuits as appropriate, engineering design labs and a senior capstone; specialty courses depend on the engineering field."
+        ],
+        [
+          "Experience",
+          "Use design competitions, labs, research and internships/co-ops to apply engineering to real problems."
+        ],
+        [
+          "Credentials / Qualifications",
+          "An accredited engineering degree is standard; FE/PE licensure matters especially for certain public-facing engineering roles."
+        ],
+        [
+          "Career Launch",
+          "Begin as an entry-level engineer in a specialty such as mechanical, civil, electrical, environmental or computer engineering."
+        ]
+      ],
+      "scene": "a modern engineering lab or design center, professional technical attire, prototypes, CAD displays and testing equipment visible"
+    },
+    "Accountant / Financial Manager": {
+      "summary": "Help people and organizations understand money, budgets, reporting, controls and financial decisions.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Algebra, Accounting, Economics, Statistics, Business and clear written communication."
+        ],
+        [
+          "College / Accounting-Finance Curriculum",
+          "Typical coursework: financial accounting, managerial accounting, taxation, auditing, cost accounting, corporate finance, economics, business law, information systems and analytics."
+        ],
+        [
+          "Experience",
+          "Pursue accounting/finance internships and practice spreadsheets, financial statements, budgeting and data analysis."
+        ],
+        [
+          "Credentials / Qualifications",
+          "A bachelor’s degree is common; CPA licensure is valuable/required for certain public-accounting work, while finance credentials vary by role."
+        ],
+        [
+          "Career Launch",
+          "Begin in accounting, audit, tax, budgeting, financial analysis or banking and progress toward management."
+        ]
+      ],
+      "scene": "a polished finance or accounting office, professional business attire, working with generic financial charts and spreadsheets on large monitors with no private data"
+    },
+    "Entrepreneur / Business Owner": {
+      "summary": "Create and grow a business by solving a customer problem, managing money and leading day-to-day operations.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Business, Accounting, Marketing, Economics, English, technology/web skills and real selling/project experience."
+        ],
+        [
+          "Business / Entrepreneurship Curriculum",
+          "Useful coursework: entrepreneurship, accounting, finance, marketing, operations, sales, business law, e-commerce, analytics and management."
+        ],
+        [
+          "Experience",
+          "Start a small real project: sell a product/service, track costs/revenue, test marketing, gather customer feedback and improve the model."
+        ],
+        [
+          "Credentials / Qualifications",
+          "No required degree or license for entrepreneurship itself, though the chosen industry may have permits, licenses or professional credentials."
+        ],
+        [
+          "Career Launch",
+          "Validate a problem/customer, build a lean business plan, manage cash flow and grow only after proving demand."
+        ]
+      ],
+      "scene": "a confident small-business owner in a contemporary office or storefront, professional attire, collaborating with a small team with generic business materials visible"
+    },
+    "Military / Armed Forces": {
+      "summary": "Serve in one of the U.S. Armed Forces in a military specialty that may involve leadership, technology, logistics, medicine, engineering, aviation, communications or other fields.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize English, math, science, physical fitness, technology, Civics and World Language when useful for your interests."
+        ],
+        [
+          "Service / Officer-Training Curriculum",
+          "Enlisted route: basic training plus a job-specific technical school. Officer routes may include college + ROTC, a service academy or Officer Candidate/Training School. Technical curriculum depends on specialty: aviation, cyber, logistics, medicine, intelligence, engineering and more."
+        ],
+        [
+          "Experience",
+          "Research branches and specialties carefully, compare service commitments/benefits and speak with family, counselors, veterans and official recruiters before deciding."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Meet service eligibility, testing, medical/fitness and training requirements; some specialties also provide civilian-recognized technical credentials."
+        ],
+        [
+          "Career Launch",
+          "Enter an enlisted specialty or commissioning path and deliberately track civilian-transferable skills, education and certifications."
+        ]
+      ],
+      "scene": "a respectful modern military professional setting with generic U.S. service-style uniform and no readable insignia, weapons, combat scene, recruitment slogan or branch logo; confident service member in a technical or leadership environment"
+    },
+    "Customer Service Representative": {
+      "summary": "Help customers solve problems, understand products or services, and have a positive experience with a business or organization.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize English, Business, Marketing/Sales, computer applications, digital communication and part-time/service experience."
+        ],
+        [
+          "Workplace / Business Training",
+          "Common training topics: customer communication, de-escalation, product/service knowledge, CRM software, data entry, business writing, privacy/security and problem resolution. College is not always required."
+        ],
+        [
+          "Experience",
+          "Use retail, hospitality, office, school-help-desk or volunteer roles to practice solving problems for real people."
+        ],
+        [
+          "Credentials / Qualifications",
+          "No universal license; role-specific product, software or industry certifications may help."
+        ],
+        [
+          "Career Launch",
+          "Begin in customer service/support and progress into senior support, quality, training, sales, operations or supervision."
+        ]
+      ],
+      "scene": "a modern customer support workplace with a friendly professional at a desk using a computer and headset, clean office setting, no readable customer data or company logos"
+    },
+    "Elected Official / Politician": {
+      "summary": "Represent a community in public office by listening to constituents, studying issues, building coalitions and helping shape laws, budgets and policy.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Civics, History, English, Economics, Law, debate/public speaking, Media Literacy and community involvement."
+        ],
+        [
+          "College / Public-Policy Curriculum",
+          "Common useful college study includes political science, public policy, economics, communications or law, with courses such as American government, constitutional law, public policy, statistics, economics and public speaking. A specific degree is not legally required for elected office."
+        ],
+        [
+          "Experience",
+          "Volunteer on campaigns/community boards, attend public meetings, organize around an issue and learn constituent communication."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Eligibility rules depend on the office and jurisdiction; credibility comes from community involvement, knowledge, ethics and leadership."
+        ],
+        [
+          "Career Launch",
+          "Begin with community/campaign service, appointed boards or local office and build a public record before seeking larger roles."
+        ]
+      ],
+      "scene": "a professional civic setting such as a town hall or legislative chamber, dressed in business attire, speaking with community members or reviewing public-policy materials, no party logos or campaign signs"
+    },
+    "Caregiver / Personal Care Aide": {
+      "summary": "Support older adults or people with disabilities with daily living, safety, companionship and independence in homes or care settings.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Health, Anatomy/biology, psychology/human behavior, CPR/first aid and supervised peer-support/service experiences."
+        ],
+        [
+          "Direct-Care Training Curriculum",
+          "Typical training: personal care, infection control, mobility/transfers, nutrition, dementia/disability support, communication, documentation, emergency response and client rights. CNA/HHA training may be useful or required for certain roles/settings."
+        ],
+        [
+          "Experience",
+          "Build supervised experience helping people with daily participation, independence and social/emotional support."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Requirements vary by job and setting; CPR/first aid and CNA/HHA or agency training may be required."
+        ],
+        [
+          "Career Launch",
+          "Work in home care, assisted living, disability support, senior care or community programs and build specialty credentials."
+        ]
+      ],
+      "scene": "a warm professional home-care or senior-living setting, respectfully assisting an older adult with everyday activities, professional caregiver attire, no medical emergency imagery"
+    },
+    "Construction Manager": {
+      "summary": "Plan and coordinate construction projects by managing schedules, budgets, safety, contractors, materials, quality and communication.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Geometry/Algebra, drafting/CAD, engineering, woodworking/construction, Business and Accounting."
+        ],
+        [
+          "College / Construction-Management Curriculum",
+          "Typical coursework: construction methods/materials, estimating, scheduling, contracts, safety, blueprint reading/BIM, cost control, project management, accounting and field operations."
+        ],
+        [
+          "Experience",
+          "Pursue construction-site internships/co-ops and learn how superintendents, trades, designers, owners and inspectors coordinate."
+        ],
+        [
+          "Credentials / Qualifications",
+          "A bachelor’s degree is common for management-track roles; industry safety/project credentials can strengthen advancement."
+        ],
+        [
+          "Career Launch",
+          "Begin as project engineer/assistant PM/field coordinator and progress toward project manager or superintendent."
+        ]
+      ],
+      "scene": "a professional construction site office and active building project, wearing appropriate hard hat and safety vest, reviewing plans with a project team, no company logos"
+    },
+    "Psychologist": {
+      "summary": "Study behavior and mental processes and, depending on specialty and licensure, assess, research or help people improve mental health and functioning.",
+      "steps": [
+        [
+          "High School Curriculum",
+          "Prioritize Human Behavior/Psychology, Biology, Statistics, English/research writing and helping/research experiences."
+        ],
+        [
+          "College + Psychology Graduate Curriculum",
+          "Typical undergraduate psychology: developmental, abnormal, social, cognitive and biological psychology, research methods and statistics. Clinical/counseling graduate study adds assessment, psychotherapy, ethics, advanced research, practicum and internship."
+        ],
+        [
+          "Experience",
+          "Build research/helping experience; clinical psychologists complete extensive supervised practicum/internship training."
+        ],
+        [
+          "Credentials / Qualifications",
+          "Independent clinical psychologist practice typically requires a doctoral degree, supervised experience, examination and state licensure; other psychology careers have different requirements."
+        ],
+        [
+          "Career Launch",
+          "Work in clinical, school, research, organizational or community settings depending on degree/credential path."
+        ]
+      ],
+      "scene": "a calm professional psychology office or research setting, dressed in professional attire, meeting respectfully with a client or reviewing behavioral research materials, no visible private patient information"
+    }
+  },
+  "meta": {
+    "Architect": [
+      "Often 7–10+ years from high school to independent licensure, depending on degree and experience route.",
+      [
+        "Design + spatial reasoning",
+        "CAD/BIM + technical drawing",
+        "Math, communication + collaboration"
+      ]
+    ],
+    "Electrician": [
+      "Often about 4–5 years in a paid apprenticeship/training route, with licensing requirements varying by state.",
+      [
+        "Safety + code awareness",
+        "Troubleshooting",
+        "Math + measurement"
+      ]
+    ],
+    "Registered Nurse": [
+      "Commonly 2–4 years after high school for an ADN/BSN route, followed by NCLEX-RN licensure.",
+      [
+        "Patient communication",
+        "Clinical judgment",
+        "Organization + teamwork"
+      ]
+    ],
+    "Veterinarian": [
+      "Usually about 8 years after high school before entering practice: undergraduate preparation plus a 4-year DVM program.",
+      [
+        "Science + diagnostics",
+        "Animal handling",
+        "Communication with owners"
+      ]
+    ],
+    "Software Developer": [
+      "Often 2–4+ years after high school depending on degree, community-college, certificate or portfolio-based route.",
+      [
+        "Programming + logic",
+        "Debugging + problem solving",
+        "Teamwork + communication"
+      ]
+    ],
+    "Teacher": [
+      "Usually 4+ years after high school for a bachelor’s degree and educator preparation, plus state certification requirements.",
+      [
+        "Communication",
+        "Subject-area knowledge",
+        "Classroom leadership"
+      ]
+    ],
+    "Special Education Teacher": [
+      "Usually 4+ years after high school for a degree and special-education teacher preparation, plus state certification requirements.",
+      [
+        "Patience + communication",
+        "Individualized instruction",
+        "Collaboration + advocacy"
+      ]
+    ],
+    "Firefighter": [
+      "Can range from months to several years after high school depending on hiring cycles, academy and EMT requirements.",
+      [
+        "Physical readiness",
+        "Teamwork under pressure",
+        "Safety + emergency judgment"
+      ]
+    ],
+    "Police Officer": [
+      "Often 1–4+ years after high school depending on college choices, minimum-age rules and agency hiring/academy requirements.",
+      [
+        "Judgment + communication",
+        "Report writing",
+        "Fitness + composure"
+      ]
+    ],
+    "TV News Reporter / Local Anchor": [
+      "Often 4 years for a journalism/communications degree, though portfolio and internship strength are major hiring factors.",
+      [
+        "Writing + interviewing",
+        "On-camera communication",
+        "News judgment + ethics"
+      ]
+    ],
+    "Broadway Director / Actor": [
+      "Highly variable; formal BFA/BA training is often 4 years, but professional progress depends on auditions, credits and network.",
+      [
+        "Performance + storytelling",
+        "Collaboration",
+        "Resilience + preparation"
+      ]
+    ],
+    "Chef / Restaurant Owner": [
+      "Can begin directly after high school; culinary programs often run 1–4 years, while ownership usually follows substantial industry experience.",
+      [
+        "Food safety + technique",
+        "Cost control",
+        "Leadership + customer service"
+      ]
+    ],
+    "Automotive Technician": [
+      "Commonly 1–2 years of postsecondary technical study or employer training, followed by continued ASE/manufacturer certification.",
+      [
+        "Mechanical troubleshooting",
+        "Electronics/diagnostics",
+        "Safety + precision"
+      ]
+    ],
+    "Physical Therapist": [
+      "Usually about 7 years after high school: undergraduate preparation plus a 3-year DPT program.",
+      [
+        "Anatomy + movement science",
+        "Patient coaching",
+        "Clinical reasoning"
+      ]
+    ],
+    "Plumber": [
+      "Often about 4–5 years in apprenticeship before full journeyperson-level qualification, depending on state rules.",
+      [
+        "Measurement + math",
+        "Troubleshooting",
+        "Code + safety"
+      ]
+    ],
+    "Business Administration / Manager": [
+      "Often 4 years for a bachelor’s degree; some entry paths begin sooner through work experience or associate-degree programs.",
+      [
+        "Leadership + communication",
+        "Business analytics",
+        "Organization + decision-making"
+      ]
+    ],
+    "Carpenter": [
+      "Can begin directly after high school; apprenticeship commonly takes 3–4 years to reach advanced journeyperson skill.",
+      [
+        "Measurement + craftsmanship",
+        "Blueprint reading",
+        "Safety + reliability"
+      ]
+    ],
+    "Graphic Designer": [
+      "Often 2–4 years of design study, though portfolio-based entry routes also exist.",
+      [
+        "Visual communication",
+        "Typography + layout",
+        "Creative software + critique"
+      ]
+    ],
+    "Neurosurgeon": [
+      "Commonly 15+ years after high school: college, medical school and about 7 years of neurosurgery residency, sometimes followed by fellowship.",
+      [
+        "Advanced science",
+        "Precision + stamina",
+        "Clinical judgment + teamwork"
+      ]
+    ],
+    "Cybersecurity Specialist": [
+      "Often 2–4 years of college/training, though certification + experience routes can begin sooner.",
+      [
+        "Systems thinking",
+        "Threat analysis",
+        "Troubleshooting + ethics"
+      ]
+    ],
+    "Data Scientist / AI Specialist": [
+      "Often 4 years for entry-level data/AI roles; advanced research positions may require graduate study.",
+      [
+        "Statistics + math",
+        "Python/data tools",
+        "Critical thinking + communication"
+      ]
+    ],
+    "Dental Hygienist": [
+      "Often 2–3 years after high school for an associate-level dental-hygiene program, plus licensing exams.",
+      [
+        "Patient care",
+        "Precision + infection control",
+        "Communication + education"
+      ]
+    ],
+    "Doctor / Physician": [
+      "Usually 11–15+ years after high school depending on specialty: college, medical school and residency/fellowship.",
+      [
+        "Science + diagnosis",
+        "Communication + empathy",
+        "Decision-making under pressure"
+      ]
+    ],
+    "HVAC Technician": [
+      "Often 1–2 years of technical education plus employer/apprenticeship experience; advancement continues through field hours and certifications.",
+      [
+        "Electrical troubleshooting",
+        "Mechanical systems",
+        "Safety + customer service"
+      ]
+    ],
+    "Lawyer / Attorney": [
+      "Usually about 7 years after high school: 4-year bachelor’s degree + 3-year JD, followed by bar admission.",
+      [
+        "Reading + writing",
+        "Argument + analysis",
+        "Research + ethics"
+      ]
+    ],
+    "Marketing / Advertising Professional": [
+      "Often 4 years for a bachelor’s degree, though portfolio/internship-based entry paths can begin sooner.",
+      [
+        "Audience insight",
+        "Writing + visual communication",
+        "Analytics + creativity"
+      ]
+    ],
+    "Medical & Health Services Manager": [
+      "Often 4 years for a bachelor’s degree; management advancement may take additional experience or graduate study.",
+      [
+        "Organization + leadership",
+        "Healthcare systems",
+        "Finance/data + communication"
+      ]
+    ],
+    "Nurse Practitioner": [
+      "Often 6–8+ years after high school depending on BSN/RN experience and MSN/DNP pathway.",
+      [
+        "Advanced assessment",
+        "Clinical decision-making",
+        "Patient education + leadership"
+      ]
+    ],
+    "Occupational Therapist": [
+      "Usually 6–7 years after high school: bachelor’s preparation plus an OT master’s/doctoral professional program.",
+      [
+        "Activity analysis",
+        "Empathy + coaching",
+        "Creative problem solving"
+      ]
+    ],
+    "Physician Assistant": [
+      "Often 6–7 years after high school: bachelor’s/prerequisites + patient-care experience + roughly 2–3 years of PA school.",
+      [
+        "Medical knowledge",
+        "Team-based care",
+        "Communication + adaptability"
+      ]
+    ],
+    "School Counselor / Mental Health Counselor": [
+      "Usually 6+ years after high school: bachelor’s degree plus a counseling master’s and supervised credentialing requirements.",
+      [
+        "Listening + empathy",
+        "Ethics + boundaries",
+        "Communication + problem solving"
+      ]
+    ],
+    "Web / Digital Designer": [
+      "Often 2–4 years of college/training, though portfolio-based entry routes can be faster.",
+      [
+        "Visual design",
+        "HTML/CSS/JS",
+        "UX + accessibility"
+      ]
+    ],
+    "Welder / Fabricator": [
+      "Often 6 months–2 years of technical training, followed by continuing skill/certification development on the job.",
+      [
+        "Precision + hand skills",
+        "Blueprint reading",
+        "Safety + quality control"
+      ]
+    ],
+    "Engineer": [
+      "Typically 4 years for a bachelor’s degree; professional licensure, when pursued, requires additional exams/experience.",
+      [
+        "Math + physics",
+        "Design + analysis",
+        "Teamwork + technical communication"
+      ]
+    ],
+    "Accountant / Financial Manager": [
+      "Often 4 years for a bachelor’s degree; CPA or advanced finance credentials can add time/experience requirements.",
+      [
+        "Accuracy + ethics",
+        "Financial analysis",
+        "Spreadsheets + communication"
+      ]
+    ],
+    "Entrepreneur / Business Owner": [
+      "Can begin in high school or immediately after; success depends more on execution, market fit and financial discipline than a fixed timeline.",
+      [
+        "Initiative + resilience",
+        "Sales + customer insight",
+        "Finance + execution"
+      ]
+    ],
+    "Military / Armed Forces": [
+      "Varies widely by route: enlistment can begin after high school; officer paths commonly include a 4-year college/academy route before commissioning.",
+      [
+        "Discipline + teamwork",
+        "Physical readiness",
+        "Technical learning + leadership"
+      ]
+    ],
+    "Customer Service Representative": [
+      "Can begin directly after high school; advancement depends strongly on communication, reliability and industry knowledge.",
+      [
+        "Communication",
+        "Problem solving",
+        "Patience + reliability"
+      ]
+    ],
+    "Elected Official / Politician": [
+      "No fixed timeline; some people run for local office soon after becoming eligible, while others build careers/community records first.",
+      [
+        "Public speaking",
+        "Policy analysis",
+        "Coalition building + ethics"
+      ]
+    ],
+    "Caregiver / Personal Care Aide": [
+      "Can begin soon after high school; formal caregiver/CNA/HHA training often takes weeks to months depending on role.",
+      [
+        "Compassion + reliability",
+        "Safe personal-care skills",
+        "Communication + observation"
+      ]
+    ],
+    "Construction Manager": [
+      "Often 4 years for a construction-management degree, with internships/co-ops building the field experience employers expect.",
+      [
+        "Scheduling + organization",
+        "Construction knowledge",
+        "Leadership + cost control"
+      ]
+    ],
+    "Psychologist": [
+      "About 4 years for bachelor-level psychology roles; licensed clinical psychologist pathways commonly take 8–12+ years after high school.",
+      [
+        "Research + statistics",
+        "Listening + assessment",
+        "Ethics + critical thinking"
+      ]
+    ]
+  }
+}
