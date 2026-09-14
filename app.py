@@ -1,7 +1,7 @@
 import os, io, base64, socket, json, traceback, secrets
 from pathlib import Path
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_from_directory, render_template_string
-from PIL import Image, ImageOps, UnidentifiedImageError
+from PIL import Image, ImageDraw, ImageFont, ImageOps, UnidentifiedImageError
 from werkzeug.utils import secure_filename
 
 try:
@@ -24,6 +24,92 @@ def config_file():
 
 CONFIG_FILE = config_file()
 
+WATERMARK_TITLE = "AI-GENERATED CAREER VISUALIZATION"
+WATERMARK_NOTICE = "NOT A PREDICTION | STEP INTO YOUR FUTURE - TODAY!"
+
+
+def _watermark_font(text, maximum_width, preferred_size, minimum_size=18):
+    """Return a bundled Pillow font sized to fit the available image width."""
+    size = preferred_size
+    while size >= minimum_size:
+        font = ImageFont.load_default(size=size)
+        left, top, right, bottom = font.getbbox(text)
+        if right - left <= maximum_width:
+            return font
+        size -= 2
+    return ImageFont.load_default(size=minimum_size)
+
+
+def burn_portrait_watermark(encoded_png):
+    """Burn the standardized disclaimer into returned portrait pixels.
+
+    This happens server-side before the image reaches the browser, so the
+    displayed, downloaded, and printed portrait all use the same marked PNG.
+    Any failure is allowed to stop the request rather than release an
+    unmarked portrait.
+    """
+    portrait_bytes = base64.b64decode(encoded_png, validate=True)
+    with Image.open(io.BytesIO(portrait_bytes)) as source:
+        source.load()
+        portrait = source.convert("RGBA")
+
+    width, height = portrait.size
+    if width < 320 or height < 320:
+        raise ValueError("generated portrait is too small to watermark safely")
+
+    horizontal_padding = max(24, width // 28)
+    vertical_padding = max(18, width // 42)
+    line_spacing = max(8, width // 100)
+    available_width = width - (horizontal_padding * 2)
+
+    title_font = _watermark_font(
+        WATERMARK_TITLE,
+        available_width,
+        preferred_size=max(28, width // 26),
+    )
+    notice_font = _watermark_font(
+        WATERMARK_NOTICE,
+        available_width,
+        preferred_size=max(22, width // 34),
+        minimum_size=16,
+    )
+
+    measure = ImageDraw.Draw(portrait)
+    title_box = measure.textbbox((0, 0), WATERMARK_TITLE, font=title_font)
+    notice_box = measure.textbbox((0, 0), WATERMARK_NOTICE, font=notice_font)
+    title_height = title_box[3] - title_box[1]
+    notice_height = notice_box[3] - notice_box[1]
+    band_height = vertical_padding * 2 + title_height + line_spacing + notice_height
+    band_top = height - band_height
+
+    overlay = Image.new("RGBA", portrait.size, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(overlay)
+    draw.rectangle((0, band_top, width, height), fill=(5, 52, 40, 226))
+    draw.rectangle((0, band_top, width, band_top + max(3, width // 300)), fill=(126, 216, 184, 255))
+
+    def draw_centered(text, font, box, top):
+        text_width = box[2] - box[0]
+        x = (width - text_width) // 2 - box[0]
+        y = top - box[1]
+        draw.text(
+            (x, y),
+            text,
+            font=font,
+            fill=(255, 255, 255, 255),
+            stroke_width=1,
+            stroke_fill=(0, 24, 18, 255),
+        )
+
+    title_top = band_top + vertical_padding
+    draw_centered(WATERMARK_TITLE, title_font, title_box, title_top)
+    notice_top = title_top + title_height + line_spacing
+    draw_centered(WATERMARK_NOTICE, notice_font, notice_box, notice_top)
+
+    marked = Image.alpha_composite(portrait, overlay).convert("RGB")
+    output = io.BytesIO()
+    marked.save(output, format="PNG", optimize=True)
+    return base64.b64encode(output.getvalue()).decode("ascii")
+
 app = Flask(__name__)
 
 @app.route("/app-icon.png")
@@ -35,6 +121,12 @@ def apple_touch_icon():
 @app.route("/manifest.json")
 def manifest():
     return send_from_directory(app.root_path, "manifest.json", mimetype="application/manifest+json")
+@app.route("/ghs-manifest.json")
+def ghs_manifest():
+    return send_from_directory(app.root_path, "ghs-manifest.json", mimetype="application/manifest+json")
+@app.route("/ghs-app-icon.png")
+def ghs_app_icon():
+    return send_from_directory(app.root_path, "ghs-app-icon.png", mimetype="image/png")
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 app.config["MAX_CONTENT_LENGTH"] = 12 * 1024 * 1024
 app.config["SESSION_COOKIE_HTTPONLY"] = True
@@ -908,7 +1000,7 @@ Setting: {info['scene']}
 Student priority: {priority}
 {business_note}
 
-Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, natural flattering lighting, age-appropriate adult appearance, confident but natural expression. Preserve recognizable identity without freezing the face at its current age. Do not add text, captions, logos, badges with readable department names, watermarks, or brand marks. Do not sexualize or glamorize the subject. If work clothing or safety equipment is appropriate, use realistic generic professional attire.
+Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, natural flattering lighting, age-appropriate adult appearance, confident but natural expression. Preserve recognizable identity without freezing the face at its current age. Do not add text, captions, logos, badges with readable department names, or brand marks. The application will add its own standardized disclaimer after generation. Do not sexualize or glamorize the subject. If work clothing or safety equipment is appropriate, use realistic generic professional attire.
 """.strip()
 
     try:
@@ -927,6 +1019,7 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
         b64=getattr(item,"b64_json",None)
         if not b64:
             return jsonify({"ok":False,"error":"The image service returned no image data."}),502
+        b64=burn_portrait_watermark(b64)
 
         session["generation_count"] = count + 1
         rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
