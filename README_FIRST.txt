@@ -1,5 +1,5 @@
 STEP INTO YOUR FUTURE — TODAY!
-BHS FLAGSHIP CATALOG BUILD V18 — BHS AND GHS
+BHS FLAGSHIP CATALOG BUILD V19 — BHS AND GHS
 
 START HERE
 1. Keep your present live site unchanged until this build has been uploaded and Render reports a successful deployment.
@@ -10,6 +10,12 @@ START HERE
    BHS: https://step-into-your-future.onrender.com/
    GHS: https://step-into-your-future.onrender.com/ghs
 6. Then make one optional portrait test. Confirm the disclaimer is visibly burned into the downloaded PNG.
+
+WHAT CHANGED IN V19
+• Standardized the browser-tab favicon so BHS and GHS both use the same blue stairs-and-arrow icon.
+• Removed the older embedded GHS favicon that could override the shared icon.
+• Added a fresh V19 cache label so Chrome retrieves the corrected GHS tab icon.
+• Guilford's green page identity remains unchanged.
 
 WHAT CHANGED IN V18
 • Clarified the portrait authorization statement for students age 13 or older.
