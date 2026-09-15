@@ -1012,7 +1012,7 @@ def generate():
     if not photo or not career:
         return jsonify({"ok":False,"error":"Please provide a photo and choose a career."}),400
     if photo_consent != "confirmed":
-        return jsonify({"ok":False,"error":"Confirm that the person is at least 13 and that you have permission to use the photo."}),400
+        return jsonify({"ok":False,"error":"Confirm that the person pictured is age 13 or older and that you are authorized to submit the photo."}),400
     if career not in career_data:
         return jsonify({"ok":False,"error":"Unknown career selection."}),400
     if grade not in BHS_GRADE_LABELS:

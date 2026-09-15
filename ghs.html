@@ -378,7 +378,7 @@ button:disabled{opacity:.55;cursor:default}
 <div class="sectionhead"><div><div class="eyebrow">STEP 1 • START HERE</div><h2>How would you like to explore?</h2><p class="lead">Choose a career and explore a practical roadmap built around real opportunities at Guilford High School. Add an illustrative future portrait if you wish.</p></div><div class="stepbadge">TODAY → TOMORROW</div></div>
 <div class="grid">
 <div>
-<div class="experience-choice"><label for="experienceMode">Choose your experience</label><select id="experienceMode" aria-describedby="modeNote"><option value="roadmap" selected>Explore careers and courses — no photo</option><option value="portrait">Use or take a current photo to create a future portrait</option></select><p id="modeNote"></p></div><div class="privacy"><strong>Photo privacy:</strong> pressing Create My Future sends your photo and selections through this app to OpenAI to make the portrait. This app does not save a photo database. Use a photo you have permission to use.</div><label id="photoConsentWrap" class="photo-consent"><input id="photoConsent" type="checkbox"/> <span>I confirm that the person in this photo is at least 13 and that I have permission to use the photo.</span></label>
+<div class="experience-choice"><label for="experienceMode">Choose your experience</label><select id="experienceMode" aria-describedby="modeNote"><option value="roadmap" selected>Explore careers and courses — no photo</option><option value="portrait">Use or take a current photo to create a future portrait</option></select><p id="modeNote"></p></div><div class="privacy"><strong>Photo privacy:</strong> pressing Create My Future sends your photo and selections through this app to OpenAI to make the portrait. This app does not save a photo database. Use a photo you are authorized to submit.</div><div id="photoConsentWrap"><label class="photo-consent"><input id="photoConsent" type="checkbox"/> <span>I confirm that the person pictured is age 13 or older and that I am authorized to submit this photo for an AI-generated career visualization.</span></label><p style="margin:8px 2px 0;color:#53645d;font-size:.84rem;line-height:1.45"><strong>Under age 13?</strong> Continue using the complete career-and-course roadmap without a photo. Portrait use requires an approved parent/guardian or school authorization process.</p></div>
 <label>Student / demo photo<input accept="image/jpeg,image/png,image/webp" id="photoInput" type="file"/></label>
 <label>Current Grade<select id="grade"><option value="8">Grade 8 — Preparing for High School</option><option value="9">Grade 9 — Freshman</option><option value="10">Grade 10 — Sophomore</option><option value="11" selected>Grade 11 — Junior</option><option value="12">Grade 12 — Senior</option></select></label>
 <div class="error" id="error1"></div>
@@ -644,7 +644,7 @@ generateButton.onclick=generateFuture;
 
 </script>
 <div class="schoolPrivacyLink noprint"><a href="/privacy">Privacy &amp; School Use</a></div>
-<div class="versionBadge noprint" style="position:fixed;right:16px;bottom:16px;z-index:99;background:#073f2d;color:white;padding:10px 13px;border-radius:999px;font:800 11px Arial;box-shadow:0 10px 25px #0002">OPTIONAL PORTRAITS • GHS V17 • 42 CAREERS × 5 GRADES</div><script>const ROADMAP_SCHOOL="GHS", ROADMAP_ENDPOINT="/api/ghs/roadmap";</script>
+<div class="versionBadge noprint" style="position:fixed;right:16px;bottom:16px;z-index:99;background:#073f2d;color:white;padding:10px 13px;border-radius:999px;font:800 11px Arial;box-shadow:0 10px 25px #0002">OPTIONAL PORTRAITS • GHS V18 • 42 CAREERS × 5 GRADES</div><script>const ROADMAP_SCHOOL="GHS", ROADMAP_ENDPOINT="/api/ghs/roadmap";</script>
 <style>
 [hidden]{display:none!important}
 .experience-choice{margin:18px 0;padding:18px;border:2px solid currentColor;border-radius:14px}
@@ -693,7 +693,7 @@ function applyExperienceMode(){
  document.querySelectorAll('#s1 .photo-box .small').forEach(x=>x.hidden=!usePhoto);
  document.getElementById('age').closest('label').hidden=!usePhoto;
  document.getElementById('next1').disabled=usePhoto&&(!photoFile||!document.getElementById('photoConsent').checked);
- document.getElementById('modeNote').textContent=usePhoto?'Choose a photo you have permission to use. Your photo and portrait selections are sent for image generation only when you press Create My Future.':'Explore the complete career roadmap without uploading a photo. No image-generation request is made.';
+ document.getElementById('modeNote').textContent=usePhoto?'Choose a photo you are authorized to submit. Your photo and portrait selections are sent for image generation only when you press Create My Future.':'Explore the complete career roadmap without uploading a photo. No image-generation request is made.';
  document.getElementById('generateBtn').textContent=usePhoto?'Create My Future':'Show My Career Roadmap';
  document.querySelector('#s2 .info').textContent=usePhoto?'Create an illustrative future portrait, then explore your career roadmap and school course options.':'Explore your career roadmap and school course options. No photo or future age is required.';
  document.querySelectorAll('#s3 .loader').forEach(x=>x.hidden=!usePhoto);

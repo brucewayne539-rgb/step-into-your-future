@@ -1,5 +1,5 @@
 STEP INTO YOUR FUTURE — TODAY!
-BHS FLAGSHIP CATALOG BUILD V17 — BHS AND GHS
+BHS FLAGSHIP CATALOG BUILD V18 — BHS AND GHS
 
 START HERE
 1. Keep your present live site unchanged until this build has been uploaded and Render reports a successful deployment.
@@ -10,6 +10,11 @@ START HERE
    BHS: https://step-into-your-future.onrender.com/
    GHS: https://step-into-your-future.onrender.com/ghs
 6. Then make one optional portrait test. Confirm the disclaimer is visibly burned into the downloaded PNG.
+
+WHAT CHANGED IN V18
+• Clarified the portrait authorization statement for students age 13 or older.
+• Added a visible under-13 direction to use the complete no-photo roadmap unless an approved parent/guardian or school authorization process is in place.
+• Updated matching server-side authorization guidance for both schools.
 
 WHAT CHANGED IN V17
 • Both school editions now include the universal TRUE TO YOU guiding principle below the opening image.
@@ -28,7 +33,7 @@ WHAT CHANGED IN V16
 SCHOOL-READINESS FEATURES RETAINED
 • The default experience is a career-and-course roadmap that requires no photo and makes no AI image call.
 • A future portrait remains optional.
-• Portrait mode requires confirmation that the person is at least 13 and that the user has permission to submit the photo.
+• Portrait mode requires confirmation that the person pictured is age 13 or older and that the user is authorized to submit the photo.
 • Grades 8–12 use school-specific course logic.
 • The approved universal blue stairs-and-arrow icon is used by both school editions.
 • A Privacy & School Use page accurately describes current processing and the work still required before formal district adoption.
