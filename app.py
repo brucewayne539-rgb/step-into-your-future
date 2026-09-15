@@ -671,6 +671,7 @@ BHS_COURSE_GRADES = {
 
 
 BHS_GRADE_LABELS = {
+    "8": "8th — Preparing for High School",
     "9": "9th — Freshman",
     "10": "10th — Sophomore",
     "11": "11th — Junior",
@@ -695,6 +696,10 @@ def bhs_for_grade(career, grade):
     def allowed(course):
         c = course.lower()
         g = int(grade)
+        # Grade 8 is a planning year. High-school catalog courses are shown
+        # as future options rather than courses the student can take now.
+        if g == 8:
+            return False
         if course in BHS_COURSE_GRADES:
             return g in BHS_COURSE_GRADES[course]
         # BHS catalog grade limits used by the careers in this demo.
@@ -735,7 +740,10 @@ def bhs_for_grade(career, grade):
         future = future or courses[:2]
 
     # Career exploration opportunities change substantially by grade at BHS.
-    if grade == "9":
+    if grade == "8":
+        experience = "Use eighth grade to explore the work, review high-school graduation requirements and plan a ninth-grade schedule with your middle- or high-school counselor. BHS Job Shadowing becomes available in grades 9–12."
+        next_step = f"Ask which ninth-grade courses build toward {career}, and note the preparation needed for {future[0]}." if future else f"Ask your counselor for one ninth-grade course or activity that helps you explore {career}."
+    elif grade == "9":
         experience = "Start with BHS Job Shadowing, which is open to grades 9–12. Use freshman year to sample the field and learn which later courses or programs you may want to build toward."
         next_step = f"Ask your counselor whether {visible[0]} is a realistic course to explore now, and identify one job-shadow possibility connected to {career}." if visible else base.get("next", "Talk with your BHS counselor about one first step this year.")
     elif grade == "10":
@@ -829,7 +837,7 @@ def local_ip():
 
 
 # GHS shares the existing hosting and image service, with separate course content.
-GHS_LOGIN = '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n<title>Step Into Your Future — Teacher Demo</title>\n<style>\n*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#eaf5fd,#f7fbff);color:#0b3558;min-height:100vh;display:grid;place-items:center;padding:24px}.card{width:min(620px,100%);background:#fff;border:1px solid #d6e6f3;border-radius:24px;box-shadow:0 18px 60px #0b355822;overflow:hidden}.head{background:linear-gradient(120deg,#073f2d,#218663);padding:34px;color:#fff}.school{font-size:13px;letter-spacing:3px;font-weight:800}.brand{font-size:38px;font-weight:900;line-height:1.05;margin-top:16px}.brand span{color:#54c6ff}.body{padding:34px}.body h2{font-size:27px;margin:0 0 10px}.body p{line-height:1.55;color:#536d83}.notice{background:#eaf6ff;border-left:5px solid #40b9f4;padding:14px 16px;border-radius:12px;margin:18px 0}label{font-weight:800;display:block;margin:22px 0 8px}input{width:100%;padding:16px;border:2px solid #cfe0ed;border-radius:12px;font-size:18px}button{margin-top:16px;width:100%;padding:16px;border:0;border-radius:12px;background:#087049;color:#fff;font-size:18px;font-weight:900;cursor:pointer}.error{background:#fff0f0;color:#a32626;padding:12px 14px;border-radius:10px;margin:14px 0}.small{font-size:12px;color:#6d7f8f;margin-top:16px}\n</style></head><body>\n<div class="card"><div class="head"><div class="school">GUILFORD HIGH SCHOOL • TEACHER PREVIEW</div><div class="brand">STEP INTO YOUR FUTURE <span>— TODAY!</span></div></div><div class="body">\n<h2>Welcome to the teacher demo.</h2><p>This preview lets educators try the same career-visualization experience before any wider student rollout.</p>\n<div class="notice"><strong>Privacy:</strong> photos are sent to the AI image service only when Generate is pressed. This demo does not intentionally create a student photo database.</div>\n{% if error %}<div class="error">{{ error }}</div>{% endif %}\n<form method="post" action="/ghs/login"><label for="access_code">Teacher demo access code</label><input id="access_code" name="access_code" type="password" autocomplete="off" required><button type="submit">Enter Demo</button></form>\n<div class="small">Illustrative career visualization only — not a prediction of appearance or career outcome.</div>\n</div></div></body></html>\n'
+GHS_LOGIN = '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n<title>Step Into Your Future — Teacher Demo</title>\n<style>\n*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#eaf5fd,#f7fbff);color:#0b3558;min-height:100vh;display:grid;place-items:center;padding:24px}.card{width:min(620px,100%);background:#fff;border:1px solid #d6e6f3;border-radius:24px;box-shadow:0 18px 60px #0b355822;overflow:hidden}.head{background:linear-gradient(120deg,#073f2d,#218663);padding:34px;color:#fff}.school{font-size:13px;letter-spacing:3px;font-weight:800}.brand{font-size:38px;font-weight:900;line-height:1.05;margin-top:16px}.brand span{color:#54c6ff}.body{padding:34px}.body h2{font-size:27px;margin:0 0 10px}.body p{line-height:1.55;color:#536d83}.notice{background:#eaf6ff;border-left:5px solid #40b9f4;padding:14px 16px;border-radius:12px;margin:18px 0}label{font-weight:800;display:block;margin:22px 0 8px}input{width:100%;padding:16px;border:2px solid #cfe0ed;border-radius:12px;font-size:18px}button{margin-top:16px;width:100%;padding:16px;border:0;border-radius:12px;background:#087049;color:#fff;font-size:18px;font-weight:900;cursor:pointer}.error{background:#fff0f0;color:#a32626;padding:12px 14px;border-radius:10px;margin:14px 0}.small{font-size:12px;color:#6d7f8f;margin-top:16px}\n</style></head><body>\n<div class="card"><div class="head"><div class="school">GUILFORD HIGH SCHOOL • TEACHER PREVIEW</div><div class="brand">STEP INTO YOUR FUTURE <span>— TODAY!</span></div></div><div class="body">\n<h2>Welcome to the teacher demo.</h2><p>This preview lets educators try the same career-visualization experience before any wider student rollout.</p>\n<div class="notice"><strong>Privacy:</strong> photos are sent to the AI image service only when Generate is pressed. This demo does not intentionally create a student photo database.</div>\n{% if error %}<div class="error">{{ error }}</div>{% endif %}\n<form method="post" action="/ghs/login"><label for="access_code">Teacher demo access code</label><input id="access_code" name="access_code" type="password" autocomplete="off" required><button type="submit">Enter Demo</button></form>\n<div class="small">Illustrative career visualization only — not a prediction of appearance or career outcome.<br><a href="/privacy">Privacy &amp; School Use</a></div>\n</div></div></body></html>\n'
 
 @app.route("/ghs")
 @app.route("/ghs/")
@@ -855,10 +863,32 @@ def ghs_status():
                    limit=MAX_GENERATIONS_PER_SESSION)
 
 @app.after_request
-def private_generation_responses(response):
-    if request.path.startswith("/api/") or request.path.startswith("/ghs"):
-        response.headers["Cache-Control"] = "no-store"
+def school_readiness_headers(response):
+    """Reduce browser leakage and restrict this self-contained application."""
+    if (request.path.startswith("/api/") or request.path.startswith("/ghs")
+            or request.path in {"/", "/login", "/logout", "/privacy"}
+            or response.mimetype == "text/html"):
+        response.headers["Cache-Control"] = "no-store, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "no-referrer"
+    response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
+    response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+    response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), payment=(), usb=()"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
+        "object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; "
+        "img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; media-src 'none'"
+    )
+    if request.is_secure or os.environ.get("RENDER") or os.environ.get("HTTPS_ONLY") == "1":
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response
+
+@app.route("/privacy")
+def privacy_notice():
+    return render_template("privacy.html")
+
 
 @app.errorhandler(413)
 def oversized_photo(error):
@@ -899,6 +929,38 @@ def setup():
     save_key(key)
     return jsonify({"ok":True})
 
+
+@app.route("/api/roadmap", methods=["POST"])
+@app.route("/api/ghs/roadmap", methods=["POST"])
+def roadmap_only():
+    """Local course guidance: no photo, provider call, key or portrait quota needed."""
+    if ACCESS_CODE and not session.get("demo_access"):
+        return jsonify(ok=False, error="Please enter the teacher demo access code first."), 401
+    if not request.is_json:
+        return jsonify(ok=False, error="Use the roadmap form without a photo."), 400
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or set(data) - {"career", "grade", "path", "priority"}:
+        return jsonify(ok=False, error="Unexpected roadmap fields. No photo is needed."), 400
+    is_ghs = request.path == "/api/ghs/roadmap"
+    careers = GHS_CAREERS if is_ghs else CAREERS
+    career, grade = data.get("career"), data.get("grade")
+    path, priority = data.get("path"), data.get("priority")
+    if not all(isinstance(v, str) for v in (career, grade, path, priority)):
+        return jsonify(ok=False, error="Please complete the roadmap selections."), 400
+    if career not in careers or grade not in BHS_GRADE_LABELS:
+        return jsonify(ok=False, error="Please select an available career and grade."), 400
+    if path not in {"employee", "owner", "explore"} or priority not in {"Doing work I enjoy", "Helping people", "High income potential", "Creativity", "Job stability", "Being my own boss"}:
+        return jsonify(ok=False, error="Please select an available path and priority."), 400
+    info = careers[career]
+    rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
+    if is_ghs:
+        timeline, keys = GHS_DATA["meta"][career]
+    return jsonify(ok=True, image=None, age=None, career=career, grade=grade,
+                   school="GHS" if is_ghs else "BHS", path=path, priority=priority,
+                   summary=info["summary"], steps=info["steps"], rich_steps=rich_steps,
+                   timeline=timeline, keys=keys,
+                   **({} if is_ghs else {"bhs": bhs_for_grade(career, grade)}))
+
 @app.route("/api/ghs/generate", methods=["POST"])
 @app.route("/api/generate", methods=["POST"])
 def generate():
@@ -921,8 +983,11 @@ def generate():
     age=(request.form.get("age") or "25").strip()
     path=(request.form.get("path") or "employee").strip()
     priority=(request.form.get("priority") or "Doing work I enjoy").strip()
+    photo_consent=(request.form.get("photo_consent") or "").strip()
     if not photo or not career:
         return jsonify({"ok":False,"error":"Please provide a photo and choose a career."}),400
+    if photo_consent != "confirmed":
+        return jsonify({"ok":False,"error":"Confirm that the person is at least 13 and that you have permission to use the photo."}),400
     if career not in career_data:
         return jsonify({"ok":False,"error":"Unknown career selection."}),400
     if grade not in BHS_GRADE_LABELS:

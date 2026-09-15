@@ -1,13 +1,13 @@
 {
-  "name": "Step Into Your Future",
+  "name": "Step Into Your Future — GHS",
   "short_name": "Future Today",
-  "start_url": "/",
+  "start_url": "/ghs",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0b2d7a",
   "icons": [
     {
-      "src": "/app-icon.png",
+      "src": "/ghs-app-icon.png",
       "sizes": "1024x1024",
       "type": "image/png"
     }

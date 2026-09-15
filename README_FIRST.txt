@@ -1,46 +1,37 @@
 STEP INTO YOUR FUTURE — TODAY!
-LIVE AI PERSONAL DEMONSTRATION — Expanded Careers Edition
+SCHOOL-READINESS BUILD V15 — BHS AND GHS
 
-WHAT THIS VERSION DOES
-• Runs a small private web server on your Windows laptop.
-• Opens in Chrome on the laptop and can also open on a phone on the same Wi-Fi when the network permits it.
-• Lets you take/choose a photo.
-• Sends the photo to the OpenAI Image API only when Generate is pressed.
-• Creates a NEW illustrative AI future-career portrait based on the uploaded person.
-• Includes an expanded menu of 35 careers spanning college, healthcare, technology, business, public service, creative fields and skilled trades.
-• Gives each career its own Roadmap to Success.
-• Lets you save/print the complete result as a PDF and separately download the generated portrait.
+START HERE
+1. Keep your present live site unchanged until this build has been uploaded and Render reports a successful deployment.
+2. Upload the CONTENTS of this folder to the root of the existing GitHub repository. Preserve the templates folder.
+3. GitHub should replace matching files and add the new privacy and GHS icon/manifest files.
+4. Wait for Render to complete its automatic deployment.
+5. Test the roadmap-only path first at both addresses:
+   BHS: https://step-into-your-future.onrender.com/
+   GHS: https://step-into-your-future.onrender.com/ghs
+6. Then make one optional portrait test. Confirm the disclaimer is visibly burned into the downloaded PNG.
 
-FIRST USE
-1. Install Python 3 if it is not already installed.
-2. Obtain an OpenAI API key and enable API billing/credits.
-3. Double-click START_APP.bat.
-4. Open http://127.0.0.1:5000 in Chrome.
-5. If the webpage asks for your API key, paste it once and choose Save Key on This Laptop.
-   The key is stored under your local Windows profile, not beside the app files or in a OneDrive Desktop folder.
-6. Keep the black START_APP window open while using the app.
+WHAT CHANGED
+• The default experience is a career-and-course roadmap that requires no photo and makes no AI image call.
+• A future portrait remains optional.
+• Portrait mode requires confirmation that the person is at least 13 and that the user has permission to submit the photo.
+• Grade 8 is now a planning year; Grades 9–12 retain their school-specific course logic.
+• The approved universal blue stairs-and-arrow icon is used by both school editions.
+• A Privacy & School Use page accurately describes current processing and the work still required before formal district adoption.
+• Browser responses include stronger no-cache, framing, referrer, permissions and content-security protections.
+• The returned portrait still has the AI disclaimer permanently burned into its PNG pixels before download.
 
-OPTIONAL KEY SETUP
-You can instead double-click SETUP_FIRST_TIME.bat. This edition uses a paste-friendly Windows dialog and stores the key in the same safer local profile location.
+IMPORTANT LIMITS
+• This is a teacher-review prototype, not a legal certification or district approval.
+• The application itself does not create a student profile or photo database, but that alone is not the same as verified zero retention across OpenAI, Render and network providers.
+• Before formal student use, the operator should obtain written provider-retention commitments where required, complete district legal/security/accessibility review, execute required contracts or DPAs, publish operator contact and incident procedures, and implement production monitoring and spending/rate controls.
+• Career and course guidance must be confirmed with a school counselor and the current official course catalog.
 
-PHONE CAMERA
-Tap the photo field. iPhone/Android should offer Take Photo / Photo Library. A school or guest Wi-Fi network may block phone-to-laptop connections even when both devices are on the same Wi-Fi.
+SERVER SETTINGS
+OPENAI_API_KEY — private server-side API key; never place it in GitHub.
+DEMO_ACCESS_CODE — optional teacher-preview access code.
+SECRET_KEY — long random server secret used to protect sessions.
+MAX_GENERATIONS_PER_SESSION — portrait limit per browser session.
 
-IMPORTANT
-• OpenAI API use is billed separately from a ChatGPT subscription.
-• Never share your API key or post it online.
-• This package is intended for a private personal demonstration.
-• Before use with actual students, the school should review consent, privacy, hosting, retention, accessibility, authentication, security, vendor/API terms and counselor/CTE review of career guidance.
-• This app intentionally does not create a student database.
-• Career roadmaps are educational demonstration content; education, licensing and hiring requirements can change and should be verified.
-
-TROUBLESHOOTING
-• If START_APP.bat says Python was not found, install Python 3 and choose Add Python to PATH during installation.
-• If the phone cannot connect, confirm both devices are on the same Wi-Fi; some networks isolate devices from one another.
-• If image generation reports authentication, billing, quota or access errors, check the OpenAI API account/key.
-• To stop the app, close the black START_APP window or press Ctrl+C in it.
-
-V3 ROADMAP DISPLAY UPGRADE
-- Roadmaps now use colorful visual icons and five clearly labeled stages.
-- Roadmap text is larger and easier to scan while retaining career-specific details.
-- Entrepreneurship paths receive their own highlighted business step.
+ROLLBACK
+The uploaded file named "step-into-your-future-main (1).zip" is the pre-update backup. If necessary, its contents can restore the earlier build.

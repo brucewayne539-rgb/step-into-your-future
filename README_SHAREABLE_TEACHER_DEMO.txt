@@ -1,35 +1,24 @@
 STEP INTO YOUR FUTURE — TODAY!
-SHAREABLE TEACHER DEMO
+SHAREABLE TEACHER-REVIEW BUILD V15
 
-WHAT THIS VERSION DOES
-- Runs as a normal website when deployed to a web host.
-- Teachers receive ONE web link and a teacher access code.
-- Teachers do NOT see or enter the OpenAI API key.
-- The OpenAI API key is stored as a private server environment variable.
-- Default limit: 2 AI portraits per browser session to help control API costs.
-- Keeps the expanded 35-career menu and rich colorful Roadmap to Success.
-- Photos are processed for generation and are not intentionally written to a student database by this app.
+CURRENT EXPERIENCE
+• BHS and GHS each contain 42 career choices and school-specific course guidance.
+• Grades 8–12 are supported. Grade 8 is presented as preparation for ninth-grade course planning.
+• The no-photo roadmap is the default and does not call the OpenAI image service.
+• The optional portrait sends a cleaned image only after the user selects portrait mode, supplies a photo, confirms permission/age eligibility and presses Generate.
+• The application normalizes the photo, strips embedded metadata, sends it to the image API, burns the disclaimer into the returned PNG pixels and returns the result to the browser.
+• The application does not intentionally write uploaded or generated photos to a server file or application database.
 
-IMPORTANT
-This ZIP makes the project DEPLOYMENT-READY; it does not itself create a public internet address.
-A web-hosting account must deploy these files. A school/IT review is recommended before student use.
+DO NOT OVERSTATE PRIVACY
+Do not describe the build as certified, legally compliant, completely zero-retention or as securely wiping every provider system. The Privacy & School Use page states the narrower, supportable facts. Formal use requires district approval, applicable agreements, provider review, notice/consent procedures, accessibility testing, incident response and designated contacts.
 
-SERVER ENVIRONMENT VARIABLES
-OPENAI_API_KEY = your current API key (never put it in the code or share it with teachers)
-DEMO_ACCESS_CODE = a short private code you give to teachers
-SECRET_KEY = a long random value used to protect sessions
-MAX_GENERATIONS_PER_SESSION = 2 (change if desired)
+TEACHER PREVIEW SETTINGS
+Teachers never receive the OpenAI API key. The hosted key remains a private Render environment variable. A DEMO_ACCESS_CODE can restrict entry, and MAX_GENERATIONS_PER_SESSION can limit portrait use. The roadmap-only path does not consume portrait quota or image credits.
 
-RENDER-READY
-A render.yaml file is included. After these files are placed in a Git repository, Render can use it to create a web service. Add OPENAI_API_KEY and DEMO_ACCESS_CODE as private environment variables.
-
-OTHER HOSTS
-Any Python host that can run Gunicorn can use:
-  pip install -r requirements.txt
-  gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 180
-
-LOCAL TESTING
-START_APP.bat still works on Windows. If OPENAI_API_KEY is not set on the server/environment, the local version can use the key saved in the local Windows profile as before.
-
-SCHOOL ROLLOUT
-Before giving this to students, add district-approved authentication/consent, formal privacy/data-retention language, accessibility review, counselor-vetted career content, admin spending controls, and district IT/security review.
+TEST BOTH EDITIONS AFTER EACH DEPLOYMENT
+1. Open the BHS and GHS URLs in a private/incognito window.
+2. Choose Grade 8 and create a no-photo roadmap; verify that high-school courses appear as future planning options.
+3. Test one Grade 9–12 no-photo roadmap in each edition.
+4. Make one authorized optional-portrait test; download the portrait and verify the permanent pixel watermark.
+5. Open Privacy & School Use and confirm that both return links work.
+6. Confirm the universal blue icon appears when the app is installed or added to a home screen.

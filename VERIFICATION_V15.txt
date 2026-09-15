@@ -1,0 +1,25 @@
+STEP INTO YOUR FUTURE — V15 VERIFICATION
+
+AUTOMATED CHECKS COMPLETED BEFORE PACKAGING
+• Python syntax compilation: PASS
+• JSON validation for BHS and GHS web-app manifests: PASS
+• 420 no-photo roadmap combinations: PASS
+  - 42 BHS careers × 5 grades
+  - 42 GHS careers × 5 grades
+• Grade 8 BHS behavior: PASS — no high-school course is represented as currently enrolled; later options are shown for planning.
+• Grade 8 GHS behavior: PASS — catalog courses are categorized as future options.
+• Optional portrait endpoint with a local fake image provider: PASS
+• Permanent watermark pixel change in returned PNG: PASS
+• Required portrait consent rejection/acceptance logic: PASS
+• Privacy/security response headers: PASS
+• BHS/GHS icon and manifest routes: PASS
+
+NO BILLABLE OPENAI IMAGE REQUEST WAS USED FOR THESE TESTS.
+
+MANUAL CHECKS STILL REQUIRED AFTER DEPLOYMENT
+• Render deployment succeeds with the existing private environment variables.
+• BHS and GHS display correctly on desktop, Chromebook and iPhone.
+• One real optional portrait succeeds and its downloaded PNG contains the visible disclaimer.
+• The newly installed home-screen/app icon refreshes; a previously installed icon may need to be removed and added again.
+
+This verification documents software behavior. It is not legal certification, district approval, a WCAG conformance report or proof of third-party zero retention.

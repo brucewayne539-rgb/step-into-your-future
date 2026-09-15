@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy and School Use | Step Into Your Future</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f8fb;color:#17364d;font-family:Arial,Helvetica,sans-serif;line-height:1.55}main{width:min(880px,calc(100% - 32px));margin:32px auto;background:white;border:1px solid #d9e6ee;border-radius:18px;padding:clamp(22px,4vw,42px);box-shadow:0 14px 40px #17364d14}h1{font-size:clamp(30px,5vw,46px);line-height:1.05;margin:0 0 12px;color:#073f67}h2{font-size:22px;margin:30px 0 8px;color:#07563c}p,li{font-size:16px}.lead{font-size:19px}.notice{border-left:6px solid #1681d7;background:#eef8ff;padding:15px 17px;margin:22px 0}.warning{border-left-color:#c98a00;background:#fff8e7}table{border-collapse:collapse;width:100%;margin:16px 0}th,td{text-align:left;vertical-align:top;border:1px solid #d9e6ee;padding:11px}th{background:#edf5f9}a{color:#075f9e;font-weight:700}footer{margin-top:32px;border-top:1px solid #d9e6ee;padding-top:16px;color:#587080;font-size:13px}@media(max-width:650px){table,tbody,tr,th,td{display:block}th{border-bottom:0}td{margin-bottom:10px}}
+</style></head><body><main>
+<h1>Privacy and School Use</h1>
+<p class="lead">This page explains the application’s present technical behavior. It is not a statement that a school district has approved the application.</p>
+<div class="notice warning"><strong>Formal school use requires district review.</strong> Before students use the application under school direction, the school or district should approve the service, execute any required privacy agreement, review all service providers, and establish notice, consent, retention, security, accessibility and incident-response procedures.</div>
+<h2>Two ways to use the app</h2>
+<table><tr><th>Career roadmap without a photo</th><td>No photo or future age is collected. The request stays within this application, uses the school’s local course index, and does not call the AI image service.</td></tr><tr><th>Optional future portrait</th><td>When Create My Future is pressed, the application receives the chosen photo and selections. It validates and normalizes the photo, strips embedded metadata, sends a cleaned image and career prompt to the OpenAI image-editing API, burns a disclaimer into the returned PNG, and sends the result to the browser.</td></tr></table>
+<h2>Information the app does and does not request</h2>
+<p>The app requests a current grade, career choice, path and priority. A future age and photo are requested only for the optional portrait. It does not ask for a student name, email address, student identification number, home address, grades from school records, disability information or a school-system login.</p>
+<p>The application code does not create a student profile or photo database. It does not sell information, serve advertising, or use student choices to advertise.</p>
+<h2>Retention must be described accurately</h2>
+<p>The absence of an application database does not prove zero retention across every service provider. OpenAI’s published API documentation currently states that image-edit requests are not used for training, have no application-state retention, and normally may be retained for up to 30 days for abuse monitoring. Eligible customers may apply for and configure Zero Data Retention. OpenAI also describes limited safety-related exceptions. Hosting and network providers may keep operational logs or metadata under their terms.</p>
+<p>Downloaded and printed results remain on the student’s or school’s device until the user or school deletes them. Computer memory cannot honestly be described as being securely wiped at an exact moment.</p>
+<h2>Photo rules</h2>
+<ul><li>Use only a photo you are authorized to submit.</li><li>The portrait option requires confirmation that the person is at least 13.</li><li>For anyone under 18, use must follow the school’s approved notice, consent, supervision and acceptable-use rules.</li><li>A required checkbox documents the user’s confirmation; it does not replace any consent or contract required by law or district policy.</li></ul>
+<h2>Accuracy and accessibility</h2>
+<p>Career and course connections are discussion guidance, not a required sequence, promise of admission, licensing advice or prediction of a career outcome. Students should confirm course availability and prerequisites with a school counselor. Formal adoption should include a current WCAG 2.1 AA accessibility review, assistive-technology testing and a process for providing an accessible alternative.</p>
+<h2>Requests and questions</h2>
+<p>Until a district designates formal contacts, students and families should direct privacy, correction or deletion questions to the teacher or school representative supervising the activity. A production agreement must identify the operator’s privacy and security contact and the district’s contact.</p>
+<p><a href="/">Return to BHS edition</a> &nbsp;|&nbsp; <a href="/ghs">Return to GHS edition</a></p>
+<footer>Step Into Your Future — school-readiness review build. Technical description only; not legal certification.</footer>
+</main></body></html>
