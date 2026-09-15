@@ -1,5 +1,11 @@
 import os, io, base64, socket, json, traceback, secrets
 from pathlib import Path
+from bhs_catalog import (
+    CAREER_COURSES as BHS_CAREER_COURSES,
+    COURSES as BHS_CATALOG,
+    OWNERSHIP_COURSES as BHS_OWNERSHIP_COURSES,
+    PROGRAMS as BHS_PROGRAMS,
+)
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_from_directory, render_template_string
 from PIL import Image, ImageDraw, ImageFont, ImageOps, UnidentifiedImageError
 from werkzeug.utils import secure_filename
@@ -115,6 +121,9 @@ app = Flask(__name__)
 @app.route("/app-icon.png")
 def app_icon():
     return send_from_directory(app.root_path, "app-icon.png", mimetype="image/png")
+@app.route("/bhs-hero.svg")
+def bhs_hero():
+    return send_from_directory(app.root_path, "bhs-hero.svg", mimetype="image/svg+xml")
 @app.route("/apple-touch-icon.png")
 def apple_touch_icon():
     return send_from_directory(app.root_path, "app-icon.png", mimetype="image/png")
@@ -636,6 +645,25 @@ BHS_META.update({
     },
 })
 
+# Firefighter preparation is intentionally broad: science, fitness, technical
+# aptitude and communication. The course order follows Connecticut's public-
+# safety pathway guidance while remaining limited to courses in the BHS catalog.
+BHS_META["Firefighter"] = {
+    "courses": [
+        "Biology",
+        "Physical Education / Wellness",
+        "Introductory Power Technology",
+        "Chemistry",
+        "Anatomy & Physiology",
+        "Public Speaking",
+        "Dealing with Natural Disasters",
+        "Residential Construction",
+    ],
+    "experience": "Use BHS Job Shadowing to explore fire service, EMS or emergency-response work. Ask about approved First Aid/CPR/AED training and an age-appropriate local fire/EMS youth or cadet opportunity if one is available.",
+    "good": "BHS does not list a dedicated firefighter/EMT course. Biology, health and fitness, technical courses, communication and approved real-world exploration provide useful preparation; actual department, CPAT and EMS requirements vary.",
+    "next": "Ask your counselor which science, wellness and technical courses fit your grade, and whether an approved fire/EMS exploration opportunity is available.",
+}
+
 # Exact grade availability for the newly added recommendations. Courses not in
 # this table continue to use the established BHS grade rules below.
 BHS_COURSE_GRADES = {
@@ -678,71 +706,64 @@ BHS_GRADE_LABELS = {
     "12": "12th — Senior",
 }
 
-def bhs_for_grade(career, grade):
-    """Return a compact BHS recommendation adjusted to the student's current grade."""
+def bhs_for_grade(career, grade, path="employee"):
+    """Return ranked, catalog-backed BHS recommendations for one grade/path."""
     base = dict(BHS_META.get(career, {}))
-    courses = list(base.get("courses", []))
     grade = str(grade or "9")
-
-    # Split a few combined labels where the BHS catalog has different grade eligibility.
-    if career == "Automotive Technician":
-        courses = [
-            "Introductory Power Technology",
-            "Advanced Power Technology",
-            "Automotive Mechanics Technology I",
-            "Automotive Mechanics Technology II",
-        ]
-
-    def allowed(course):
-        c = course.lower()
-        g = int(grade)
-        # Grade 8 is a planning year. High-school catalog courses are shown
-        # as future options rather than courses the student can take now.
-        if g == 8:
-            return False
-        if course in BHS_COURSE_GRADES:
-            return g in BHS_COURSE_GRADES[course]
-        # BHS catalog grade limits used by the careers in this demo.
-        if "medical terminology" in c or "certified nursing assistant" in c or "cna" in c:
-            return g >= 11
-        if "ap business" in c or "entrepreneurship" in c or "accounting/computerized accounting ii" in c:
-            return g >= 11
-        if "accounting/computerized accounting i" in c or "business law" in c or "financial literacy" in c:
-            return g >= 10
-        if "anatomy & physiology" in c or "chemistry" in c:
-            return g >= 10
-        if "ap-ece biology" in c or "ap/ece biology" in c:
-            return g >= 11
-        if "statistics & probability" in c or "ap computer science" in c:
-            return g >= 11
-        if "automotive mechanics technology ii" in c:
-            return g >= 11
-        if "automotive mechanics technology i" in c:
-            return g >= 10
-        if "advanced baking" in c:
-            return g >= 11
-        return True
-
-    eligible = [course for course in courses if allowed(course)]
-    visible = eligible[:3]
-    supporting = eligible[3:]
     current_grade = int(grade)
+    mapping = BHS_CAREER_COURSES.get(career, {"direct": [], "support": []})
+    direct = list(mapping.get("direct", []))
+    support = list(mapping.get("support", []))
+    if path == "owner":
+        for name in BHS_OWNERSHIP_COURSES:
+            if name not in direct and name not in support:
+                support.append(name)
 
-    def available_later(course):
-        if course in BHS_COURSE_GRADES:
-            return any(option_grade > current_grade for option_grade in BHS_COURSE_GRADES[course])
-        return not allowed(course) and current_grade < 12
+    def available_now(name):
+        return current_grade != 8 and current_grade in BHS_CATALOG[name]["grades"]
 
-    future = [course for course in courses if not allowed(course) and available_later(course)]
-    if not visible and courses:
-        # A student may have no current-grade match but should still see the
-        # strongest later option rather than an empty school section.
-        future = future or courses[:2]
+    def available_later(name):
+        return any(option_grade > current_grade for option_grade in BHS_CATALOG[name]["grades"])
+
+    direct_now = [name for name in direct if available_now(name)]
+    support_now = [name for name in support if available_now(name)]
+    ranked_now = direct_now + support_now
+    visible = ranked_now[:3]
+    supporting = ranked_now[3:]
+    future = [name for name in direct + support if not available_now(name) and available_later(name)]
+
+    def detail(name):
+        data = BHS_CATALOG[name]
+        grades = data["grades"]
+        grade_text = str(grades[0]) if len(grades) == 1 else f"{grades[0]}–{grades[-1]}"
+        return {
+            "name": name,
+            "grades": grade_text,
+            "department": data["department"],
+            "focus": data["focus"],
+            "prerequisite": data.get("prerequisite", ""),
+        }
+
+    # Relevant BHS programs are grade-filtered just like courses.
+    program_names = ["Job Shadowing", "Senior Internship"]
+    if career in {"Registered Nurse", "Physical Therapist", "Dental Hygienist", "Doctor / Physician", "Medical & Health Services Manager", "Nurse Practitioner", "Occupational Therapist", "Physician Assistant", "Caregiver / Personal Care Aide", "Neurosurgeon"}:
+        program_names.insert(1, "Health Science Program Pathway")
+    if career in {"Teacher", "Special Education Teacher", "School Counselor / Mental Health Counselor"}:
+        program_names[1:1] = ["Classroom Aide", "Internal Internship"]
+    elif career in {"Software Developer", "Cybersecurity Specialist", "TV News Reporter / Local Anchor", "Chef / Restaurant Owner", "Business Administration / Manager", "Customer Service Representative"}:
+        program_names.insert(1, "Internal Internship")
+    programs = []
+    for name in dict.fromkeys(program_names):
+        item = BHS_PROGRAMS[name]
+        state = "available now" if current_grade in item["grades"] else "plan ahead"
+        if current_grade == 12 and max(item["grades"]) < 12:
+            continue
+        programs.append({"name": name, "grades": f"Grades {item['grades'][0]}–{item['grades'][-1]}" if len(item["grades"]) > 1 else f"Grade {item['grades'][0]}", "detail": item["detail"], "state": state})
 
     # Career exploration opportunities change substantially by grade at BHS.
     if grade == "8":
         experience = "Use eighth grade to explore the work, review high-school graduation requirements and plan a ninth-grade schedule with your middle- or high-school counselor. BHS Job Shadowing becomes available in grades 9–12."
-        next_step = f"Ask which ninth-grade courses build toward {career}, and note the preparation needed for {future[0]}." if future else f"Ask your counselor for one ninth-grade course or activity that helps you explore {career}."
+        next_step = f"Ask your counselor which Grade 9 courses can help you begin exploring {career}, and which later courses require advance planning."
     elif grade == "9":
         experience = "Start with BHS Job Shadowing, which is open to grades 9–12. Use freshman year to sample the field and learn which later courses or programs you may want to build toward."
         next_step = f"Ask your counselor whether {visible[0]} is a realistic course to explore now, and identify one job-shadow possibility connected to {career}." if visible else base.get("next", "Talk with your BHS counselor about one first step this year.")
@@ -766,6 +787,10 @@ def bhs_for_grade(career, grade):
         "courses": visible,
         "supporting_courses": supporting,
         "future_courses": future,
+        "course_details": [detail(name) for name in visible],
+        "supporting_course_details": [detail(name) for name in supporting],
+        "future_course_details": [detail(name) for name in future],
+        "programs": programs,
         "experience": experience,
         "good": base.get("good", ""),
         "next": next_step,
@@ -959,7 +984,7 @@ def roadmap_only():
                    school="GHS" if is_ghs else "BHS", path=path, priority=priority,
                    summary=info["summary"], steps=info["steps"], rich_steps=rich_steps,
                    timeline=timeline, keys=keys,
-                   **({} if is_ghs else {"bhs": bhs_for_grade(career, grade)}))
+                   **({} if is_ghs else {"bhs": bhs_for_grade(career, grade, path)}))
 
 @app.route("/api/ghs/generate", methods=["POST"])
 @app.route("/api/generate", methods=["POST"])
@@ -1105,7 +1130,7 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             "grade":grade,
             "school":"GHS" if is_ghs else "BHS",
             "generations_left":max(0, MAX_GENERATIONS_PER_SESSION-count-1),
-            **({} if is_ghs else {"bhs":bhs_for_grade(career, grade)})
+            **({} if is_ghs else {"bhs":bhs_for_grade(career, grade, path)})
         })
     except Exception as e:
         # Keep provider diagnostics/credentials out of student-facing responses.
