@@ -38,6 +38,54 @@ class AdministratorPreviewTests(unittest.TestCase):
             session["csrf_token"] = "test-csrf"
             session["admin_preview_count"] = 0
 
+    def test_school_explorers_are_public_but_admin_preview_is_protected(self):
+        with patch.object(application, "ACCESS_CODE", "test-demo-code"):
+            bhs = self.client.get("/")
+            self.assertEqual(bhs.status_code, 200)
+            self.assertIn(b"How would you like to explore?", bhs.data)
+            self.assertNotIn(b"Administrator Preview Access", bhs.data)
+
+            ghs = self.client.get("/ghs")
+            self.assertEqual(ghs.status_code, 200)
+            self.assertIn(b"How would you like to explore?", ghs.data)
+            self.assertNotIn(b"Administrator Preview Access", ghs.data)
+
+            protected = self.client.get("/admin-preview?school=bhs")
+            self.assertEqual(protected.status_code, 200)
+            self.assertIn(b"Administrator Preview Access", protected.data)
+            self.assertNotIn(b"Fictional Sample Student", protected.data)
+
+    def test_access_code_returns_to_requested_admin_preview(self):
+        with patch.object(application, "ACCESS_CODE", "test-demo-code"):
+            self.client.get("/admin-preview?school=bhs")
+            with self.client.session_transaction() as session:
+                token = session["csrf_token"]
+            response = self.client.post(
+                "/login",
+                data={"_csrf_token": token, "access_code": "test-demo-code"},
+            )
+            self.assertEqual(response.status_code, 302)
+            self.assertIn("/admin-preview?school=bhs", response.headers["Location"])
+
+    def test_no_photo_roadmap_does_not_require_access_code(self):
+        with patch.object(application, "ACCESS_CODE", "test-demo-code"), \
+             patch.object(application, "rate_limited", return_value=False):
+            with self.client.session_transaction() as session:
+                session["csrf_token"] = "test-csrf"
+                session.pop("demo_access", None)
+            response = self.client.post(
+                "/api/roadmap",
+                headers={"X-CSRF-Token": "test-csrf"},
+                json={
+                    "career": "Architect",
+                    "grade": "9",
+                    "path": "explore",
+                    "priority": "Creativity",
+                },
+            )
+            self.assertEqual(response.status_code, 200)
+            self.assertTrue(response.get_json()["ok"])
+
     def test_fictional_source_assets_are_available(self):
         for sample in ("grade9", "grade11"):
             response = self.client.get(f"/demo-student/{sample}.png")

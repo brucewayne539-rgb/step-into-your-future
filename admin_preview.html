@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Administrator Preview | Step Into Your Future</title>
+<style>
+:root{--ink:#102536;--muted:#5d6d78;--paper:#fff;--line:#d8e3e9;--blue:#0b5fa4;--gold:#e8ad2c;--green:#087049;--red:#a30e29}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:linear-gradient(145deg,#edf6fb,#f8fbfd);line-height:1.5}body.ghs{--accent:var(--green);--accent2:#0c3f2e}body.bhs{--accent:var(--red);--accent2:#171719}
+header{background:linear-gradient(120deg,var(--accent2),var(--accent));color:#fff;padding:24px clamp(18px,4vw,54px);box-shadow:0 10px 30px #10253620}.brand{font-size:clamp(25px,4vw,42px);font-weight:950;line-height:1}.brand span{color:#ffe59a}.school{margin-top:9px;font-size:12px;font-weight:900;letter-spacing:2px;text-transform:uppercase}.topnote{margin-top:13px;max-width:860px;color:#edf7f2;font-weight:650}
+main{width:min(1120px,calc(100% - 28px));margin:28px auto 54px}.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:clamp(20px,4vw,36px);box-shadow:0 18px 48px #10253614;margin-bottom:22px}h1,h2,h3{line-height:1.1;margin-top:0}h1{font-size:clamp(30px,5vw,48px);margin-bottom:10px}.eyebrow{font-size:12px;font-weight:950;letter-spacing:2px;color:var(--accent);text-transform:uppercase}.notice{border-left:6px solid var(--accent);background:#f2f7fa;border-radius:12px;padding:14px 16px;margin:18px 0}.status{font-weight:800}.status.ready{color:#075d3c}.status.blocked{color:#9c2736}
+.samples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:20px}.sample{position:relative;border:3px solid transparent;border-radius:20px;overflow:hidden;background:#f5f8fa;cursor:pointer;transition:.18s;box-shadow:0 10px 24px #10253613}.sample:hover{transform:translateY(-2px)}.sample:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent),0 12px 28px #10253620}.sample input{position:absolute;top:14px;left:14px;width:22px;height:22px;accent-color:var(--accent);z-index:2}.sample img{width:100%;height:300px;display:block;object-fit:cover;object-position:center 25%}.samplecopy{padding:14px 16px}.samplecopy strong{display:block;font-size:17px}.samplecopy span{font-size:12px;color:var(--muted)}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px}label.field{display:block;font-weight:900;font-size:14px}select{width:100%;margin-top:7px;padding:13px;border:2px solid #cddbe3;border-radius:11px;background:#fff;color:var(--ink);font-size:16px}.action{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:22px}button,.button{border:0;border-radius:12px;padding:14px 20px;font-size:16px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;box-shadow:0 9px 22px #1025362c}.secondary{background:#eaf1f5;color:#17384f}.primary:disabled{opacity:.5;cursor:not-allowed}.cost{font-size:13px;color:var(--muted)}
+.loading{display:none;text-align:center;padding:34px}.spinner{width:52px;height:52px;border:6px solid #dbe6eb;border-top-color:var(--accent);border-radius:50%;margin:0 auto 14px;animation:spin .9s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.error{display:none;background:#fff0f2;color:#821c2d;border-left:6px solid #c8344e;padding:14px 16px;border-radius:10px;margin-top:18px}
+#result{display:none}.resultgrid{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(360px,1.2fr);gap:24px}.portrait{width:100%;border-radius:18px;background:#eaf0f3;display:block}.fictional{margin-top:10px;background:#fff4cf;border:1px solid #ebcc65;border-radius:10px;padding:10px 12px;font-weight:900;font-size:12px}.roadstep{display:grid;grid-template-columns:38px 1fr;gap:11px;padding:14px 0;border-bottom:1px solid var(--line)}.num{width:32px;height:32px;border-radius:10px;background:#eaf3f7;color:var(--accent);display:grid;place-items:center;font-weight:950}.roadstep strong{display:block}.roadstep p{margin:4px 0 0;color:#4f626e}.meta{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.metabox{border:1px solid var(--line);border-radius:13px;padding:14px;background:#f8fbfc}.metabox h3{font-size:13px;color:var(--accent);letter-spacing:1px;margin-bottom:8px}.metabox p,.metabox ul{margin:0;color:#4f626e}.courses{margin-top:20px;border-top:2px solid var(--line);padding-top:18px}.coursechips{display:flex;gap:8px;flex-wrap:wrap}.chip{background:#edf4f7;border:1px solid #d4e1e7;border-radius:999px;padding:7px 11px;font-size:13px;font-weight:750}.small{font-size:12px;color:var(--muted)}footer{text-align:center;color:#60727e;font-size:12px;margin-top:26px}
+.coursegroup{margin:14px 0}.coursegroup summary{cursor:pointer;font-weight:950;color:var(--accent);padding:8px 0}.coursecard{border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:12px;padding:12px 14px;margin:9px 0;background:#f9fbfc}.coursecard strong{display:block}.coursecard p{margin:5px 0;color:#4f626e}.coursemeta{font-size:11px;color:#687b87;font-weight:800}.program{border-radius:11px;padding:11px 13px;margin:8px 0;background:#edf4f7}.program strong{display:block}.program p{margin:4px 0;color:#4f626e}.callout{border-radius:11px;padding:12px 14px;margin-top:12px;background:#fff5d9;border:1px solid #e6ca78}
+@media(max-width:760px){.samples,.formgrid,.resultgrid,.meta{grid-template-columns:1fr}.sample img{height:260px}.action>*{width:100%}}
+@media print{header,.setup,.noprint,footer{display:none!important}body{background:#fff}main{width:100%;margin:0}.card{box-shadow:none;border:0;padding:0}#result{display:block!important}.resultgrid{grid-template-columns:42% 58%;gap:18px}.portrait{max-height:8.5in;object-fit:contain}}
+</style>
+</head>
+<body class="{{ school }}">
+<header><div class="brand">STEP INTO YOUR FUTURE <span>— TODAY!</span></div><div class="school">{{ school_name }} • Administrator Preview</div><div class="topnote">A live demonstration using fictional AI-generated students. No real student photograph can be uploaded in this mode.</div></header>
+<main>
+<section class="card setup">
+<div class="eyebrow">Protected demonstration</div><h1>Choose a fictional student.</h1>
+<p>Pick a sample student, career and future age. The application will create the transformation live and return an illustrative career roadmap.</p>
+<div class="notice"><strong>Privacy by design:</strong> both starting portraits were created by AI and represent people who do not exist. Administrator Preview sends only the selected bundled image and career choices to the image service. It does not accept personal photo uploads.</div>
+<p id="previewStatus" class="status {{ 'ready' if preview_ready else 'blocked' }}">{{ preview_status }}{% if preview_ready %} {{ generations_left }} generation(s) remain in this browser session.{% endif %}</p>
+<div class="samples">
+{% for sample_id, sample in samples.items() %}
+<label class="sample"><input type="radio" name="sample" value="{{ sample_id }}" {% if loop.first %}checked{% endif %}><img src="/demo-student/{{ sample_id }}.png" alt="{{ sample.label }}"><span class="samplecopy"><strong>{{ sample.label }}</strong><span>Entirely fictional • Created for demonstration</span></span></label>
+{% endfor %}
+</div>
+<div class="formgrid" style="margin-top:24px">
+<label class="field">Career<select id="career">{% for career in careers %}<option>{{ career }}</option>{% endfor %}</select></label>
+<label class="field">Future age<select id="age"><option>22</option><option selected>25</option><option>28</option><option>30</option><option>35</option></select></label>
+<label class="field">Path<select id="path"><option value="employee">Work in the profession</option><option value="owner">Own a business someday</option><option value="explore">Not sure — explore the path</option></select></label>
+<label class="field">What matters most?<select id="priority"><option>Doing work I enjoy</option><option>Helping people</option><option>High income potential</option><option>Creativity</option><option>Job stability</option><option>Being my own boss</option></select></label>
+</div>
+<div class="action"><button class="primary" id="generate" {% if not preview_ready %}disabled{% endif %}>Create Fictional Future →</button><a class="button secondary" href="{{ '/ghs' if school == 'ghs' else '/' }}">Return to {{ school|upper }}</a><span class="cost">Each creation uses one paid image-generation request.</span></div>
+<div id="error" class="error" role="alert"></div>
+<div id="loading" class="loading"><div class="spinner"></div><h2>Creating the fictional future…</h2><p>The live transformation may take a little while.</p></div>
+</section>
+
+<section class="card" id="result">
+<div class="eyebrow">Administrator demonstration result</div><h2 id="resultTitle"></h2><p id="summary"></p>
+<div class="action noprint"><button class="button secondary" onclick="window.print()">Save / Print</button><button class="button secondary" id="download">Download Fictional Portrait</button><button class="button primary" id="another">Try Another</button></div>
+<div class="resultgrid" style="margin-top:20px">
+<div><img class="portrait" id="portrait" alt="Fictional AI-generated future career demonstration"><div class="fictional">FICTIONAL AI DEMONSTRATION • This person does not exist • Not a prediction</div></div>
+<div><div id="road"></div><div class="meta"><div class="metabox"><h3>ESTIMATED PATH</h3><p id="timeline"></p></div><div class="metabox"><h3>SKILLS TO BUILD</h3><ul id="keys"></ul></div></div><div class="courses" id="courses"></div></div>
+</div>
+</section>
+<footer>Step Into Your Future V21 • A Palonious Student Pathway Experience • Administrator Preview</footer>
+</main>
+<script>
+const CSRF={{ csrf_token|tojson }}, SCHOOL={{ school|tojson }};
+const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+$('generate').onclick=async()=>{
+ const selected=document.querySelector('input[name="sample"]:checked');
+ const payload={school:SCHOOL,sample_id:selected.value,career:$('career').value,age:$('age').value,path:$('path').value,priority:$('priority').value};
+ $('error').style.display='none';$('loading').style.display='block';$('generate').disabled=true;
+ try{
+  const response=await fetch('/api/admin-preview/generate',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':CSRF},body:JSON.stringify(payload)});
+  const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||'The preview could not be completed.');
+  $('portrait').src=data.image;$('resultTitle').textContent='Age '+data.age+': '+data.career;$('summary').textContent=data.summary;
+  $('road').innerHTML=(data.steps||[]).map((s,i)=>'<div class="roadstep"><div class="num">'+(i+1)+'</div><div><strong>'+esc(s[0])+'</strong><p>'+esc(s[1])+'</p></div></div>').join('');
+  $('timeline').textContent=data.timeline||'';$('keys').innerHTML=(data.keys||[]).map(k=>'<li>'+esc(k)+'</li>').join('');
+  if(data.bhs){
+   const b=data.bhs;
+   const bhsCards=(items,planned=false)=>(items||[]).map(c=>'<article class="coursecard"><strong>'+esc(c.name)+'</strong><p>'+esc(c.focus)+'</p>'+(c.prerequisite?'<p><b>'+(planned?'Plan ahead: ':'Entry notes: ')+'</b>'+esc(c.prerequisite)+'</p>':'')+'<div class="coursemeta">'+esc(c.department)+' · Grade(s) '+esc(c.grades)+'</div></article>').join('');
+   let html='<h3>BHS courses and opportunities</h3><p><strong>'+esc(b.grade_note)+'</strong></p>';
+   html+='<section class="coursegroup"><h4>Strongest matches to discuss</h4>'+(bhsCards(b.course_details)||'<p>Use current core courses to build the foundation and discuss later options with a counselor.</p>')+'</section>';
+   if((b.supporting_course_details||[]).length)html+='<details class="coursegroup" open><summary>Helpful supporting courses · '+b.supporting_course_details.length+' options</summary>'+bhsCards(b.supporting_course_details)+'</details>';
+   if((b.future_course_details||[]).length)html+='<details class="coursegroup" open><summary>Plan ahead at BHS · '+b.future_course_details.length+' options</summary>'+bhsCards(b.future_course_details,true)+'</details>';
+   html+='<div class="callout"><strong>Try the work</strong><p>'+esc(b.experience)+'</p></div>';
+   if((b.programs||[]).length)html+='<details class="coursegroup" open><summary>Additional BHS programs and experiences · '+b.programs.length+' options</summary>'+b.programs.map(p=>'<div class="program"><strong>'+esc(p.name)+' · '+esc(p.state)+'</strong><p>'+esc(p.detail)+'</p><div class="coursemeta">'+esc(p.grades)+'</div></div>').join('')+'</details>';
+   if(b.good)html+='<div class="callout"><strong>Good to know</strong><p>'+esc(b.good)+'</p></div>';
+   html+='<p><strong>Your next step:</strong> '+esc(b.next||'Discuss the pathway with a school counselor.')+'</p>';
+   $('courses').innerHTML=html;
+  }
+  else if(data.ghs){
+   const g=data.ghs;
+   const cards=items=>(items||[]).map(c=>'<article class="coursecard"><strong>'+esc(c.name)+'</strong><p>'+esc(c.why)+'</p><p><b>'+(c.planned?'Plan ahead: ':'Entry notes: ')+'</b>'+esc(c.prerequisite)+'</p><div class="coursemeta">Grades '+esc(c.grades)+' · GHS Catalog p. '+esc(c.page)+'</div></article>').join('');
+   let html='<h3>GHS courses and opportunities</h3><p><strong>'+esc(g.grade_note)+'</strong></p>';
+   html+='<section class="coursegroup"><h4>Strongest matches to discuss</h4>'+(cards(g.primary_course_details)||'<p>The most direct electives are later options; use current core courses to build the foundation.</p>')+'</section>';
+   if((g.supporting_course_details||[]).length)html+='<details class="coursegroup" open><summary>Helpful supporting courses · '+g.supporting_course_details.length+' options</summary>'+cards(g.supporting_course_details)+'</details>';
+   if((g.future_course_details||[]).length)html+='<details class="coursegroup" open><summary>Plan ahead at GHS · '+g.future_course_details.length+' options</summary>'+cards(g.future_course_details)+'</details>';
+   html+='<div class="callout"><strong>Try the work</strong><p>'+esc(g.experience)+'</p></div>';
+   if((g.programs||[]).length)html+='<details class="coursegroup" open><summary>Additional GHS programs and experiences · '+g.programs.length+' options</summary>'+g.programs.map(p=>'<div class="program"><strong>'+esc(p.name)+'</strong><p>'+esc(p.detail)+'</p></div>').join('')+'</details>';
+   html+='<div class="callout"><strong>Good to know</strong><p>'+esc(g.good)+'</p></div><p><strong>Your next step:</strong> '+esc(g.next)+'</p><p><strong>Think about:</strong> '+esc(g.reflection)+'</p>';
+   $('courses').innerHTML=html;
+  }
+  $('previewStatus').textContent='Administrator Preview is ready for fictional sample students. '+data.generations_left+' generation(s) remain in this browser session.';
+  if(data.generations_left<=0)$('generate').dataset.exhausted='1';
+  $('result').style.display='block';$('result').scrollIntoView({behavior:'smooth',block:'start'});
+ }catch(error){$('error').textContent=error.message;$('error').style.display='block';}
+ finally{$('loading').style.display='none';$('generate').disabled=$('generate').dataset.exhausted==='1';}
+};
+$('download').onclick=()=>{const a=document.createElement('a');a.href=$('portrait').src;a.download='Fictional_Admin_Preview_'+$('career').value.replace(/[^A-Za-z0-9]+/g,'_')+'.png';a.click();};
+$('another').onclick=()=>{window.scrollTo({top:0,behavior:'smooth'});};
+</script>
+</body></html>

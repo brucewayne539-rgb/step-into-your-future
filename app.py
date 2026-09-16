@@ -1132,12 +1132,19 @@ GHS_LOGIN = GHS_LOGIN.replace(
     "Hosted portraits remain blocked until the required provider-retention and school approvals are documented.",
     "The Administrator Preview uses only fictional AI-generated sample students. Real-student portraits remain blocked until the required provider-retention and school approvals are documented.",
 )
+GHS_LOGIN = (GHS_LOGIN
+    .replace("Step Into Your Future — Teacher Demo", "Step Into Your Future — Administrator Preview")
+    .replace("GUILFORD HIGH SCHOOL • TEACHER PREVIEW", "GUILFORD HIGH SCHOOL • ADMINISTRATOR PREVIEW")
+    .replace("Welcome to the teacher demo.", "Administrator Preview Access")
+    .replace("This preview lets educators try the career-and-course roadmap before any wider student rollout.", "Enter the demonstration code to create fictional future-career portraits and compare their complete GHS course pathways.")
+    .replace("Teacher demo access code", "Administrator Preview access code")
+    .replace(">Enter Demo</button>", ">Enter Administrator Preview</button>")
+    .replace('<a href="/privacy">Privacy &amp; School Use</a>', '<a href="/ghs">Return to the GHS pathway explorer</a> &nbsp;•&nbsp; <a href="/privacy">Privacy &amp; School Use</a>')
+)
 
 @app.route("/ghs")
 @app.route("/ghs/")
 def ghs_home():
-    if ACCESS_CODE and not session.get("demo_access"):
-        return render_template_string(GHS_LOGIN, csrf_token=csrf_token())
     portrait_enabled, portrait_status = portrait_gate()
     page = (APP_DIR / "templates" / "ghs.html").read_text(encoding="utf-8")
     page = page.replace("__CSRF_TOKEN_JSON__", json.dumps(csrf_token()))
@@ -1156,13 +1163,12 @@ def ghs_login():
         session.permanent = True
         session["generation_count"] = 0
         session["admin_preview_count"] = 0
-        return redirect(url_for("ghs_home"))
+        school = session.pop("pending_admin_school", "ghs")
+        return redirect(url_for("admin_preview", school=school))
     return render_template_string(GHS_LOGIN, csrf_token=csrf_token(), error="That access code is not correct."), 403
 
 @app.route("/api/ghs/status")
 def ghs_status():
-    if ACCESS_CODE and not session.get("demo_access"):
-        return jsonify(ok=False, error="Enter the teacher demo access code at /ghs."), 401
     enabled, reason = portrait_gate()
     return jsonify(ok=True, ready=enabled, portrait_enabled=enabled, portrait_status=reason,
                    generations_left=max(0, MAX_GENERATIONS_PER_SESSION-int(session.get("generation_count", 0))),
@@ -1209,11 +1215,14 @@ def demo_student_asset(sample_id):
 
 @app.route("/admin-preview")
 def admin_preview():
-    if ACCESS_CODE and not session.get("demo_access"):
-        return redirect(url_for("home"))
     school = (request.args.get("school") or "bhs").lower()
     if school not in {"bhs", "ghs"}:
         school = "bhs"
+    if ACCESS_CODE and not session.get("demo_access"):
+        session["pending_admin_school"] = school
+        if school == "ghs":
+            return render_template_string(GHS_LOGIN, csrf_token=csrf_token())
+        return render_template("login.html", csrf_token=csrf_token())
     ready, status = admin_preview_gate()
     careers = GHS_CAREERS if school == "ghs" else CAREERS
     return render_template(
@@ -1232,7 +1241,7 @@ def admin_preview():
 @app.route("/healthz")
 def healthz():
     """Minimal health check; never tests or exposes credentials."""
-    return jsonify(ok=True, service="step-into-your-future", version="21")
+    return jsonify(ok=True, service="step-into-your-future", version="22")
 
 
 @app.errorhandler(413)
@@ -1242,8 +1251,6 @@ def oversized_photo(error):
 
 @app.route("/")
 def home():
-    if ACCESS_CODE and not session.get("demo_access"):
-        return render_template("login.html", csrf_token=csrf_token())
     portrait_enabled, portrait_status = portrait_gate()
     return render_template("index.html", careers=list(CAREERS.keys()), key_ready=bool(load_key()), hosted=HOSTED,
                            csrf_token=csrf_token(), portrait_enabled=portrait_enabled, portrait_status=portrait_status,
@@ -1259,14 +1266,16 @@ def login():
         session.permanent = True
         session["generation_count"] = 0
         session["admin_preview_count"] = 0
-        return redirect(url_for("home"))
+        school = session.pop("pending_admin_school", "bhs")
+        return redirect(url_for("admin_preview", school=school))
     code=(request.form.get("access_code") or "").strip()
     if secrets.compare_digest(code, ACCESS_CODE):
         session["demo_access"] = True
         session.permanent = True
         session["generation_count"] = 0
         session["admin_preview_count"] = 0
-        return redirect(url_for("home"))
+        school = session.pop("pending_admin_school", "bhs")
+        return redirect(url_for("admin_preview", school=school))
     return render_template("login.html", csrf_token=csrf_token(), error="That access code is not correct."), 403
 
 @app.route("/logout", methods=["POST"])
@@ -1292,8 +1301,6 @@ def setup():
 @app.route("/api/ghs/roadmap", methods=["POST"])
 def roadmap_only():
     """Local course guidance: no photo, provider call, key or portrait quota needed."""
-    if ACCESS_CODE and not session.get("demo_access"):
-        return jsonify(ok=False, error="Please enter the teacher demo access code first."), 401
     if rate_limited("roadmap", 60, 10 * 60):
         return jsonify(ok=False, error="Too many roadmap requests from this browser. Wait a few minutes and try again."), 429
     if not request.is_json:
