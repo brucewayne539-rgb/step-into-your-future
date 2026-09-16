@@ -1,4 +1,6 @@
-import os, io, base64, socket, json, traceback, secrets
+import os, io, base64, socket, json, secrets, time, hashlib, hmac
+from collections import defaultdict, deque
+from datetime import timedelta
 from pathlib import Path
 from bhs_catalog import (
     CAREER_COURSES as BHS_CAREER_COURSES,
@@ -6,9 +8,9 @@ from bhs_catalog import (
     OWNERSHIP_COURSES as BHS_OWNERSHIP_COURSES,
     PROGRAMS as BHS_PROGRAMS,
 )
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_from_directory, render_template_string
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_from_directory, render_template_string, make_response
+from markupsafe import escape
 from PIL import Image, ImageDraw, ImageFont, ImageOps, UnidentifiedImageError
-from werkzeug.utils import secure_filename
 
 try:
     from openai import OpenAI
@@ -118,6 +120,24 @@ def burn_portrait_watermark(encoded_png):
 
 app = Flask(__name__)
 
+
+def env_flag(name, default=False):
+    """Read a conservative boolean environment flag."""
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+HOSTED = bool(os.environ.get("RENDER") or env_flag("HTTPS_ONLY"))
+SECRET_KEY_CONFIGURED = bool((os.environ.get("SECRET_KEY") or "").strip())
+PORTRAITS_ENABLED = env_flag("PORTRAITS_ENABLED", default=not HOSTED)
+OPENAI_ZDR_CONFIRMED = env_flag("OPENAI_ZDR_CONFIRMED")
+SCHOOL_PORTRAIT_APPROVED = env_flag("SCHOOL_PORTRAIT_APPROVED")
+PRIVACY_CONTACT_EMAIL = (os.environ.get("PRIVACY_CONTACT_EMAIL") or "").strip()
+OPERATOR_NAME = (os.environ.get("OPERATOR_NAME") or "Step Into Your Future").strip()
+RATE_BUCKETS = defaultdict(deque)
+
 @app.route("/app-icon.png")
 def app_icon():
     return send_from_directory(app.root_path, "app-icon.png", mimetype="image/png")
@@ -138,16 +158,85 @@ def ghs_app_icon():
     return send_from_directory(app.root_path, "ghs-app-icon.png", mimetype="image/png")
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 app.config["MAX_CONTENT_LENGTH"] = 12 * 1024 * 1024
+app.config["MAX_FORM_MEMORY_SIZE"] = 13 * 1024 * 1024
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-if os.environ.get("RENDER") or os.environ.get("HTTPS_ONLY") == "1":
+app.config["SESSION_COOKIE_NAME"] = "siyf_session"
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=60)
+app.config["SESSION_REFRESH_EACH_REQUEST"] = False
+if HOSTED:
     app.config["SESSION_COOKIE_SECURE"] = True
 
 ACCESS_CODE = (os.environ.get("DEMO_ACCESS_CODE") or "").strip()
 GHS_DATA = json.loads((APP_DIR / "ghs_data.json").read_text(encoding="utf-8"))
 GHS_CAREERS = GHS_DATA["careers"]
 
-MAX_GENERATIONS_PER_SESSION = int(os.environ.get("MAX_GENERATIONS_PER_SESSION", "2"))
+try:
+    MAX_GENERATIONS_PER_SESSION = max(0, min(10, int(os.environ.get("MAX_GENERATIONS_PER_SESSION", "2"))))
+except ValueError:
+    MAX_GENERATIONS_PER_SESSION = 2
+
+
+def csrf_token():
+    token = session.get("csrf_token")
+    if not token:
+        token = secrets.token_urlsafe(32)
+        session["csrf_token"] = token
+    return token
+
+
+def request_has_valid_csrf():
+    supplied = request.headers.get("X-CSRF-Token", "")
+    if not supplied:
+        supplied = request.form.get("_csrf_token", "")
+    expected = session.get("csrf_token", "")
+    return bool(expected and supplied and secrets.compare_digest(supplied, expected))
+
+
+def anonymous_client_key():
+    """Create an in-memory, rotating pseudonymous client key; never log the IP."""
+    address = (request.headers.get("X-Forwarded-For") or request.remote_addr or "unknown").split(",", 1)[0].strip()
+    return hmac.new(app.secret_key.encode("utf-8"), address.encode("utf-8"), hashlib.sha256).hexdigest()[:24]
+
+
+def rate_limited(bucket_name, limit, window_seconds):
+    if len(RATE_BUCKETS) > 10_000:
+        RATE_BUCKETS.clear()
+    now = time.monotonic()
+    bucket = RATE_BUCKETS[(bucket_name, anonymous_client_key())]
+    while bucket and bucket[0] <= now - window_seconds:
+        bucket.popleft()
+    if len(bucket) >= limit:
+        return True
+    bucket.append(now)
+    return False
+
+
+def portrait_gate():
+    """Return a supportable hosted-portrait status without claiming legal approval."""
+    if not PORTRAITS_ENABLED:
+        return False, "Portrait mode is disabled. The no-photo career roadmap remains available."
+    if HOSTED and not SECRET_KEY_CONFIGURED:
+        return False, "Portrait mode requires a configured server session secret."
+    if HOSTED and not ACCESS_CODE:
+        return False, "Portrait mode requires restricted teacher access on a hosted deployment."
+    if HOSTED and not OPENAI_ZDR_CONFIRMED:
+        return False, "Portrait mode is awaiting written confirmation that Zero Data Retention is enabled for the OpenAI project."
+    if HOSTED and not SCHOOL_PORTRAIT_APPROVED:
+        return False, "Portrait mode is awaiting the school's documented privacy and authorization approval."
+    if HOSTED and ("@" not in PRIVACY_CONTACT_EMAIL or len(PRIVACY_CONTACT_EMAIL) > 254):
+        return False, "Portrait mode requires a published privacy contact for family and school requests."
+    if not load_key() or OpenAI is None:
+        return False, "Portrait service setup is incomplete. The no-photo roadmap remains available."
+    return True, "Portrait mode is enabled for this approved deployment."
+
+
+@app.before_request
+def verify_mutating_request():
+    if request.method in {"POST", "PUT", "PATCH", "DELETE"} and not request_has_valid_csrf():
+        if request.path.startswith("/api/"):
+            return jsonify(ok=False, error="This request expired or did not come from this app. Refresh the page and try again."), 400
+        return "This form expired. Return to the app, refresh the page, and try again.", 400
 
 CAREERS = {
     "Architect": {
@@ -862,28 +951,38 @@ def local_ip():
 
 
 # GHS shares the existing hosting and image service, with separate course content.
-GHS_LOGIN = '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n<title>Step Into Your Future — Teacher Demo</title>\n<style>\n*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#eaf5fd,#f7fbff);color:#0b3558;min-height:100vh;display:grid;place-items:center;padding:24px}.card{width:min(620px,100%);background:#fff;border:1px solid #d6e6f3;border-radius:24px;box-shadow:0 18px 60px #0b355822;overflow:hidden}.head{background:linear-gradient(120deg,#073f2d,#218663);padding:34px;color:#fff}.school{font-size:13px;letter-spacing:3px;font-weight:800}.brand{font-size:38px;font-weight:900;line-height:1.05;margin-top:16px}.brand span{color:#54c6ff}.body{padding:34px}.body h2{font-size:27px;margin:0 0 10px}.body p{line-height:1.55;color:#536d83}.notice{background:#eaf6ff;border-left:5px solid #40b9f4;padding:14px 16px;border-radius:12px;margin:18px 0}label{font-weight:800;display:block;margin:22px 0 8px}input{width:100%;padding:16px;border:2px solid #cfe0ed;border-radius:12px;font-size:18px}button{margin-top:16px;width:100%;padding:16px;border:0;border-radius:12px;background:#087049;color:#fff;font-size:18px;font-weight:900;cursor:pointer}.error{background:#fff0f0;color:#a32626;padding:12px 14px;border-radius:10px;margin:14px 0}.small{font-size:12px;color:#6d7f8f;margin-top:16px}\n</style></head><body>\n<div class="card"><div class="head"><div class="school">GUILFORD HIGH SCHOOL • TEACHER PREVIEW</div><div class="brand">STEP INTO YOUR FUTURE <span>— TODAY!</span></div></div><div class="body">\n<h2>Welcome to the teacher demo.</h2><p>This preview lets educators try the same career-visualization experience before any wider student rollout.</p>\n<div class="notice"><strong>Privacy:</strong> photos are sent to the AI image service only when Generate is pressed. This demo does not intentionally create a student photo database.</div>\n{% if error %}<div class="error">{{ error }}</div>{% endif %}\n<form method="post" action="/ghs/login"><label for="access_code">Teacher demo access code</label><input id="access_code" name="access_code" type="password" autocomplete="off" required><button type="submit">Enter Demo</button></form>\n<div class="small">Illustrative career visualization only — not a prediction of appearance or career outcome.<br><a href="/privacy">Privacy &amp; School Use</a></div>\n</div></div></body></html>\n'
+GHS_LOGIN = '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n<title>Step Into Your Future — Teacher Demo</title>\n<style>\n*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#eaf5fd,#f7fbff);color:#0b3558;min-height:100vh;display:grid;place-items:center;padding:24px}.card{width:min(620px,100%);background:#fff;border:1px solid #d6e6f3;border-radius:24px;box-shadow:0 18px 60px #0b355822;overflow:hidden}.head{background:linear-gradient(120deg,#073f2d,#218663);padding:34px;color:#fff}.school{font-size:13px;letter-spacing:3px;font-weight:800}.brand{font-size:38px;font-weight:900;line-height:1.05;margin-top:16px}.brand span{color:#54c6ff}.body{padding:34px}.body h2{font-size:27px;margin:0 0 10px}.body p{line-height:1.55;color:#536d83}.notice{background:#eaf6ff;border-left:5px solid #40b9f4;padding:14px 16px;border-radius:12px;margin:18px 0}label{font-weight:800;display:block;margin:22px 0 8px}input{width:100%;padding:16px;border:2px solid #cfe0ed;border-radius:12px;font-size:18px}button{margin-top:16px;width:100%;padding:16px;border:0;border-radius:12px;background:#087049;color:#fff;font-size:18px;font-weight:900;cursor:pointer}.error{background:#fff0f0;color:#a32626;padding:12px 14px;border-radius:10px;margin:14px 0}.small{font-size:12px;color:#6d7f8f;margin-top:16px}\n</style></head><body>\n<div class="card"><div class="head"><div class="school">GUILFORD HIGH SCHOOL • TEACHER PREVIEW</div><div class="brand">STEP INTO YOUR FUTURE <span>— TODAY!</span></div></div><div class="body">\n<h2>Welcome to the teacher demo.</h2><p>This preview lets educators try the career-and-course roadmap before any wider student rollout.</p>\n<div class="notice"><strong>Privacy:</strong> the no-photo roadmap is the default. Hosted portraits remain blocked until the required provider-retention and school approvals are documented.</div>\n{% if error %}<div class="error" role="alert">{{ error }}</div>{% endif %}\n<form method="post" action="/ghs/login"><input type="hidden" name="_csrf_token" value="{{ csrf_token }}"><label for="access_code">Teacher demo access code</label><input id="access_code" name="access_code" type="password" autocomplete="current-password" required><button type="submit">Enter Demo</button></form>\n<div class="small">Illustrative career visualization only — not a prediction of appearance or career outcome.<br><a href="/privacy">Privacy &amp; School Use</a></div>\n</div></div></body></html>\n'
 
 @app.route("/ghs")
 @app.route("/ghs/")
 def ghs_home():
     if ACCESS_CODE and not session.get("demo_access"):
-        return render_template_string(GHS_LOGIN)
-    return send_from_directory(APP_DIR, "ghs.html")
+        return render_template_string(GHS_LOGIN, csrf_token=csrf_token())
+    portrait_enabled, portrait_status = portrait_gate()
+    page = (APP_DIR / "templates" / "ghs.html").read_text(encoding="utf-8")
+    page = page.replace("__CSRF_TOKEN_JSON__", json.dumps(csrf_token()))
+    page = page.replace("__PORTRAIT_ENABLED_JSON__", "true" if portrait_enabled else "false")
+    page = page.replace("__PORTRAIT_STATUS__", str(escape(portrait_status)))
+    return make_response(page)
 
 @app.route("/ghs/login", methods=["POST"])
 def ghs_login():
+    if rate_limited("ghs-login", 10, 15 * 60):
+        return render_template_string(GHS_LOGIN, csrf_token=csrf_token(), error="Too many sign-in attempts. Wait 15 minutes and try again."), 429
     code = (request.form.get("access_code") or "").strip()
     if not ACCESS_CODE or secrets.compare_digest(code, ACCESS_CODE):
         session["demo_access"] = True
+        session.permanent = True
+        session["generation_count"] = 0
         return redirect(url_for("ghs_home"))
-    return render_template_string(GHS_LOGIN, error="That access code is not correct."), 403
+    return render_template_string(GHS_LOGIN, csrf_token=csrf_token(), error="That access code is not correct."), 403
 
 @app.route("/api/ghs/status")
 def ghs_status():
     if ACCESS_CODE and not session.get("demo_access"):
         return jsonify(ok=False, error="Enter the teacher demo access code at /ghs."), 401
-    return jsonify(ok=True, ready=bool(load_key()) and OpenAI is not None,
+    enabled, reason = portrait_gate()
+    return jsonify(ok=True, ready=enabled, portrait_enabled=enabled, portrait_status=reason,
                    generations_left=max(0, MAX_GENERATIONS_PER_SESSION-int(session.get("generation_count", 0))),
                    limit=MAX_GENERATIONS_PER_SESSION)
 
@@ -900,7 +999,9 @@ def school_readiness_headers(response):
     response.headers["Referrer-Policy"] = "no-referrer"
     response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
     response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
-    response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), payment=(), usb=()"
+    response.headers["Permissions-Policy"] = "camera=(), geolocation=(), microphone=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=()"
+    response.headers["X-Permitted-Cross-Domain-Policies"] = "none"
+    response.headers["Origin-Agent-Cluster"] = "?1"
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
         "object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; "
@@ -912,7 +1013,14 @@ def school_readiness_headers(response):
 
 @app.route("/privacy")
 def privacy_notice():
-    return render_template("privacy.html")
+    return render_template("privacy.html", operator_name=OPERATOR_NAME,
+                           privacy_contact=PRIVACY_CONTACT_EMAIL or "Not yet designated — portrait mode remains blocked")
+
+
+@app.route("/healthz")
+def healthz():
+    """Minimal health check; never tests or exposes credentials."""
+    return jsonify(ok=True, service="step-into-your-future", version="20")
 
 
 @app.errorhandler(413)
@@ -923,25 +1031,34 @@ def oversized_photo(error):
 @app.route("/")
 def home():
     if ACCESS_CODE and not session.get("demo_access"):
-        return render_template("login.html")
-    return render_template("index.html", careers=list(CAREERS.keys()), key_ready=bool(load_key()), hosted=bool(os.environ.get("OPENAI_API_KEY")), generations_left=max(0, MAX_GENERATIONS_PER_SESSION-int(session.get("generation_count",0))))
+        return render_template("login.html", csrf_token=csrf_token())
+    portrait_enabled, portrait_status = portrait_gate()
+    return render_template("index.html", careers=list(CAREERS.keys()), key_ready=bool(load_key()), hosted=HOSTED,
+                           csrf_token=csrf_token(), portrait_enabled=portrait_enabled, portrait_status=portrait_status,
+                           generations_left=max(0, MAX_GENERATIONS_PER_SESSION-int(session.get("generation_count",0))))
 
 @app.route("/login", methods=["POST"])
 def login():
+    if rate_limited("bhs-login", 10, 15 * 60):
+        return render_template("login.html", csrf_token=csrf_token(), error="Too many sign-in attempts. Wait 15 minutes and try again."), 429
     if not ACCESS_CODE:
         session["demo_access"] = True
+        session.permanent = True
         return redirect(url_for("home"))
     code=(request.form.get("access_code") or "").strip()
     if secrets.compare_digest(code, ACCESS_CODE):
         session["demo_access"] = True
+        session.permanent = True
         session["generation_count"] = 0
         return redirect(url_for("home"))
-    return render_template("login.html", error="That access code is not correct."), 403
+    return render_template("login.html", csrf_token=csrf_token(), error="That access code is not correct."), 403
 
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
     session.clear()
-    return redirect(url_for("home"))
+    response = redirect(url_for("home"))
+    response.headers["Clear-Site-Data"] = '"cache", "storage"'
+    return response
 
 @app.route("/api/setup", methods=["POST"])
 def setup():
@@ -961,6 +1078,8 @@ def roadmap_only():
     """Local course guidance: no photo, provider call, key or portrait quota needed."""
     if ACCESS_CODE and not session.get("demo_access"):
         return jsonify(ok=False, error="Please enter the teacher demo access code first."), 401
+    if rate_limited("roadmap", 60, 10 * 60):
+        return jsonify(ok=False, error="Too many roadmap requests from this browser. Wait a few minutes and try again."), 429
     if not request.is_json:
         return jsonify(ok=False, error="Use the roadmap form without a photo."), 400
     data = request.get_json(silent=True)
@@ -991,6 +1110,11 @@ def roadmap_only():
 def generate():
     if ACCESS_CODE and not session.get("demo_access"):
         return jsonify({"ok":False,"error":"Please enter the teacher demo access code first."}),401
+    portrait_enabled, portrait_status = portrait_gate()
+    if not portrait_enabled:
+        return jsonify(ok=False, error=portrait_status), 403
+    if rate_limited("portrait", 5, 10 * 60):
+        return jsonify(ok=False, error="Too many portrait requests from this browser. Wait 10 minutes before trying again."), 429
     count=int(session.get("generation_count",0))
     if count >= MAX_GENERATIONS_PER_SESSION:
         return jsonify({"ok":False,"error":f"This demo is limited to {MAX_GENERATIONS_PER_SESSION} AI portraits per browser session to control costs."}),429
@@ -1009,10 +1133,13 @@ def generate():
     path=(request.form.get("path") or "employee").strip()
     priority=(request.form.get("priority") or "Doing work I enjoy").strip()
     photo_consent=(request.form.get("photo_consent") or "").strip()
+    privacy_ack=(request.form.get("privacy_ack") or "").strip()
     if not photo or not career:
         return jsonify({"ok":False,"error":"Please provide a photo and choose a career."}),400
     if photo_consent != "confirmed":
         return jsonify({"ok":False,"error":"Confirm that the person pictured is age 13 or older and that you are authorized to submit the photo."}),400
+    if privacy_ack != "acknowledged":
+        return jsonify({"ok":False,"error":"Acknowledge the photo-processing and provider-retention notice before creating a portrait."}),400
     if career not in career_data:
         return jsonify({"ok":False,"error":"Unknown career selection."}),400
     if grade not in BHS_GRADE_LABELS:
@@ -1029,6 +1156,7 @@ def generate():
         return jsonify({"ok":False,"error":"Photo is too large. Please use an image under 12 MB."}),400
 
     # Decode actual image bytes, correct phone rotation, and strip location/EXIF metadata.
+    cleaned = None
     try:
         with Image.open(io.BytesIO(raw)) as source:
             if source.format not in {"JPEG", "PNG", "WEBP"}:
@@ -1039,10 +1167,16 @@ def generate():
             normalized = ImageOps.exif_transpose(source).convert("RGB")
             normalized.thumbnail((2048, 2048))
             cleaned = io.BytesIO()
-            normalized.save(cleaned, format="PNG")
-            raw = cleaned.getvalue()
+            normalized.save(cleaned, format="PNG", optimize=True)
+            cleaned.seek(0)
     except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
+        if cleaned is not None:
+            cleaned.close()
         return jsonify(ok=False, error="Choose a valid JPEG, PNG or WebP photo, up to 24 megapixels."), 400
+    finally:
+        # Release the original upload as soon as decoding finishes. Python and
+        # provider infrastructure cannot honestly guarantee a secure memory wipe.
+        raw = b""
 
     info=career_data[career]
     business_note = "The person should look like an established professional and small-business owner." if path=="owner" else ""
@@ -1093,9 +1227,10 @@ Student priority: {priority}
 Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, natural flattering lighting, age-appropriate adult appearance, confident but natural expression. Preserve recognizable identity without freezing the face at its current age. Do not add text, captions, logos, badges with readable department names, or brand marks. The application will add its own standardized disclaimer after generation. Do not sexualize or glamorize the subject. If work clothing or safety equipment is appropriate, use realistic generic professional attire.
 """.strip()
 
+    bio = None
     try:
         client=OpenAI(api_key=key, timeout=150.0, max_retries=0)
-        bio=io.BytesIO(raw)
+        bio=cleaned
         bio.name="portrait-reference.png"
 
         result=client.images.edit(
@@ -1147,6 +1282,9 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
         else:
             msg="The portrait could not be completed. Your selections are still here. Please ask the teacher before trying again."
         return jsonify(ok=False, error=msg), 502
+    finally:
+        if bio is not None:
+            bio.close()
 
 if __name__=="__main__":
     ip=local_ip()
