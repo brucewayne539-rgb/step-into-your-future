@@ -1,10 +1,12 @@
 STEP INTO YOUR FUTURE — TODAY!
-TEACHER-REVIEW BUILD V20
+TEACHER / ADMINISTRATOR REVIEW BUILD V21
 
-The default experience is a complete BHS/GHS career-and-course roadmap that does not request a photo and does not call OpenAI. Grade 8 is a planning year; Grades 9–12 receive grade-aware school-course guidance. All course decisions must be confirmed with a counselor and the current official catalog.
+The default experience is a complete BHS/GHS career-and-course roadmap that does not request a photo and does not call the image API. Grade 8 is a planning year; Grades 9–12 receive grade-aware school-course guidance. All course decisions must be confirmed with a counselor and the current official catalog.
 
-Hosted portrait mode is intentionally blocked until the operator documents OpenAI Zero Data Retention for the exact project, receives school authorization, publishes a privacy contact, restricts access and deliberately enables the portrait flags. The app’s lack of a photo database is not the same as an absolute zero-retention promise.
+The protected Administrator Preview adds a live visual demonstration using two bundled, entirely fictional AI-generated students. Administrators may choose a career, future age and pathway, then retry the same fictional student with another career to compare how the portrait and roadmap are changed. The preview contains no file-upload control and never accepts a real student photograph. Every generated preview portrait receives a permanent pixel-level FICTIONAL AI DEMONSTRATION watermark.
 
-V20 adds request-integrity checks, throttling, shorter secure sessions, stricter photo notices, browser cleanup, expanded privacy disclosures and school-review forms. It remains a prototype—not legal compliance, security certification, accessibility conformance, district approval, patent status or a prediction of any student’s future.
+The fictional preview still makes a standard image-API request. It is not described as Zero Data Retention. Real-student portrait mode remains intentionally blocked until the operator documents retention controls for the exact provider project, receives school authorization, publishes a privacy contact, restricts access and deliberately enables all real-photo flags.
 
-Review README_FIRST.txt, SCHOOL_PILOT_CHECKLIST.md, DATA_FLOW_AND_RETENTION.md, SECURITY.md and ACCESSIBILITY.md before deployment or demonstration.
+V21 is a review prototype—not legal compliance or security certification, accessibility conformance, district approval, patent status, or a prediction of any student's appearance or career outcome.
+
+Review README_FIRST.txt, SCHOOL_PILOT_CHECKLIST.md, DATA_FLOW_AND_RETENTION.md, SECURITY.md, ACCESSIBILITY.md and V21_VERIFICATION_REPORT.md before deployment or demonstration.

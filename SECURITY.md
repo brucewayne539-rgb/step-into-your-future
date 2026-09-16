@@ -1,4 +1,4 @@
-# Security Notes — V20
+# Security Notes — V21
 
 This is a teacher-review build, not a security certification.
 
@@ -15,6 +15,7 @@ This is a teacher-review build, not a security certification.
 - Logs contain an exception category only; code does not log prompts, selections, photo bytes, access codes, API keys, or raw IP addresses.
 - HTML/API responses use no-store caching and headers that restrict framing, referrers, browser capabilities, object embedding, and cross-origin access.
 - AI/illustrative language is burned into returned portrait pixels before release.
+- Administrator Preview accepts only two bundled fictional sample identifiers, has no upload control, applies a separate generation limit, and burns a fictional-person notice into every returned preview image.
 
 ## Known limits requiring external work
 
@@ -35,4 +36,3 @@ Never commit these values to GitHub:
 - `SECRET_KEY`
 
 Rotate a secret immediately if it appears in source, screenshots, logs, email, or chat. Keep teacher and production environments separate.
-

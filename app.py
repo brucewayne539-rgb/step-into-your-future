@@ -34,6 +34,8 @@ CONFIG_FILE = config_file()
 
 WATERMARK_TITLE = "AI-GENERATED CAREER VISUALIZATION"
 WATERMARK_NOTICE = "NOT A PREDICTION | STEP INTO YOUR FUTURE - TODAY!"
+DEMO_WATERMARK_TITLE = "FICTIONAL AI DEMONSTRATION"
+DEMO_WATERMARK_NOTICE = "NOT A REAL STUDENT | NOT A PREDICTION"
 
 
 def _watermark_font(text, maximum_width, preferred_size, minimum_size=18):
@@ -48,7 +50,7 @@ def _watermark_font(text, maximum_width, preferred_size, minimum_size=18):
     return ImageFont.load_default(size=minimum_size)
 
 
-def burn_portrait_watermark(encoded_png):
+def burn_portrait_watermark(encoded_png, fictional_demo=False):
     """Burn the standardized disclaimer into returned portrait pixels.
 
     This happens server-side before the image reaches the browser, so the
@@ -70,21 +72,24 @@ def burn_portrait_watermark(encoded_png):
     line_spacing = max(8, width // 100)
     available_width = width - (horizontal_padding * 2)
 
+    title_text = DEMO_WATERMARK_TITLE if fictional_demo else WATERMARK_TITLE
+    notice_text = DEMO_WATERMARK_NOTICE if fictional_demo else WATERMARK_NOTICE
+
     title_font = _watermark_font(
-        WATERMARK_TITLE,
+        title_text,
         available_width,
         preferred_size=max(28, width // 26),
     )
     notice_font = _watermark_font(
-        WATERMARK_NOTICE,
+        notice_text,
         available_width,
         preferred_size=max(22, width // 34),
         minimum_size=16,
     )
 
     measure = ImageDraw.Draw(portrait)
-    title_box = measure.textbbox((0, 0), WATERMARK_TITLE, font=title_font)
-    notice_box = measure.textbbox((0, 0), WATERMARK_NOTICE, font=notice_font)
+    title_box = measure.textbbox((0, 0), title_text, font=title_font)
+    notice_box = measure.textbbox((0, 0), notice_text, font=notice_font)
     title_height = title_box[3] - title_box[1]
     notice_height = notice_box[3] - notice_box[1]
     band_height = vertical_padding * 2 + title_height + line_spacing + notice_height
@@ -109,9 +114,9 @@ def burn_portrait_watermark(encoded_png):
         )
 
     title_top = band_top + vertical_padding
-    draw_centered(WATERMARK_TITLE, title_font, title_box, title_top)
+    draw_centered(title_text, title_font, title_box, title_top)
     notice_top = title_top + title_height + line_spacing
-    draw_centered(WATERMARK_NOTICE, notice_font, notice_box, notice_top)
+    draw_centered(notice_text, notice_font, notice_box, notice_top)
 
     marked = Image.alpha_composite(portrait, overlay).convert("RGB")
     output = io.BytesIO()
@@ -132,6 +137,7 @@ def env_flag(name, default=False):
 HOSTED = bool(os.environ.get("RENDER") or env_flag("HTTPS_ONLY"))
 SECRET_KEY_CONFIGURED = bool((os.environ.get("SECRET_KEY") or "").strip())
 PORTRAITS_ENABLED = env_flag("PORTRAITS_ENABLED", default=not HOSTED)
+ADMIN_PREVIEW_ENABLED = env_flag("ADMIN_PREVIEW_ENABLED", default=True)
 OPENAI_ZDR_CONFIRMED = env_flag("OPENAI_ZDR_CONFIRMED")
 SCHOOL_PORTRAIT_APPROVED = env_flag("SCHOOL_PORTRAIT_APPROVED")
 PRIVACY_CONTACT_EMAIL = (os.environ.get("PRIVACY_CONTACT_EMAIL") or "").strip()
@@ -170,11 +176,27 @@ if HOSTED:
 ACCESS_CODE = (os.environ.get("DEMO_ACCESS_CODE") or "").strip()
 GHS_DATA = json.loads((APP_DIR / "ghs_data.json").read_text(encoding="utf-8"))
 GHS_CAREERS = GHS_DATA["careers"]
+DEMO_STUDENTS = {
+    "grade9": {
+        "grade": "9",
+        "label": "Fictional Sample Student — Grade 9",
+        "file": "demo-student-grade-9.png",
+    },
+    "grade11": {
+        "grade": "11",
+        "label": "Fictional Sample Student — Grade 11",
+        "file": "demo-student-grade-11.png",
+    },
+}
 
 try:
     MAX_GENERATIONS_PER_SESSION = max(0, min(10, int(os.environ.get("MAX_GENERATIONS_PER_SESSION", "2"))))
 except ValueError:
     MAX_GENERATIONS_PER_SESSION = 2
+try:
+    MAX_ADMIN_PREVIEW_GENERATIONS = max(1, min(10, int(os.environ.get("MAX_ADMIN_PREVIEW_GENERATIONS", "6"))))
+except ValueError:
+    MAX_ADMIN_PREVIEW_GENERATIONS = 6
 
 
 def csrf_token():
@@ -229,6 +251,19 @@ def portrait_gate():
     if not load_key() or OpenAI is None:
         return False, "Portrait service setup is incomplete. The no-photo roadmap remains available."
     return True, "Portrait mode is enabled for this approved deployment."
+
+
+def admin_preview_gate():
+    """Allow only synthetic, bundled faces in the protected sales preview."""
+    if not ADMIN_PREVIEW_ENABLED:
+        return False, "Administrator Preview has been hidden for this deployment."
+    if HOSTED and not SECRET_KEY_CONFIGURED:
+        return False, "Administrator Preview requires a configured server session secret."
+    if HOSTED and not ACCESS_CODE:
+        return False, "Administrator Preview requires restricted teacher/admin access."
+    if not load_key() or OpenAI is None:
+        return False, "The image service setup is incomplete."
+    return True, "Administrator Preview is ready for fictional sample students."
 
 
 @app.before_request
@@ -952,6 +987,10 @@ def local_ip():
 
 # GHS shares the existing hosting and image service, with separate course content.
 GHS_LOGIN = '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n<title>Step Into Your Future — Teacher Demo</title>\n<style>\n*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#eaf5fd,#f7fbff);color:#0b3558;min-height:100vh;display:grid;place-items:center;padding:24px}.card{width:min(620px,100%);background:#fff;border:1px solid #d6e6f3;border-radius:24px;box-shadow:0 18px 60px #0b355822;overflow:hidden}.head{background:linear-gradient(120deg,#073f2d,#218663);padding:34px;color:#fff}.school{font-size:13px;letter-spacing:3px;font-weight:800}.brand{font-size:38px;font-weight:900;line-height:1.05;margin-top:16px}.brand span{color:#54c6ff}.body{padding:34px}.body h2{font-size:27px;margin:0 0 10px}.body p{line-height:1.55;color:#536d83}.notice{background:#eaf6ff;border-left:5px solid #40b9f4;padding:14px 16px;border-radius:12px;margin:18px 0}label{font-weight:800;display:block;margin:22px 0 8px}input{width:100%;padding:16px;border:2px solid #cfe0ed;border-radius:12px;font-size:18px}button{margin-top:16px;width:100%;padding:16px;border:0;border-radius:12px;background:#087049;color:#fff;font-size:18px;font-weight:900;cursor:pointer}.error{background:#fff0f0;color:#a32626;padding:12px 14px;border-radius:10px;margin:14px 0}.small{font-size:12px;color:#6d7f8f;margin-top:16px}\n</style></head><body>\n<div class="card"><div class="head"><div class="school">GUILFORD HIGH SCHOOL • TEACHER PREVIEW</div><div class="brand">STEP INTO YOUR FUTURE <span>— TODAY!</span></div></div><div class="body">\n<h2>Welcome to the teacher demo.</h2><p>This preview lets educators try the career-and-course roadmap before any wider student rollout.</p>\n<div class="notice"><strong>Privacy:</strong> the no-photo roadmap is the default. Hosted portraits remain blocked until the required provider-retention and school approvals are documented.</div>\n{% if error %}<div class="error" role="alert">{{ error }}</div>{% endif %}\n<form method="post" action="/ghs/login"><input type="hidden" name="_csrf_token" value="{{ csrf_token }}"><label for="access_code">Teacher demo access code</label><input id="access_code" name="access_code" type="password" autocomplete="current-password" required><button type="submit">Enter Demo</button></form>\n<div class="small">Illustrative career visualization only — not a prediction of appearance or career outcome.<br><a href="/privacy">Privacy &amp; School Use</a></div>\n</div></div></body></html>\n'
+GHS_LOGIN = GHS_LOGIN.replace(
+    "Hosted portraits remain blocked until the required provider-retention and school approvals are documented.",
+    "The Administrator Preview uses only fictional AI-generated sample students. Real-student portraits remain blocked until the required provider-retention and school approvals are documented.",
+)
 
 @app.route("/ghs")
 @app.route("/ghs/")
@@ -963,6 +1002,7 @@ def ghs_home():
     page = page.replace("__CSRF_TOKEN_JSON__", json.dumps(csrf_token()))
     page = page.replace("__PORTRAIT_ENABLED_JSON__", "true" if portrait_enabled else "false")
     page = page.replace("__PORTRAIT_STATUS__", str(escape(portrait_status)))
+    page = page.replace("__ADMIN_PREVIEW_DISPLAY__", "inline-flex" if ADMIN_PREVIEW_ENABLED else "none")
     return make_response(page)
 
 @app.route("/ghs/login", methods=["POST"])
@@ -974,6 +1014,7 @@ def ghs_login():
         session["demo_access"] = True
         session.permanent = True
         session["generation_count"] = 0
+        session["admin_preview_count"] = 0
         return redirect(url_for("ghs_home"))
     return render_template_string(GHS_LOGIN, csrf_token=csrf_token(), error="That access code is not correct."), 403
 
@@ -1017,10 +1058,40 @@ def privacy_notice():
                            privacy_contact=PRIVACY_CONTACT_EMAIL or "Not yet designated — portrait mode remains blocked")
 
 
+@app.route("/demo-student/<sample_id>.png")
+def demo_student_asset(sample_id):
+    sample = DEMO_STUDENTS.get(sample_id)
+    if not sample:
+        return "Not found", 404
+    return send_from_directory(app.root_path, sample["file"], mimetype="image/png")
+
+
+@app.route("/admin-preview")
+def admin_preview():
+    if ACCESS_CODE and not session.get("demo_access"):
+        return redirect(url_for("home"))
+    school = (request.args.get("school") or "bhs").lower()
+    if school not in {"bhs", "ghs"}:
+        school = "bhs"
+    ready, status = admin_preview_gate()
+    careers = GHS_CAREERS if school == "ghs" else CAREERS
+    return render_template(
+        "admin_preview.html",
+        school=school,
+        school_name="Guilford High School" if school == "ghs" else "Branford High School",
+        careers=list(careers.keys()),
+        samples=DEMO_STUDENTS,
+        preview_ready=ready,
+        preview_status=status,
+        csrf_token=csrf_token(),
+        generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-int(session.get("admin_preview_count", 0))),
+    )
+
+
 @app.route("/healthz")
 def healthz():
     """Minimal health check; never tests or exposes credentials."""
-    return jsonify(ok=True, service="step-into-your-future", version="20")
+    return jsonify(ok=True, service="step-into-your-future", version="21")
 
 
 @app.errorhandler(413)
@@ -1035,6 +1106,7 @@ def home():
     portrait_enabled, portrait_status = portrait_gate()
     return render_template("index.html", careers=list(CAREERS.keys()), key_ready=bool(load_key()), hosted=HOSTED,
                            csrf_token=csrf_token(), portrait_enabled=portrait_enabled, portrait_status=portrait_status,
+                           admin_preview_enabled=ADMIN_PREVIEW_ENABLED,
                            generations_left=max(0, MAX_GENERATIONS_PER_SESSION-int(session.get("generation_count",0))))
 
 @app.route("/login", methods=["POST"])
@@ -1044,12 +1116,15 @@ def login():
     if not ACCESS_CODE:
         session["demo_access"] = True
         session.permanent = True
+        session["generation_count"] = 0
+        session["admin_preview_count"] = 0
         return redirect(url_for("home"))
     code=(request.form.get("access_code") or "").strip()
     if secrets.compare_digest(code, ACCESS_CODE):
         session["demo_access"] = True
         session.permanent = True
         session["generation_count"] = 0
+        session["admin_preview_count"] = 0
         return redirect(url_for("home"))
     return render_template("login.html", csrf_token=csrf_token(), error="That access code is not correct."), 403
 
@@ -1104,6 +1179,131 @@ def roadmap_only():
                    summary=info["summary"], steps=info["steps"], rich_steps=rich_steps,
                    timeline=timeline, keys=keys,
                    **({} if is_ghs else {"bhs": bhs_for_grade(career, grade, path)}))
+
+
+def demo_age_direction(age):
+    future_age = int(age)
+    if future_age == 22:
+        return "Show believable progression to approximately age 22: a young adult in the early twenties, not a teenager."
+    if future_age <= 25:
+        return "Show clear but subtle progression into a believable young adult around age 25, with mature facial proportions, grooming and professional presence."
+    if future_age <= 28:
+        return "Show noticeable progression into the late twenties, with clearly adult facial proportions, grooming, posture and professional presence."
+    if future_age <= 30:
+        return "Show unmistakable progression to approximately age 30 as a fully mature adult, not the source student simply placed in professional clothing."
+    return "Show clearly visible, believable progression to approximately age 35 while preserving the same fictional identity; do not exaggerate aging."
+
+
+@app.route("/api/admin-preview/generate", methods=["POST"])
+def admin_preview_generate():
+    """Live administrator demo using only bundled, synthetic source portraits."""
+    if ACCESS_CODE and not session.get("demo_access"):
+        return jsonify(ok=False, error="Please enter the teacher/admin access code first."), 401
+    preview_ready, preview_status = admin_preview_gate()
+    if not preview_ready:
+        return jsonify(ok=False, error=preview_status), 403
+    if rate_limited("admin-preview", 8, 10 * 60):
+        return jsonify(ok=False, error="Too many preview requests from this browser. Wait 10 minutes before trying again."), 429
+    count = int(session.get("admin_preview_count", 0))
+    if count >= MAX_ADMIN_PREVIEW_GENERATIONS:
+        return jsonify(ok=False, error=f"This Administrator Preview session is limited to {MAX_ADMIN_PREVIEW_GENERATIONS} fictional portraits to control costs."), 429
+
+    data = request.get_json(silent=True)
+    allowed = {"school", "sample_id", "career", "age", "path", "priority"}
+    if not isinstance(data, dict) or set(data) - allowed:
+        return jsonify(ok=False, error="Unexpected preview fields. Refresh the page and try again."), 400
+    school = (data.get("school") or "").lower()
+    sample_id = data.get("sample_id")
+    career = data.get("career")
+    age = data.get("age")
+    path = data.get("path")
+    priority = data.get("priority")
+    sample = DEMO_STUDENTS.get(sample_id)
+    if school not in {"bhs", "ghs"} or not sample:
+        return jsonify(ok=False, error="Choose one of the available fictional student previews."), 400
+    career_data = GHS_CAREERS if school == "ghs" else CAREERS
+    if career not in career_data:
+        return jsonify(ok=False, error="Choose an available career."), 400
+    if age not in {"22", "25", "28", "30", "35"}:
+        return jsonify(ok=False, error="Choose one of the available future ages."), 400
+    if path not in {"employee", "owner", "explore"}:
+        return jsonify(ok=False, error="Choose an available career path."), 400
+    if priority not in {"Doing work I enjoy", "Helping people", "High income potential", "Creativity", "Job stability", "Being my own boss"}:
+        return jsonify(ok=False, error="Choose one of the available priorities."), 400
+
+    info = career_data[career]
+    business_note = "Show the person as an established professional and small-business owner." if path == "owner" else ""
+    prompt = f"""
+Create a realistic, respectful FUTURE-CAREER VISUALIZATION based on the entirely fictional, AI-generated student shown in the supplied reference image.
+
+Preserve the fictional person's recognizable identity and apparent ethnicity while applying believable age progression to approximately age {age}. {demo_age_direction(age)}
+
+IMPORTANT: This is an administrator demonstration using a synthetic person who does not exist. Do not simply copy the youthful face into adult clothing. The selected future age must be visually apparent while the result still looks like the same fictional person. The result is illustrative, not predictive.
+
+Career: {career}
+Setting: {info['scene']}
+Demonstration priority: {priority}
+{business_note}
+
+Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, natural flattering lighting, age-appropriate adult appearance, and a confident but natural expression. Do not add text, captions, logos, readable badges or brand marks. The application will add its own fictional-demonstration watermark. Use realistic generic professional clothing and safety equipment where appropriate.
+""".strip()
+
+    bio = None
+    try:
+        bio = io.BytesIO((APP_DIR / sample["file"]).read_bytes())
+        bio.name = "fictional-demo-student.png"
+        client = OpenAI(api_key=load_key(), timeout=150.0, max_retries=0)
+        result = client.images.edit(
+            model="gpt-image-2",
+            image=bio,
+            prompt=prompt,
+            size="1024x1536",
+            quality="medium",
+        )
+        item = result.data[0] if result.data else None
+        b64 = getattr(item, "b64_json", None)
+        if not b64:
+            return jsonify(ok=False, error="The image service returned no image data."), 502
+        b64 = burn_portrait_watermark(b64, fictional_demo=True)
+        session["admin_preview_count"] = count + 1
+        rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
+        if school == "ghs":
+            timeline, keys = GHS_DATA["meta"][career]
+        grade = sample["grade"]
+        return jsonify(
+            ok=True,
+            fictional_demo=True,
+            sample_label=sample["label"],
+            image="data:image/png;base64," + b64,
+            career=career,
+            age=age,
+            grade=grade,
+            school=school.upper(),
+            path=path,
+            priority=priority,
+            summary=info["summary"],
+            steps=info["steps"],
+            rich_steps=rich_steps,
+            timeline=timeline,
+            keys=keys,
+            generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-count-1),
+            **({} if school == "ghs" else {"bhs": bhs_for_grade(career, grade, path)}),
+        )
+    except Exception as error:
+        category = type(error).__name__
+        app.logger.warning("Administrator Preview generation failed (%s)", category)
+        if category in {"AuthenticationError", "PermissionDeniedError"}:
+            message = "The image service is not authorized. Check the server API key and image-model access."
+        elif category == "RateLimitError":
+            message = "The image service has reached a usage or billing limit. Check the API account."
+        elif category in {"APITimeoutError", "APIConnectionError"}:
+            message = "The image service did not finish in time. No automatic retry was sent; the submitted request may still be billed."
+        else:
+            message = "The fictional demonstration portrait could not be completed. Your selections remain available; please try again later."
+        return jsonify(ok=False, error=message), 502
+    finally:
+        if bio is not None:
+            bio.close()
 
 @app.route("/api/ghs/generate", methods=["POST"])
 @app.route("/api/generate", methods=["POST"])

@@ -13,6 +13,12 @@ services:
         generateValue: true
       - key: MAX_GENERATIONS_PER_SESSION
         value: "2"
+      - key: MAX_ADMIN_PREVIEW_GENERATIONS
+        value: "6"
+      # Temporary sales/presentation feature. It uses only bundled fictional
+      # people and can be hidden after a pilot/contract by changing this to 0.
+      - key: ADMIN_PREVIEW_ENABLED
+        value: "1"
       # Fail-closed privacy gates. Keep portraits off until the matching
       # evidence is in the district review file, then explicitly set to "1".
       - key: PORTRAITS_ENABLED

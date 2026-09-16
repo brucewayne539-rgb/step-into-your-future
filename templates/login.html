@@ -6,7 +6,7 @@
 </style></head><body>
 <main class="card"><div class="head"><div class="school">BRANFORD HIGH SCHOOL • TEACHER PREVIEW</div><div class="brand">STEP INTO YOUR FUTURE <span>— TODAY!</span></div></div><div class="body">
 <h2>Welcome to the teacher demo.</h2><p>This preview lets educators try the career-and-course roadmap before any wider student rollout.</p>
-<div class="notice"><strong>Privacy:</strong> the no-photo roadmap is the default. Hosted portraits remain blocked until the required provider-retention and school approvals are documented.</div>
+<div class="notice"><strong>Privacy:</strong> the no-photo roadmap is the default. The Administrator Preview uses only fictional AI-generated sample students. Real-student portraits remain blocked until the required provider-retention and school approvals are documented.</div>
 {% if error %}<div class="error" role="alert">{{ error }}</div>{% endif %}
 <form method="post" action="/login"><input type="hidden" name="_csrf_token" value="{{ csrf_token }}"><label for="access_code">Teacher demo access code</label><input id="access_code" name="access_code" type="password" autocomplete="current-password" required><button type="submit">Enter Demo</button></form><p class="small"><a href="/privacy">Privacy &amp; School Use</a></p>
 <div class="small">Illustrative career visualization only — not a prediction of appearance or career outcome.</div>
