@@ -176,6 +176,21 @@ if HOSTED:
 ACCESS_CODE = (os.environ.get("DEMO_ACCESS_CODE") or "").strip()
 GHS_DATA = json.loads((APP_DIR / "ghs_data.json").read_text(encoding="utf-8"))
 GHS_CAREERS = GHS_DATA["careers"]
+
+
+def load_ghs_embedded_json(constant_name):
+    """Load catalog-backed GHS data embedded in the self-contained GHS page."""
+    source = (APP_DIR / "templates" / "ghs.html").read_text(encoding="utf-8")
+    marker = f"const {constant_name}="
+    start = source.find(marker)
+    if start < 0:
+        raise RuntimeError(f"Missing GHS data constant: {constant_name}")
+    value, _ = json.JSONDecoder().raw_decode(source[start + len(marker):])
+    return value
+
+
+GHS_COURSE_CATALOG = load_ghs_embedded_json("COURSE_CATALOG")
+GHS_CAREER_MATCHES = load_ghs_embedded_json("CAREER_MATCHES")
 DEMO_STUDENTS = {
     "grade9": {
         "grade": "9",
@@ -923,6 +938,132 @@ def bhs_for_grade(career, grade, path="employee"):
     return result
 
 
+def ghs_for_grade(career, grade, path="employee", priority="Doing work I enjoy"):
+    """Return the same catalog-backed GHS choices shown in the main explorer."""
+    grade = str(grade or "9")
+    current_grade = int(grade)
+    match = GHS_CAREER_MATCHES[career]
+    primary = list(match["primary"])
+    support = list(match["support"])
+    if path == "owner":
+        for course_id in ("business", "accounting", "enterprise", "bizlaw"):
+            if course_id not in primary and course_id not in support:
+                support.append(course_id)
+
+    def course_state(course_id):
+        grades = GHS_COURSE_CATALOG[course_id]["grades"]
+        if current_grade in grades:
+            return "current"
+        if min(grades) > current_grade:
+            return "future"
+        return "past"
+
+    primary_now = [course_id for course_id in primary if course_state(course_id) == "current"]
+    support_now = [course_id for course_id in support if course_state(course_id) == "current"]
+    future = [course_id for course_id in primary + support if course_state(course_id) == "future"]
+
+    def course_detail(course_id, planned=False):
+        item = GHS_COURSE_CATALOG[course_id]
+        return {
+            "name": item["name"],
+            "why": item["why"],
+            "prerequisite": item["prerequisite"],
+            "grades": ", ".join(str(option) for option in item["grades"]),
+            "page": item["page"],
+            "planned": planned,
+        }
+
+    programs = [
+        {
+            "name": "Community Service for Credit — Grades 9–12",
+            "detail": "An approved proposal is required before service starts. GHS lists 60 hours for 0.5 credit or 120 hours for 1.0 credit. Ask whether a project can connect to this career interest. (Catalog p. 13.)",
+        },
+        {
+            "name": "Capstone Project / Internship — Grades 11–12",
+            "detail": "With an advisor and mentor, a student may design an approved career-related internship or project. Ask about scheduling, deadlines and eligibility. (Catalog p. 13.)",
+        },
+        {
+            "name": "Mastery Based Diploma Program — Grades 11–12",
+            "detail": "Connect career exploration, an action-research project, résumé development and a mock interview to this pathway. (Catalog p. 11.)",
+        },
+    ]
+
+    arts = {"Broadway Director / Actor", "Graphic Designer", "TV News Reporter / Local Anchor", "Web / Digital Designer"}
+    if career in arts:
+        programs.append({
+            "name": "ACES Educational Center for the Arts (ECA)",
+            "detail": "Explore visual arts, theatre, creative writing, music or dance where relevant. Admission uses a competitive interview or audition; discuss scheduling with a counselor. (Catalog p. 14.)",
+        })
+
+    academic = {
+        "Architect", "Registered Nurse", "Veterinarian", "Software Developer", "Teacher",
+        "Special Education Teacher", "Physical Therapist", "Business Administration / Manager",
+        "Neurosurgeon", "Cybersecurity Specialist", "Data Scientist / AI Specialist",
+        "Dental Hygienist", "Doctor / Physician", "Lawyer / Attorney",
+        "Marketing / Advertising Professional", "Medical & Health Services Manager",
+        "Nurse Practitioner", "Occupational Therapist", "Physician Assistant",
+        "School Counselor / Mental Health Counselor", "Engineer", "Accountant / Financial Manager",
+        "Construction Manager", "Psychologist",
+    }
+    if career in academic:
+        programs.append({
+            "name": "High School Partnership Programs",
+            "detail": "Ask whether a relevant college course or enrichment opportunity fits your preparation. Administrative approval and each program's entry requirements apply. (Catalog p. 14.)",
+        })
+
+    all_ids = primary + support
+    ib_subjects = []
+    for course_id, subject in (("bio", "IB Biology"), ("chem", "IB Chemistry"), ("physics", "IB Physics"), ("theatre", "IB Theatre")):
+        if course_id in all_ids:
+            ib_subjects.append(subject)
+    if "human" in all_ids and "ibpsych" not in all_ids:
+        ib_subjects.append("IB Psychology")
+    if career in {"Teacher", "Lawyer / Attorney", "TV News Reporter / Local Anchor"}:
+        ib_subjects.append("IB Literature")
+    if ib_subjects:
+        programs.append({
+            "name": "Optional IB study: " + ", ".join(dict.fromkeys(ib_subjects)),
+            "detail": "GHS permits individual IB courses as well as the full diploma. Discuss readiness, scheduling and the two-year sequence with a counselor or IB coordinator. (Catalog pp. 15–16.)",
+        })
+
+    good_notes = {
+        "Electrician": "Electrical knowledge, practical tool skills and understanding building plans complement one another. GHS courses are preparation; they do not replace apprenticeship training.",
+        "Registered Nurse": "Anatomy and Physiology and Healthcare ECE have different entry requirements. Confirm Biology and Chemistry preparation with a counselor.",
+        "Teacher": "Choose the subject and age group you may want to teach. Strengthen those subject foundations alongside communication and supervised teaching experience.",
+        "Special Education Teacher": "Each peer-support option has its own entry requirements. Peer Tutor is not listed as a prerequisite for every adaptive aide course.",
+        "Chef / Restaurant Owner": "GHS offers useful business and supporting-science courses but does not list a dedicated culinary program; hands-on culinary and food-safety training require a separate route.",
+    }
+
+    grade_actions = {
+        "8": "Use eighth grade to review graduation requirements and plan a ninth-grade schedule. Identify one foundation course and one later option to discuss with your counselor.",
+        "9": "With your counselor, choose one realistic foundation course or supervised experience to discuss now. Identify a later option and the preparation it needs.",
+        "10": "With your counselor, review what you have completed. Choose a useful next course or supervised experience and plan prerequisites for junior-year options.",
+        "11": "With your counselor, review your remaining schedule. Ask about a relevant course, service project or Capstone opportunity this year, if available.",
+        "12": "With your counselor, review graduation requirements and useful remaining options. Focus on applications, deadlines and a realistic post-graduation plan.",
+    }
+    next_step = grade_actions[grade] + " " + match["launch"]
+    questions = {
+        "Doing work I enjoy": "Which everyday tasks in this career would you enjoy practicing?",
+        "Helping people": "Who would your work help, and how?",
+        "High income potential": "How would training costs, time and starting pay affect your plan?",
+        "Creativity": "Where could you use creativity in the everyday work?",
+        "Job stability": "What qualifications and adaptable skills could strengthen your options?",
+        "Being my own boss": "What experience, customers, costs and responsibilities would ownership involve?",
+    }
+
+    return {
+        "primary_course_details": [course_detail(course_id) for course_id in primary_now],
+        "supporting_course_details": [course_detail(course_id) for course_id in support_now],
+        "future_course_details": [course_detail(course_id, planned=True) for course_id in future],
+        "programs": programs,
+        "experience": match["experience"],
+        "good": good_notes.get(career, "Choose courses for the skills they build, and confirm preparation, availability and prerequisites before enrolling."),
+        "next": next_step,
+        "reflection": questions.get(priority, "What would you like to learn about this work?"),
+        "grade_note": f"For a current {BHS_GRADE_LABELS.get(grade, grade + 'th grade')} student",
+    }
+
+
 def rich_roadmap(career, steps):
     out=[]
     for i,(title,detail) in enumerate(steps):
@@ -1174,11 +1315,12 @@ def roadmap_only():
     rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
     if is_ghs:
         timeline, keys = GHS_DATA["meta"][career]
+    school_detail = ghs_for_grade(career, grade, path, priority) if is_ghs else bhs_for_grade(career, grade, path)
     return jsonify(ok=True, image=None, age=None, career=career, grade=grade,
                    school="GHS" if is_ghs else "BHS", path=path, priority=priority,
                    summary=info["summary"], steps=info["steps"], rich_steps=rich_steps,
                    timeline=timeline, keys=keys,
-                   **({} if is_ghs else {"bhs": bhs_for_grade(career, grade, path)}))
+                   **({"ghs": school_detail} if is_ghs else {"bhs": school_detail}))
 
 
 def demo_age_direction(age):
@@ -1287,7 +1429,7 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             timeline=timeline,
             keys=keys,
             generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-count-1),
-            **({} if school == "ghs" else {"bhs": bhs_for_grade(career, grade, path)}),
+            **({"ghs": ghs_for_grade(career, grade, path, priority)} if school == "ghs" else {"bhs": bhs_for_grade(career, grade, path)}),
         )
     except Exception as error:
         category = type(error).__name__

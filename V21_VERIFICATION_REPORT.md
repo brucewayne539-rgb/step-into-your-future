@@ -16,6 +16,7 @@ This report covers the BHS/GHS V21 school-readiness build and its protected Admi
 - Real-student portrait mode remains disabled by the three fail-closed approval flags.
 - BHS school-course data continues to use the official catalog-derived index and grade-aware matching logic.
 - GHS retains its complete course, prerequisite and program explorer in the main Guilford edition.
+- Both BHS and GHS fictional-photo previews display grade-aware school courses, prerequisites, future options, programs, experiences and a counselor next step within the same result.
 
 ## Automated checks
 
@@ -24,6 +25,7 @@ This report covers the BHS/GHS V21 school-readiness build and its protected Admi
 - Administrator Preview fictional-source asset checks.
 - Administrator Preview page check confirming that no file input exists.
 - Mocked live image-generation response, fictional watermark processing, session counter and BHS course-result checks.
+- All 630 GHS career/grade/path combinations return school-specific course and program results, and a mocked live GHS portrait result includes those details.
 
 ## Required human deployment checks
 

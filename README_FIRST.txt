@@ -51,8 +51,9 @@ WHAT V21 ADDS
 • Permanent pixel-level fictional-demo watermark on every preview portrait.
 • Separate six-generation administrator-preview limit per signed-in browser session.
 • Existing no-photo Grades 8–12 roadmap remains available.
+• Fictional-photo results now include the full grade-aware BHS or GHS course pathway, including prerequisites, later options, programs, experiences and a counselor next step.
 • Existing real-student portrait mode remains privacy-gated and disabled.
-• Automated tests cover fictional assets, the upload-free preview page, live mocked generation, watermark handling and BHS school-course results.
+• Automated tests cover fictional assets, the upload-free preview page, live mocked generation, watermark handling and both schools' course results.
 
 DO NOT CLAIM
 Do not describe V21 as certified compliant, district approved, patented, patent pending, guaranteed Zero Data Retention or securely wiped. Formal adoption requires district legal, privacy, security, accessibility and curriculum review; applicable agreements; provider evidence; authorization procedures; named contacts; and production operations.

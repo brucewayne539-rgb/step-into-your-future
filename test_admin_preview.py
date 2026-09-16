@@ -82,6 +82,41 @@ class AdministratorPreviewTests(unittest.TestCase):
         self.assertTrue(data["image"].startswith("data:image/png;base64,"))
         self.assertIn("course_details", data["bhs"])
 
+    @patch.object(application, "load_key", return_value="sk-test")
+    @patch.object(application, "OpenAI", FakeOpenAIClient)
+    def test_ghs_preview_returns_school_courses_and_programs(self, _key):
+        self.authorize()
+        response = self.client.post(
+            "/api/admin-preview/generate",
+            headers={"X-CSRF-Token": "test-csrf"},
+            json={
+                "school": "ghs",
+                "sample_id": "grade11",
+                "career": "Architect",
+                "age": "30",
+                "path": "employee",
+                "priority": "Creativity",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertTrue(data["ok"])
+        self.assertEqual(data["school"], "GHS")
+        self.assertTrue(data["ghs"]["primary_course_details"])
+        self.assertTrue(data["ghs"]["supporting_course_details"])
+        self.assertTrue(data["ghs"]["programs"])
+        self.assertIn("counselor", data["ghs"]["next"].lower())
+
+    def test_all_ghs_preview_pathways_have_school_specific_results(self):
+        for career in application.GHS_CAREERS:
+            for grade in application.BHS_GRADE_LABELS:
+                for path in ("employee", "owner", "explore"):
+                    result = application.ghs_for_grade(career, grade, path)
+                    self.assertTrue(result["primary_course_details"] or result["future_course_details"])
+                    self.assertTrue(result["programs"])
+                    self.assertTrue(result["experience"])
+                    self.assertTrue(result["next"])
+
 
 if __name__ == "__main__":
     unittest.main()
