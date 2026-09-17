@@ -204,6 +204,160 @@ DEMO_STUDENTS = {
     },
 }
 
+ARMIE_PRIORITIES = {
+    "Technology and cyber",
+    "Helping and protecting people",
+    "Aviation",
+    "Hands-on mechanical work",
+    "Leadership",
+    "Logistics and organization",
+}
+
+# Student-friendly Army career families. Exact job availability, eligibility,
+# training and service commitments must be confirmed with official Army sources.
+ARMY_CAREERS = {
+    "Cyber Operations Specialist": {
+        "school_match": "Cybersecurity Specialist",
+        "summary": "Help protect Army networks, systems and information while building advanced cyber and technical skills.",
+        "steps": [
+            ["Build the foundation", "Strengthen computer science, algebra, writing and careful problem-solving in high school."],
+            ["Explore service options", "Compare enlisted, officer, Active Duty, Army Reserve and Army National Guard pathways with trusted adults and official Army sources."],
+            ["Confirm eligibility", "Review current age, education, citizenship, medical, testing and security requirements with an official recruiter."],
+            ["Complete training", "If selected, complete required initial military training and job-specific cyber training."],
+            ["Grow your skills", "Pursue approved certifications, leadership experience and civilian-transferable technical skills while serving."],
+        ],
+        "scene": "a secure modern military cyber operations center, working at computer displays, wearing a neat generic U.S. Army-style operational uniform without readable insignia, rank, name tape or unit markings",
+        "timeline": "Preparation can begin in high school. Training length and service commitment depend on the exact pathway and current Army requirements.",
+        "keys": ["Computer systems", "Analytical thinking", "Attention to detail", "Ethics and teamwork"],
+    },
+    "Combat Medic Specialist": {
+        "school_match": "Registered Nurse",
+        "summary": "Provide emergency medical support and patient care as part of an Army healthcare team.",
+        "steps": [
+            ["Build the foundation", "Focus on biology, anatomy, health, communication and physical readiness."],
+            ["Explore the role", "Learn how military medical work differs from civilian nursing, EMT and other healthcare careers."],
+            ["Confirm eligibility", "Review current medical, physical, testing and service requirements with an official recruiter."],
+            ["Complete training", "If selected, complete required initial military training and job-specific medical instruction."],
+            ["Keep learning", "Maintain required skills and explore approved credentials or later civilian healthcare education."],
+        ],
+        "scene": "a clean military medical clinic, wearing a neat generic U.S. Army-style operational uniform without readable insignia, calmly preparing medical equipment, no injury, blood, emergency or weapon visible",
+        "timeline": "High-school preparation can start now. The exact training sequence and commitment depend on the current role and service option.",
+        "keys": ["Medical knowledge", "Calm decision-making", "Compassion", "Teamwork"],
+    },
+    "Army Aviation Specialist": {
+        "school_match": "Engineer",
+        "summary": "Support Army aviation through flight operations, aircraft systems, maintenance or a future pilot pathway.",
+        "steps": [
+            ["Build the foundation", "Strengthen math, physics, technology, communication and disciplined study habits."],
+            ["Compare aviation paths", "Explore enlisted aviation jobs, warrant officer flight paths and commissioned officer options."],
+            ["Confirm eligibility", "Ask official sources about current testing, medical, vision, education and selection requirements."],
+            ["Complete training", "If selected, complete the military and aviation training required for the exact role."],
+            ["Develop expertise", "Build safety, technical, leadership and aviation skills through continuing training."],
+        ],
+        "scene": "inside a bright Army aviation hangar beside a generic utility helicopter, wearing appropriate aviation work clothing without readable insignia, rank, name tape, logos or unit markings",
+        "timeline": "Aviation pathways vary widely. Officer and flight routes may require additional education, testing and selection.",
+        "keys": ["Math and physics", "Safety mindset", "Technical precision", "Communication"],
+    },
+    "Intelligence Analyst": {
+        "school_match": "Data Scientist / AI Specialist",
+        "summary": "Organize and analyze information to help Army leaders understand situations and make informed decisions.",
+        "steps": [
+            ["Build the foundation", "Take strong history, geography, writing, statistics and technology courses."],
+            ["Practice analysis", "Learn to compare sources, identify bias, explain evidence and protect sensitive information."],
+            ["Confirm eligibility", "Review current testing, citizenship and security-screening requirements with official sources."],
+            ["Complete training", "If selected, complete initial military training and job-specific intelligence instruction."],
+            ["Grow professionally", "Develop research, briefing, language, regional or technical specialties as opportunities allow."],
+        ],
+        "scene": "a professional military analysis center with maps and data displays containing no sensitive or readable information, wearing a generic U.S. Army-style operational uniform without readable insignia or rank",
+        "timeline": "Preparation can begin in high school; selection and training depend on current eligibility and security requirements.",
+        "keys": ["Research", "Critical thinking", "Clear briefing", "Discretion"],
+    },
+    "Wheeled Vehicle Mechanic": {
+        "school_match": "Automotive Technician",
+        "summary": "Inspect, maintain and repair Army vehicles while developing practical mechanical and diagnostic skills.",
+        "steps": [
+            ["Build the foundation", "Study automotive systems, power technology, algebra, electronics and shop safety."],
+            ["Get hands-on", "Practice tool use, maintenance routines, troubleshooting and teamwork in approved settings."],
+            ["Confirm eligibility", "Discuss current testing, medical and service requirements with an official recruiter."],
+            ["Complete training", "If selected, complete initial military training and job-specific mechanical instruction."],
+            ["Build credentials", "Explore approved technical certifications and civilian-transferable maintenance experience."],
+        ],
+        "scene": "a clean Army vehicle maintenance bay beside a generic wheeled utility vehicle, using professional diagnostic tools and wearing safe work clothing without readable insignia, logos or rank",
+        "timeline": "Technical preparation can start in high school; exact training and commitments vary by service option and assignment.",
+        "keys": ["Diagnostics", "Tool safety", "Mechanical systems", "Reliability"],
+    },
+    "Signal Support Systems Specialist": {
+        "school_match": "Software Developer",
+        "summary": "Help teams stay connected by supporting communications equipment, networks and information systems.",
+        "steps": [
+            ["Build the foundation", "Study computer science, electronics, algebra, communication and structured troubleshooting."],
+            ["Explore systems", "Practice networking, hardware setup, documentation and responsible technology use."],
+            ["Confirm eligibility", "Review current testing, citizenship and security requirements through official channels."],
+            ["Complete training", "If selected, complete initial military training and job-specific signal instruction."],
+            ["Keep advancing", "Build technical expertise, approved certifications and leadership experience."],
+        ],
+        "scene": "a modern military communications workspace with radios and network equipment, no readable screens, wearing a generic U.S. Army-style operational uniform without readable insignia, rank or name tape",
+        "timeline": "Preparation can start now; exact training length and service requirements depend on the selected communications role.",
+        "keys": ["Networking", "Troubleshooting", "Communication", "Team reliability"],
+    },
+    "Logistics and Supply Specialist": {
+        "school_match": "Business Administration / Manager",
+        "summary": "Coordinate equipment, inventory and supplies so Army teams have what they need when they need it.",
+        "steps": [
+            ["Build the foundation", "Strengthen organization, spreadsheets, business math, communication and accountability."],
+            ["Practice logistics", "Learn inventory control, scheduling, documentation and safe material handling."],
+            ["Confirm eligibility", "Review current role availability and entry requirements with official Army sources."],
+            ["Complete training", "If selected, complete initial military training and job-specific logistics instruction."],
+            ["Lead and improve", "Build supervisory, planning and civilian-transferable supply-chain skills."],
+        ],
+        "scene": "a bright organized military logistics center with labeled generic containers and inventory tablets showing no readable data, wearing a generic U.S. Army-style operational uniform without insignia or rank",
+        "timeline": "Preparation can begin in high school; exact training and duties vary across supply and logistics roles.",
+        "keys": ["Organization", "Inventory accuracy", "Planning", "Accountability"],
+    },
+    "Public Affairs Specialist": {
+        "school_match": "TV News Reporter / Local Anchor",
+        "summary": "Tell Army stories accurately through writing, photography, video, interviews and digital communication.",
+        "steps": [
+            ["Build the foundation", "Take writing, journalism, public speaking, photography and digital media courses."],
+            ["Create a portfolio", "Practice interviewing, fact-checking, video editing and ethical storytelling."],
+            ["Confirm eligibility", "Review current testing and job requirements with an official recruiter."],
+            ["Complete training", "If selected, complete initial military training and job-specific public affairs instruction."],
+            ["Grow your voice", "Build reporting, visual, social-media and leadership experience while maintaining accuracy."],
+        ],
+        "scene": "a professional military media workspace while preparing a camera interview, wearing a generic U.S. Army-style operational uniform without readable insignia, with no logos or readable screens",
+        "timeline": "A strong school media portfolio can begin now; exact training and assignments depend on current Army needs.",
+        "keys": ["Writing", "Interviewing", "Visual storytelling", "Accuracy"],
+    },
+    "Human Resources Specialist": {
+        "school_match": "Business Administration / Manager",
+        "summary": "Support Soldiers and units by maintaining personnel information and helping manage administrative services.",
+        "steps": [
+            ["Build the foundation", "Develop business, writing, spreadsheet, customer-service and confidentiality skills."],
+            ["Practice service", "Learn accurate recordkeeping, professional communication and respectful problem-solving."],
+            ["Confirm eligibility", "Check current testing and entry requirements through official Army sources."],
+            ["Complete training", "If selected, complete initial military training and job-specific personnel instruction."],
+            ["Advance", "Build administrative, leadership and civilian-transferable human-resources skills."],
+        ],
+        "scene": "a professional military personnel office, helping a colleague with paperwork at a modern workstation, wearing a generic U.S. Army-style operational uniform without readable insignia, rank or name tape",
+        "timeline": "Preparation can start with business and communication courses; exact training varies by role and service option.",
+        "keys": ["Accuracy", "Confidentiality", "Customer service", "Organization"],
+    },
+    "Culinary Specialist": {
+        "school_match": "Chef / Restaurant Owner",
+        "summary": "Prepare safe, nutritious meals and support food-service operations for Army teams.",
+        "steps": [
+            ["Build the foundation", "Study culinary arts, food safety, nutrition, measurement and teamwork."],
+            ["Practice the craft", "Develop knife skills, sanitation, timing, volume preparation and inventory habits."],
+            ["Confirm eligibility", "Review current role availability and entry requirements with official Army sources."],
+            ["Complete training", "If selected, complete initial military training and job-specific culinary instruction."],
+            ["Keep developing", "Build leadership, food-service management and civilian-transferable culinary skills."],
+        ],
+        "scene": "a spotless large-scale military kitchen preparing a healthy meal, wearing professional culinary clothing with subtle generic Army styling and no readable logos or insignia",
+        "timeline": "Culinary skills can begin in high school; exact training and assignments depend on the current Army pathway.",
+        "keys": ["Food safety", "Timing", "Teamwork", "Consistency"],
+    },
+}
+
 try:
     MAX_GENERATIONS_PER_SESSION = max(0, min(10, int(os.environ.get("MAX_GENERATIONS_PER_SESSION", "2"))))
 except ValueError:
@@ -1238,6 +1392,29 @@ def admin_preview():
     )
 
 
+@app.route("/armie")
+@app.route("/armie/")
+def armie_preview():
+    """Army-themed career exploration using only fictional sample students."""
+    if ACCESS_CODE and not session.get("demo_access"):
+        session["pending_armie"] = True
+        return render_template("login.html", csrf_token=csrf_token())
+    ready, status = admin_preview_gate()
+    return render_template(
+        "admin_preview.html",
+        school="army",
+        school_name="Armie - Army Career Exploration",
+        careers=list(ARMY_CAREERS.keys()),
+        samples=DEMO_STUDENTS,
+        preview_ready=ready,
+        preview_status=status,
+        csrf_token=csrf_token(),
+        generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-int(session.get("admin_preview_count", 0))),
+        army_mode=True,
+        army_priorities=sorted(ARMIE_PRIORITIES),
+    )
+
+
 @app.route("/healthz")
 def healthz():
     """Minimal health check; never tests or exposes credentials."""
@@ -1266,6 +1443,8 @@ def login():
         session.permanent = True
         session["generation_count"] = 0
         session["admin_preview_count"] = 0
+        if session.pop("pending_armie", False):
+            return redirect(url_for("armie_preview"))
         school = session.pop("pending_admin_school", "bhs")
         return redirect(url_for("admin_preview", school=school))
     code=(request.form.get("access_code") or "").strip()
@@ -1274,6 +1453,8 @@ def login():
         session.permanent = True
         session["generation_count"] = 0
         session["admin_preview_count"] = 0
+        if session.pop("pending_armie", False):
+            return redirect(url_for("armie_preview"))
         school = session.pop("pending_admin_school", "bhs")
         return redirect(url_for("admin_preview", school=school))
     return render_template("login.html", csrf_token=csrf_token(), error="That access code is not correct."), 403
@@ -1358,7 +1539,7 @@ def admin_preview_generate():
         return jsonify(ok=False, error=f"This Administrator Preview session is limited to {MAX_ADMIN_PREVIEW_GENERATIONS} fictional portraits to control costs."), 429
 
     data = request.get_json(silent=True)
-    allowed = {"school", "sample_id", "career", "age", "path", "priority"}
+    allowed = {"school", "sample_id", "career", "age", "path", "priority", "mode", "grade"}
     if not isinstance(data, dict) or set(data) - allowed:
         return jsonify(ok=False, error="Unexpected preview fields. Refresh the page and try again."), 400
     school = (data.get("school") or "").lower()
@@ -1367,21 +1548,33 @@ def admin_preview_generate():
     age = data.get("age")
     path = data.get("path")
     priority = data.get("priority")
+    mode = data.get("mode") or "standard"
     sample = DEMO_STUDENTS.get(sample_id)
+    grade = data.get("grade") or (sample["grade"] if sample else "9")
     if school not in {"bhs", "ghs"} or not sample:
         return jsonify(ok=False, error="Choose one of the available fictional student previews."), 400
-    career_data = GHS_CAREERS if school == "ghs" else CAREERS
+    career_data = ARMY_CAREERS if mode == "army" else (GHS_CAREERS if school == "ghs" else CAREERS)
     if career not in career_data:
         return jsonify(ok=False, error="Choose an available career."), 400
     if age not in {"22", "25", "28", "30", "35"}:
         return jsonify(ok=False, error="Choose one of the available future ages."), 400
     if path not in {"employee", "owner", "explore"}:
         return jsonify(ok=False, error="Choose an available career path."), 400
-    if priority not in {"Doing work I enjoy", "Helping people", "High income potential", "Creativity", "Job stability", "Being my own boss"}:
+    allowed_priorities = ARMIE_PRIORITIES if mode == "army" else {"Doing work I enjoy", "Helping people", "High income potential", "Creativity", "Job stability", "Being my own boss"}
+    if priority not in allowed_priorities:
         return jsonify(ok=False, error="Choose one of the available priorities."), 400
+    if grade not in {"9", "10", "11", "12"}:
+        return jsonify(ok=False, error="Choose a high-school grade from 9 through 12."), 400
 
     info = career_data[career]
-    business_note = "Show the person as an established professional and small-business owner." if path == "owner" else ""
+    if mode == "army":
+        business_note = {
+            "employee": "Show the person serving in an enlisted career role appropriate to the selected career family.",
+            "owner": "Show the person in a professional Army leadership pathway appropriate to the selected career family; do not invent rank or decorations.",
+            "explore": "Show a realistic early-career Army professional in the selected career family.",
+        }[path]
+    else:
+        business_note = "Show the person as an established professional and small-business owner." if path == "owner" else ""
     prompt = f"""
 Create a realistic, respectful FUTURE-CAREER VISUALIZATION based on the entirely fictional, AI-generated student shown in the supplied reference image.
 
@@ -1416,9 +1609,11 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
         b64 = burn_portrait_watermark(b64, fictional_demo=True)
         session["admin_preview_count"] = count + 1
         rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
-        if school == "ghs":
+        school_career = info.get("school_match", career)
+        if mode == "army":
+            timeline, keys = info["timeline"], info["keys"]
+        elif school == "ghs":
             timeline, keys = GHS_DATA["meta"][career]
-        grade = sample["grade"]
         return jsonify(
             ok=True,
             fictional_demo=True,
@@ -1430,13 +1625,14 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             school=school.upper(),
             path=path,
             priority=priority,
+            mode=mode,
             summary=info["summary"],
             steps=info["steps"],
             rich_steps=rich_steps,
             timeline=timeline,
             keys=keys,
             generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-count-1),
-            **({"ghs": ghs_for_grade(career, grade, path, priority)} if school == "ghs" else {"bhs": bhs_for_grade(career, grade, path)}),
+            **({"ghs": ghs_for_grade(school_career, grade, "explore", "Doing work I enjoy")} if school == "ghs" else {"bhs": bhs_for_grade(school_career, grade, "explore")}),
         )
     except Exception as error:
         category = type(error).__name__

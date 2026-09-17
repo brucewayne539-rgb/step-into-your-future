@@ -165,6 +165,52 @@ class AdministratorPreviewTests(unittest.TestCase):
                     self.assertTrue(result["experience"])
                     self.assertTrue(result["next"])
 
+    @patch.object(application, "load_key", return_value="sk-test")
+    @patch.object(application, "OpenAI", FakeOpenAIClient)
+    def test_armie_page_has_army_branding_and_no_upload(self, _key):
+        self.authorize()
+        response = self.client.get("/armie")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"MEET <span>ARMIE</span>", response.data)
+        self.assertIn(b"Cyber Operations Specialist", response.data)
+        self.assertIn(b"Branford High School", response.data)
+        self.assertIn(b"Guilford High School", response.data)
+        self.assertNotIn(b'type="file"', response.data)
+
+    def test_every_armie_career_maps_to_both_school_catalogs(self):
+        for career, info in application.ARMY_CAREERS.items():
+            with self.subTest(career=career):
+                school_match = info["school_match"]
+                self.assertIn(school_match, application.CAREERS)
+                self.assertIn(school_match, application.GHS_CAREERS)
+
+    @patch.object(application, "load_key", return_value="sk-test")
+    @patch.object(application, "OpenAI", FakeOpenAIClient)
+    def test_armie_live_preview_returns_grade_specific_bhs_path(self, _key):
+        self.authorize()
+        response = self.client.post(
+            "/api/admin-preview/generate",
+            headers={"X-CSRF-Token": "test-csrf"},
+            json={
+                "mode": "army",
+                "school": "bhs",
+                "sample_id": "grade9",
+                "grade": "12",
+                "career": "Cyber Operations Specialist",
+                "age": "25",
+                "path": "employee",
+                "priority": "Technology and cyber",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertTrue(data["ok"])
+        self.assertEqual(data["mode"], "army")
+        self.assertEqual(data["grade"], "12")
+        self.assertEqual(data["career"], "Cyber Operations Specialist")
+        self.assertIn("current 12th", data["bhs"]["grade_note"])
+        self.assertIn("Computer systems", data["keys"])
+
 
 if __name__ == "__main__":
     unittest.main()
