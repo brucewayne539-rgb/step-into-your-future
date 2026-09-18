@@ -4,7 +4,7 @@ ARMIE - ARMY CAREER EXPLORATION DEMONSTRATION
 What is included
 ----------------
 - New /armie route with an Army-inspired visual design.
-- Ten student-friendly Army career families.
+- Six student-friendly Army career areas with 262 specific Army career opportunities.
 - Branford High School and Guilford High School selector.
 - Grade-specific high-school course and experience guidance for grades 9-12.
 - Two bundled fictional AI-generated sample students; no real-student upload in Armie mode.
@@ -31,3 +31,6 @@ Verification
 The package passed 18 automated tests covering the existing BHS/GHS app,
 security and CSRF protections, Army career-to-school mappings, the Armie page,
 and a mocked live future-portrait response.
+
+
+V3 adds a clean Career Area → Specific Career explorer while preserving school-specific roadmap matching.
