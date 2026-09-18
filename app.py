@@ -213,99 +213,234 @@ ARMIE_PRIORITIES = {
     "Logistics and organization",
 }
 
-# Armie V3 career explorer. Career names and six broad categories mirror the
-# U.S. Army Jobs Site Map reviewed September 18, 2026. Availability, eligibility,
-# entry path, training and service commitments can change and must be confirmed
-# with official Army sources.
-ARMY_CAREER_GROUPS = {'Mechanics & Engineering': ['Watercraft Engineer', 'Technical Engineer', 'Special Forces Engineer Sergeant', 'Interior Electrician', 'Tactical Power Generation Specialist', 'Engineer Officer', 'Quarrying Specialist', 'Geospatial Engineer', 'Plumber', 'Horizontal Construction Engineer', 'Bridge Crewmember', 'Combat Engineer', 'Automated Test Set (ATS) Operator/Maintainer', 'Small Arms/Towed Artillery Repairer', 'Self-Propelled Artillery Systems Mechanic', 'Prime Power Production Specialist', 'Construction Equipment Repairer', 'Power Distribution Specialist', 'Bradley Fighting Vehicle System Maintainer', 'Track Vehicle Repairer', 'Wheeled Vehicle Mechanic', 'Quartermaster and Chemical Equipment Repairer', 'Test Measurement and Diagnostic Equipment Maintenance Support Specialist', 'Multiple Launch Rocket System (MLRS) Repairer', 'M1 Abrams Tank System Maintainer', 'Land Combat Electronic Missile System Repairer', 'Carpentry and Masonry Specialist', 'Diver', 'Patriot System Repairer', 'Short Range Air Defense System Repairer', 'Stryker Systems Maintainer', 'Allied Trade Specialist'], 'Support & Logistics': ['Visual Information Specialist', 'Band Officer', 'Culinary Specialist', 'Visual Information Equipment Operator-Maintainer', 'Musician', 'Special Band Musician', 'Shower & Laundry Specialist', 'Health Services Human Resources', 'Chaplain', 'Patient Administration Officer', 'Financial Management Technician', 'Human Resources Officer', 'Health Care Administrator', 'Religious Affairs Specialist', 'Human Resources Specialist', 'Financial Manager', 'Health Services Comptroller', 'Mortuary Affairs Specialist', 'Army Judge Advocate General’s (JAG) Corps Attorney', 'Military Working Dog Handler', 'Military Police', 'Health Services Plans, Operations, Intelligence Security and Training', 'Paralegal Specialist', 'Military Police Officer', 'Chemical, Biological, Radiological, and Nuclear (CBRN) Specialist', 'Firefighter', 'Corrections / Detention Specialist', 'Cargo Specialist', 'Transportation Management Coordinator', 'Watercraft Operator', 'Ammunition Stock Control and Accounting Specialist', 'Automated Logistical Specialist', 'Health Services Materiel', 'Parachute Rigger', 'Logistics Officer', 'Ammunition Specialist', 'Unit Supply Specialist', 'Medical Logistics Specialist', 'Petroleum Supply Specialist', 'Railway Specialist', 'Utilities Equipment Repairer', 'Motor Transport Operator'], 'Signal & Intelligence': ['Special Forces Communications Sergeant', 'Radio Equipment Repairer', 'Cyber Operations Specialist', 'Satellite Communication Systems Specialist', 'Signals Collector/Analyst', 'Cyber Capability Developer Technician', 'Electromagnetic Warfare Specialist', 'Geospatial Intelligence Imagery Analyst', 'Cyber Warfare Officer', 'Information Technology Specialist', 'Signal Operations Support Specialist', 'Computer / Detection Systems Repairer', 'Radar Repairer', 'Signal Officer', 'Military Intelligence Officer', 'Cyber Network Defender', 'Public Affairs Mass Communication Specialist', 'Cyber Electromagnetic Warfare Officer', 'Signals Intelligence Analyst', 'Network Communication Systems Specialist', 'Public Affairs Officer', 'Counterintelligence Agent', 'Special Forces Intelligence Sergeant', 'Intelligence Analyst', 'Cyber Capability Development Officer', 'Foreign Language Specialist', 'Signals Intelligence Voice Interceptor', 'Military Intelligence (MI) Systems Maintainer/Integrator', 'Human Intelligence Collector'], 'Aviation & Aerial Defense': ['Air Traffic Control (ATC) Operator', 'Aviation Operations Specialist', 'Aviation Officer', 'Rotary Wing Aviator Warrant Officer', 'MQ-1 Unmanned Aircraft System (UAS) Operator', 'Fixed Wing Aviator Warrant Officer', 'Patriot Fire Control Enhanced Operator / Maintainer', 'Air Defense Artillery (ADA) Officer', 'Air Defense Enhanced Early Warning System Operator', 'Patriot Launching Station Enhanced Operator / Maintainer', 'Avenger Crewmember', 'Air and Missile Defense (AMD) Crewmember', 'Air Defense Artillery (ADA) Recruit', 'Air Defense Battle Management System Operator', 'Aircraft Structural Repairer', 'MQ-1 Unmanned Aircraft System (UAS) Repairer', 'Air Traffic Control Equipment Repairer', 'Aircraft Pneudraulics Repairer', 'Aircraft Electrician', 'UH-60 Helicopter Repairer/Aircrew Member', 'AH-64 Attack Helicopter Repairer', 'Avionic and Survivability Equipment Repairer', 'Aircraft Powertrain Repairer', 'Avionic Mechanic', 'Aircraft Powerplant Repairer', 'AH-64 Armament / Electrical / Avionic Systems Repairer', 'CH-47 Helicopter Repairer / Aircrew Member', 'Tactical Unmanned Aircraft System (TUAS) Specialist'], 'Science & Medicine': ['Army Public Health Nurse', 'Veterinary Laboratory Animal Medicine Officer', 'Biochemist Physiologist', 'Microbiologist', 'Veterinary Food Inspection Specialist', 'Biomedical Equipment Specialist', 'Public Health Dentist', 'Environmental Science & Engineering Officer', 'Petroleum Laboratory Specialist', 'Clinical Pharmacologist', 'Nuclear Medical Science Officer', 'Veterinary Pathologist', 'Water Treatment Specialist', 'Entomologist', 'Clinical Laboratory Scientist', 'Infectious Disease Officer', 'Medical Laboratory Specialist', 'Research Psychologist', 'Pathologist', 'Optometrist', 'Family Nurse Practitioner', 'Veterinary Clinical Medicine', 'Internal Medicine Physician', 'Certified Nurse Midwife', 'Endocrinologist', 'Dermatologist', 'Family Medicine Physician', 'Diagnostic Radiologist', 'Practical Nursing Specialist', 'Field Veterinary Service', 'Animal Care Specialist', 'Eye Specialist', 'Periodontist', 'Ob / Gyn Nurse', 'Dental Specialist', 'Allergist, Clinical Immunologist', 'Otolaryngologist', 'Comprehensive Dentist', 'Podiatrist', 'Orthopedic Specialist', 'Orthodontist', 'Prosthodontist', 'Radiology Specialist', 'Urologist', 'Obstetrician & Gynecologist', 'Physician Assistant Officer', 'General Dentist', 'Endodontist', 'Ophthalmologist', 'Pediatric Dentist', 'Respiratory Specialist', 'Pediatric Physician', 'Rheumatologist', 'Orthopedic Surgeon', 'Anesthesiologist', 'Critical Care Nurse', 'Plastic Surgeon', 'Neurosurgeon', 'General Surgeon', 'Aerospace Medicine Officer (Residency in Aerospace Medicine (RAM))', 'Peripheral Vascular Surgeon', 'Special Forces Medical Sergeant', 'Nephrologist', 'Medical-Surgical Nurse', 'Medical Oncologist / Hematologist', 'Oral & Maxillofacial Surgeon', 'Nuclear Medicine Officer', 'Neurologist', 'Perioperative Nurse', 'Operating Room Specialist', 'Radiation Oncologist', 'Child Neurologist', 'Gastroenterologist', 'Emergency Room Nurse', 'Nurse Anesthetist', 'Emergency Physician', 'Aeromedical Evacuations Officer', 'Field Surgeon', 'Oral Pathologist', 'Cardiologist', 'Combat Medic Specialist', 'Thoracic Surgeon', 'Occupational Therapist', 'Pharmacy Specialist', 'Social Worker', 'Psychiatrist', 'Physical Therapy Specialist', 'Behavioral Health Specialist', 'Preventive Medicine Officer', 'Physical Therapist', 'Psychiatric Nurse Practitioner', 'Psychiatric / Behavioral Health Nurse', 'Nutrition Care Specialist', 'Patient Administration Specialist', 'Pharmacist', 'Dietitian', 'Audiologist', 'Optical Laboratory Specialist', 'Health Services Administration Officer', 'Occupational Medicine Officer', 'Physiatrist', 'Preventive Medicine Specialist', 'Clinical Psychologist', 'Occupational Therapy Specialist', 'Health Services System Management Officer'], 'Ground Forces': ['Special Forces Weapons Sergeant', 'Infantry Officer', 'Infantryman Jobs', 'Indirect Fire Infantryman', 'Civil Affairs Specialist', 'Infantryman', 'Special Forces Officer', 'Special Forces Candidate', 'Civil Affairs Officer', 'Cavalry Scout', 'Explosive Ordnance Disposal (EOD) Specialist', 'Field Artillery Officer', 'Chemical, Biological, Radiological And Nuclear (CBRN) Officer', 'Multiple Launch Rocket System (MLRS/HIMARS) Crewmember', 'Joint Fire Support Specialist', 'Fire Control Specialist', 'Explosive Ordnance Disposal (EOD) Officer', 'Weapons Locating Radar Operator', 'Field Artillery Recruit', 'Cannon Crewmember', 'Armor Crewmember', 'Armor Crewmember Recruit', 'Bradley Crewmember', 'Armor Officer', 'Psychological Operations Specialist', 'Psychological Operations Officer']}
-
-ARMY_CATEGORY_ORDER = ["Science & Medicine", "Aviation & Aerial Defense", "Signal & Intelligence", "Mechanics & Engineering", "Support & Logistics", "Ground Forces"]
-
-ARMY_CATEGORY_NOTES = {
-    "Science & Medicine": "Health, patient care, research and medical science",
-    "Support & Logistics": "Business, law, public service, transportation and supply",
-    "Signal & Intelligence": "Cyber, communications, information and analysis",
-    "Aviation & Aerial Defense": "Flight, aircraft systems, drones and air defense",
-    "Mechanics & Engineering": "Engineering, construction, power, repair and skilled trades",
-    "Ground Forces": "Field leadership, operations and mission support",
-}
-
-def _army_school_match(job, category):
-    j = job.lower()
-    if category == "Science & Medicine":
-        if any(w in j for w in ("veterinary", "animal")): return "Veterinarian"
-        if any(w in j for w in ("psych", "social worker", "behavioral")): return "School Counselor / Mental Health Counselor"
-        if any(w in j for w in ("dental", "dentist", "orthodont", "periodont", "prosthodont", "endodont", "oral & maxillofacial")): return "Dental Hygienist"
-        if any(w in j for w in ("nurse", "nursing", "midwife")): return "Registered Nurse"
-        if any(w in j for w in ("physical therapist", "physical therapy", "occupational therapist", "occupational therapy")): return "Physical Therapist"
-        if any(w in j for w in ("administrator", "administration", "system management", "patient administration")): return "Medical & Health Services Manager"
-        if any(w in j for w in ("biomedical", "environmental science", "water treatment", "laboratory", "microbiologist", "biochemist", "entomologist")): return "Engineer"
-        return "Doctor / Physician"
-    if category == "Signal & Intelligence":
-        if "public affairs" in j: return "TV News Reporter / Local Anchor"
-        if any(w in j for w in ("intelligence", "analyst", "geospatial", "language", "collector", "interceptor")): return "Data Scientist / AI Specialist"
-        return "Cybersecurity Specialist"
-    if category == "Aviation & Aerial Defense":
-        if any(w in j for w in ("repairer", "mechanic", "electrician", "powertrain", "powerplant", "structural")): return "Automotive Technician"
-        return "Engineer"
-    if category == "Mechanics & Engineering":
-        if "electric" in j or "power distribution" in j or "power generation" in j: return "Electrician"
-        if "plumber" in j: return "Plumber"
-        if "carpentry" in j or "masonry" in j: return "Carpenter"
-        if any(w in j for w in ("mechanic", "maintainer", "repairer", "vehicle")): return "Automotive Technician"
-        if "allied trade" in j: return "Welder / Fabricator"
-        return "Engineer"
-    if category == "Support & Logistics":
-        if "attorney" in j or "paralegal" in j: return "Lawyer / Attorney"
-        if "firefighter" in j: return "Firefighter"
-        if any(w in j for w in ("military police", "corrections", "working dog")): return "Police Officer"
-        if "culinary" in j: return "Chef / Restaurant Owner"
-        if any(w in j for w in ("visual information", "musician", "band")): return "TV News Reporter / Local Anchor"
-        if any(w in j for w in ("financial", "comptroller")): return "Accountant / Financial Manager"
-        return "Business Administration / Manager"
-    # Ground Forces: keep school guidance broad and preparation-oriented.
-    if "civil affairs" in j or "psychological operations" in j: return "TV News Reporter / Local Anchor"
-    if any(w in j for w in ("engineer", "eod", "explosive", "radar", "fire control", "artillery")): return "Engineer"
-    return "Police Officer"
-
-def _army_scene(job, category):
-    # Keep student-facing future images professional, non-graphic and non-combat.
-    if category == "Science & Medicine":
-        return f"a modern Army health, medical or science workplace appropriate to {job}, professional and calm, wearing generic U.S. Army-style work attire without readable insignia, rank, name tape or unit markings; no injury, blood, procedure or weapon visible"
-    if category == "Signal & Intelligence":
-        return f"a modern Army technology, communications or analysis workspace appropriate to {job}, with generic equipment and no readable sensitive information, wearing generic U.S. Army-style work attire without readable insignia, rank or name tape"
-    if category == "Aviation & Aerial Defense":
-        return f"a bright Army aviation or technical operations setting appropriate to {job}, with aircraft or systems in the background when suitable, wearing safe professional work attire without readable insignia, rank, logos or weapons"
-    if category == "Mechanics & Engineering":
-        return f"a clean Army engineering, construction or maintenance workplace appropriate to {job}, using professional tools or technical equipment, wearing required safety gear and generic work attire without readable insignia, rank or weapons"
-    if category == "Support & Logistics":
-        return f"a professional Army support, logistics, public-service or administrative workplace appropriate to {job}, organized and realistic, wearing generic work attire without readable insignia, rank or weapons"
-    return f"a professional Army training, planning or field-support environment appropriate to {job}, focused on teamwork, leadership and readiness rather than combat, wearing generic U.S. Army-style work attire without readable insignia, rank, name tape or visible weapons"
-
-def _army_career_info(job, category):
-    school_match = _army_school_match(job, category)
-    note = ARMY_CATEGORY_NOTES[category]
-    return {
-        "category": category,
-        "school_match": school_match,
-        "summary": f"Explore {job} as one Army career possibility in {category}. Build related skills in high school, then verify current qualifications, training and availability with official Army sources.",
-        "steps": [
-            ["Start at your school", f"Build a foundation for {job} through relevant high-school courses, projects and experiences."],
-            ["Understand the role", f"Learn what {job} actually does and compare enlisted, officer or warrant-officer paths when applicable."],
-            ["Confirm eligibility", "Use official Army sources and a recruiter to verify current testing, education, medical, citizenship, security and other requirements."],
-            ["Train for the work", "If selected, complete the required initial military training and job-specific instruction for the exact role."],
-            ["Keep building", "Use experience, continuing training, approved credentials and eligible education benefits to keep moving toward your long-term goals."],
-        ],
-        "scene": _army_scene(job, category),
-        "timeline": "You can start preparing in high school. Exact training length, entry path and service commitment depend on the specific Army job and current requirements.",
-        "keys": [note.split(',')[0], "Problem solving", "Teamwork", "Reliability"],
-    }
-
+# Student-friendly Army career families. Exact job availability, eligibility,
+# training and service commitments must be confirmed with official Army sources.
 ARMY_CAREERS = {
-    job: _army_career_info(job, category)
-    for category, jobs in ARMY_CAREER_GROUPS.items()
-    for job in jobs
+    "Cyber Operations Specialist": {
+        "school_match": "Cybersecurity Specialist",
+        "summary": "Help protect Army networks, systems and information while building advanced cyber and technical skills.",
+        "steps": [
+            ["Build the foundation", "Strengthen computer science, algebra, writing and careful problem-solving in high school."],
+            ["Explore service options", "Compare enlisted, officer, Active Duty, Army Reserve and Army National Guard pathways with trusted adults and official Army sources."],
+            ["Confirm eligibility", "Review current age, education, citizenship, medical, testing and security requirements with an official recruiter."],
+            ["Complete training", "If selected, complete required initial military training and job-specific cyber training."],
+            ["Grow your skills", "Pursue approved certifications, leadership experience and civilian-transferable technical skills while serving."],
+        ],
+        "scene": "a secure modern military cyber operations center, working at computer displays, wearing a neat generic U.S. Army-style operational uniform without readable insignia, rank, name tape or unit markings",
+        "timeline": "Preparation can begin in high school. Training length and service commitment depend on the exact pathway and current Army requirements.",
+        "keys": ["Computer systems", "Analytical thinking", "Attention to detail", "Ethics and teamwork"],
+    },
+    "Combat Medic Specialist": {
+        "school_match": "Registered Nurse",
+        "summary": "Provide emergency medical support and patient care as part of an Army healthcare team.",
+        "steps": [
+            ["Build the foundation", "Focus on biology, anatomy, health, communication and physical readiness."],
+            ["Explore the role", "Learn how military medical work differs from civilian nursing, EMT and other healthcare careers."],
+            ["Confirm eligibility", "Review current medical, physical, testing and service requirements with an official recruiter."],
+            ["Complete training", "If selected, complete required initial military training and job-specific medical instruction."],
+            ["Keep learning", "Maintain required skills and explore approved credentials or later civilian healthcare education."],
+        ],
+        "scene": "a clean military medical clinic, wearing a neat generic U.S. Army-style operational uniform without readable insignia, calmly preparing medical equipment, no injury, blood, emergency or weapon visible",
+        "timeline": "High-school preparation can start now. The exact training sequence and commitment depend on the current role and service option.",
+        "keys": ["Medical knowledge", "Calm decision-making", "Compassion", "Teamwork"],
+    },
+    "Army Aviation Specialist": {
+        "school_match": "Engineer",
+        "summary": "Support Army aviation through flight operations, aircraft systems, maintenance or a future pilot pathway.",
+        "steps": [
+            ["Build the foundation", "Strengthen math, physics, technology, communication and disciplined study habits."],
+            ["Compare aviation paths", "Explore enlisted aviation jobs, warrant officer flight paths and commissioned officer options."],
+            ["Confirm eligibility", "Ask official sources about current testing, medical, vision, education and selection requirements."],
+            ["Complete training", "If selected, complete the military and aviation training required for the exact role."],
+            ["Develop expertise", "Build safety, technical, leadership and aviation skills through continuing training."],
+        ],
+        "scene": "inside a bright Army aviation hangar beside a generic utility helicopter, wearing appropriate aviation work clothing without readable insignia, rank, name tape, logos or unit markings",
+        "timeline": "Aviation pathways vary widely. Officer and flight routes may require additional education, testing and selection.",
+        "keys": ["Math and physics", "Safety mindset", "Technical precision", "Communication"],
+    },
+    "Intelligence Analyst": {
+        "school_match": "Data Scientist / AI Specialist",
+        "summary": "Organize and analyze information to help Army leaders understand situations and make informed decisions.",
+        "steps": [
+            ["Build the foundation", "Take strong history, geography, writing, statistics and technology courses."],
+            ["Practice analysis", "Learn to compare sources, identify bias, explain evidence and protect sensitive information."],
+            ["Confirm eligibility", "Review current testing, citizenship and security-screening requirements with official sources."],
+            ["Complete training", "If selected, complete initial military training and job-specific intelligence instruction."],
+            ["Grow professionally", "Develop research, briefing, language, regional or technical specialties as opportunities allow."],
+        ],
+        "scene": "a professional military analysis center with maps and data displays containing no sensitive or readable information, wearing a generic U.S. Army-style operational uniform without readable insignia or rank",
+        "timeline": "Preparation can begin in high school; selection and training depend on current eligibility and security requirements.",
+        "keys": ["Research", "Critical thinking", "Clear briefing", "Discretion"],
+    },
+    "Wheeled Vehicle Mechanic": {
+        "school_match": "Automotive Technician",
+        "summary": "Inspect, maintain and repair Army vehicles while developing practical mechanical and diagnostic skills.",
+        "steps": [
+            ["Build the foundation", "Study automotive systems, power technology, algebra, electronics and shop safety."],
+            ["Get hands-on", "Practice tool use, maintenance routines, troubleshooting and teamwork in approved settings."],
+            ["Confirm eligibility", "Discuss current testing, medical and service requirements with an official recruiter."],
+            ["Complete training", "If selected, complete initial military training and job-specific mechanical instruction."],
+            ["Build credentials", "Explore approved technical certifications and civilian-transferable maintenance experience."],
+        ],
+        "scene": "a clean Army vehicle maintenance bay beside a generic wheeled utility vehicle, using professional diagnostic tools and wearing safe work clothing without readable insignia, logos or rank",
+        "timeline": "Technical preparation can start in high school; exact training and commitments vary by service option and assignment.",
+        "keys": ["Diagnostics", "Tool safety", "Mechanical systems", "Reliability"],
+    },
+    "Signal Support Systems Specialist": {
+        "school_match": "Software Developer",
+        "summary": "Help teams stay connected by supporting communications equipment, networks and information systems.",
+        "steps": [
+            ["Build the foundation", "Study computer science, electronics, algebra, communication and structured troubleshooting."],
+            ["Explore systems", "Practice networking, hardware setup, documentation and responsible technology use."],
+            ["Confirm eligibility", "Review current testing, citizenship and security requirements through official channels."],
+            ["Complete training", "If selected, complete initial military training and job-specific signal instruction."],
+            ["Keep advancing", "Build technical expertise, approved certifications and leadership experience."],
+        ],
+        "scene": "a modern military communications workspace with radios and network equipment, no readable screens, wearing a generic U.S. Army-style operational uniform without readable insignia, rank or name tape",
+        "timeline": "Preparation can start now; exact training length and service requirements depend on the selected communications role.",
+        "keys": ["Networking", "Troubleshooting", "Communication", "Team reliability"],
+    },
+    "Logistics and Supply Specialist": {
+        "school_match": "Business Administration / Manager",
+        "summary": "Coordinate equipment, inventory and supplies so Army teams have what they need when they need it.",
+        "steps": [
+            ["Build the foundation", "Strengthen organization, spreadsheets, business math, communication and accountability."],
+            ["Practice logistics", "Learn inventory control, scheduling, documentation and safe material handling."],
+            ["Confirm eligibility", "Review current role availability and entry requirements with official Army sources."],
+            ["Complete training", "If selected, complete initial military training and job-specific logistics instruction."],
+            ["Lead and improve", "Build supervisory, planning and civilian-transferable supply-chain skills."],
+        ],
+        "scene": "a bright organized military logistics center with labeled generic containers and inventory tablets showing no readable data, wearing a generic U.S. Army-style operational uniform without insignia or rank",
+        "timeline": "Preparation can begin in high school; exact training and duties vary across supply and logistics roles.",
+        "keys": ["Organization", "Inventory accuracy", "Planning", "Accountability"],
+    },
+    "Public Affairs Specialist": {
+        "school_match": "TV News Reporter / Local Anchor",
+        "summary": "Tell Army stories accurately through writing, photography, video, interviews and digital communication.",
+        "steps": [
+            ["Build the foundation", "Take writing, journalism, public speaking, photography and digital media courses."],
+            ["Create a portfolio", "Practice interviewing, fact-checking, video editing and ethical storytelling."],
+            ["Confirm eligibility", "Review current testing and job requirements with an official recruiter."],
+            ["Complete training", "If selected, complete initial military training and job-specific public affairs instruction."],
+            ["Grow your voice", "Build reporting, visual, social-media and leadership experience while maintaining accuracy."],
+        ],
+        "scene": "a professional military media workspace while preparing a camera interview, wearing a generic U.S. Army-style operational uniform without readable insignia, with no logos or readable screens",
+        "timeline": "A strong school media portfolio can begin now; exact training and assignments depend on current Army needs.",
+        "keys": ["Writing", "Interviewing", "Visual storytelling", "Accuracy"],
+    },
+    "Human Resources Specialist": {
+        "school_match": "Business Administration / Manager",
+        "summary": "Support Soldiers and units by maintaining personnel information and helping manage administrative services.",
+        "steps": [
+            ["Build the foundation", "Develop business, writing, spreadsheet, customer-service and confidentiality skills."],
+            ["Practice service", "Learn accurate recordkeeping, professional communication and respectful problem-solving."],
+            ["Confirm eligibility", "Check current testing and entry requirements through official Army sources."],
+            ["Complete training", "If selected, complete initial military training and job-specific personnel instruction."],
+            ["Advance", "Build administrative, leadership and civilian-transferable human-resources skills."],
+        ],
+        "scene": "a professional military personnel office, helping a colleague with paperwork at a modern workstation, wearing a generic U.S. Army-style operational uniform without readable insignia, rank or name tape",
+        "timeline": "Preparation can start with business and communication courses; exact training varies by role and service option.",
+        "keys": ["Accuracy", "Confidentiality", "Customer service", "Organization"],
+    },
+    "Culinary Specialist": {
+        "school_match": "Chef / Restaurant Owner",
+        "summary": "Prepare safe, nutritious meals and support food-service operations for Army teams.",
+        "steps": [
+            ["Build the foundation", "Study culinary arts, food safety, nutrition, measurement and teamwork."],
+            ["Practice the craft", "Develop knife skills, sanitation, timing, volume preparation and inventory habits."],
+            ["Confirm eligibility", "Review current role availability and entry requirements with official Army sources."],
+            ["Complete training", "If selected, complete initial military training and job-specific culinary instruction."],
+            ["Keep developing", "Build leadership, food-service management and civilian-transferable culinary skills."],
+        ],
+        "scene": "a spotless large-scale military kitchen preparing a healthy meal, wearing professional culinary clothing with subtle generic Army styling and no readable logos or insignia",
+        "timeline": "Culinary skills can begin in high school; exact training and assignments depend on the current Army pathway.",
+        "keys": ["Food safety", "Timing", "Teamwork", "Consistency"],
+    },
 }
+
+try:
+    MAX_GENERATIONS_PER_SESSION = max(0, min(10, int(os.environ.get("MAX_GENERATIONS_PER_SESSION", "2"))))
+except ValueError:
+    MAX_GENERATIONS_PER_SESSION = 2
+try:
+    MAX_ADMIN_PREVIEW_GENERATIONS = max(1, min(10, int(os.environ.get("MAX_ADMIN_PREVIEW_GENERATIONS", "6"))))
+except ValueError:
+    MAX_ADMIN_PREVIEW_GENERATIONS = 6
+
+
+def csrf_token():
+    token = session.get("csrf_token")
+    if not token:
+        token = secrets.token_urlsafe(32)
+        session["csrf_token"] = token
+    return token
+
+
+def request_has_valid_csrf():
+    supplied = request.headers.get("X-CSRF-Token", "")
+    if not supplied:
+        supplied = request.form.get("_csrf_token", "")
+    expected = session.get("csrf_token", "")
+    return bool(expected and supplied and secrets.compare_digest(supplied, expected))
+
+
+def anonymous_client_key():
+    """Create an in-memory, rotating pseudonymous client key; never log the IP."""
+    address = (request.headers.get("X-Forwarded-For") or request.remote_addr or "unknown").split(",", 1)[0].strip()
+    return hmac.new(app.secret_key.encode("utf-8"), address.encode("utf-8"), hashlib.sha256).hexdigest()[:24]
+
+
+def rate_limited(bucket_name, limit, window_seconds):
+    if len(RATE_BUCKETS) > 10_000:
+        RATE_BUCKETS.clear()
+    now = time.monotonic()
+    bucket = RATE_BUCKETS[(bucket_name, anonymous_client_key())]
+    while bucket and bucket[0] <= now - window_seconds:
+        bucket.popleft()
+    if len(bucket) >= limit:
+        return True
+    bucket.append(now)
+    return False
+
+
+def portrait_gate():
+    """Return a supportable hosted-portrait status without claiming legal approval."""
+    if not PORTRAITS_ENABLED:
+        return False, "Portrait mode is disabled. The no-photo career roadmap remains available."
+    if HOSTED and not SECRET_KEY_CONFIGURED:
+        return False, "Portrait mode requires a configured server session secret."
+    if HOSTED and not ACCESS_CODE:
+        return False, "Portrait mode requires restricted teacher access on a hosted deployment."
+    if HOSTED and not OPENAI_ZDR_CONFIRMED:
+        return False, "Portrait mode is awaiting written confirmation that Zero Data Retention is enabled for the OpenAI project."
+    if HOSTED and not SCHOOL_PORTRAIT_APPROVED:
+        return False, "Portrait mode is awaiting the school's documented privacy and authorization approval."
+    if HOSTED and ("@" not in PRIVACY_CONTACT_EMAIL or len(PRIVACY_CONTACT_EMAIL) > 254):
+        return False, "Portrait mode requires a published privacy contact for family and school requests."
+    if not load_key() or OpenAI is None:
+        return False, "Portrait service setup is incomplete. The no-photo roadmap remains available."
+    return True, "Portrait mode is enabled for this approved deployment."
+
+
+def admin_preview_gate():
+    """Allow only synthetic, bundled faces in the protected sales preview."""
+    if not ADMIN_PREVIEW_ENABLED:
+        return False, "Administrator Preview has been hidden for this deployment."
+    if HOSTED and not SECRET_KEY_CONFIGURED:
+        return False, "Administrator Preview requires a configured server session secret."
+    if HOSTED and not ACCESS_CODE:
+        return False, "Administrator Preview requires restricted teacher/admin access."
+    if not load_key() or OpenAI is None:
+        return False, "The image service setup is incomplete."
+    return True, "Administrator Preview is ready for fictional sample students."
+
+
+@app.before_request
+def verify_mutating_request():
+    if request.method in {"POST", "PUT", "PATCH", "DELETE"} and not request_has_valid_csrf():
+        if request.path.startswith("/api/"):
+            return jsonify(ok=False, error="This request expired or did not come from this app. Refresh the page and try again."), 400
+        return "This form expired. Return to the app, refresh the page, and try again.", 400
 
 CAREERS = {
     "Architect": {
@@ -1270,10 +1405,6 @@ def armie_preview():
         school="army",
         school_name="Armie - Army Career Exploration",
         careers=list(ARMY_CAREERS.keys()),
-        army_career_groups=ARMY_CAREER_GROUPS,
-        army_category_order=ARMY_CATEGORY_ORDER,
-        army_category_notes=ARMY_CATEGORY_NOTES,
-        army_career_count=len(ARMY_CAREERS),
         samples=DEMO_STUDENTS,
         preview_ready=ready,
         preview_status=status,
