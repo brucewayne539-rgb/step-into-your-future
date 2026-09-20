@@ -70,10 +70,10 @@ def burn_portrait_watermark(encoded_png, fictional_demo=False):
 
     horizontal_padding = max(24, width // 28)
     vertical_padding = max(18, width // 42)
-    # Keep both disclaimer lines above rounded display corners for either
-    # fictional student. This raises the text by about another one-eighth inch
-    # at the standard generated-image size.
-    bottom_safe_padding = max(30, width // 32)
+    # Keep both disclaimer lines decisively above the rounded display corners
+    # for either fictional student. The larger protected area makes the shift
+    # visible and prevents the lower line's first/last letters from clipping.
+    bottom_safe_padding = max(64, width // 16)
     line_spacing = max(8, width // 100)
     available_width = width - (horizontal_padding * 2)
 
