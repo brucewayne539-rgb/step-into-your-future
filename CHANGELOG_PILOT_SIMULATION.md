@@ -19,6 +19,12 @@ The routes use the existing administrator access code, API key, generation
 limit, course engines, school catalogs, CSRF protection, rate limiting and
 privacy headers. Existing BHS, GHS, CHS and Armie routes are unchanged.
 
+CHS simulation results keep the strongest current matches visible, place
+supporting and later-course lists in collapsed category controls, and show the
+school curriculum before the after-high-school pathway. The permanent two-line
+portrait watermark includes additional bottom clearance so rounded display
+corners do not cover its lettering.
+
 Verification completed:
 
 - Full Python suite: 1,301 tests and 265 subtests passed.

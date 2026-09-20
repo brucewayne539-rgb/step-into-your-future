@@ -100,6 +100,10 @@ class AdministratorPreviewTests(unittest.TestCase):
                 self.assertIn(b"your selected file never leaves this browser", response.data)
                 self.assertIn(b"FICTIONAL AI DEMONSTRATION", response.data)
                 self.assertNotIn(b"Choose a fictional student.", response.data)
+                if path == "/chs/pilot-demo":
+                    self.assertIn(b"Helpful supporting courses", response.data)
+                    self.assertIn(b"Plan ahead at CHS", response.data)
+                    self.assertIn(b"AFTER HIGH SCHOOL: YOUR CAREER ROADMAP", response.data)
                 response.close()
 
     def test_armie_pilot_simulation_returns_after_access_code(self):
