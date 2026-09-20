@@ -122,16 +122,19 @@ class AdministratorPreviewTests(unittest.TestCase):
 
     @patch.object(application, "load_key", return_value="sk-test")
     @patch.object(application, "OpenAI", FakeOpenAIClient)
-    def test_armie_pilot_simulation_has_photo_step_and_army_career_choices(self, _key):
+    def test_armie_pilot_simulation_needs_no_photo_and_has_army_career_choices(self, _key):
         self.authorize()
         response = self.client.get("/armie/pilot-demo")
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Student Career Explorer", response.data)
-        self.assertIn(b'type="file"', response.data)
+        self.assertNotIn(b'type="file"', response.data)
         self.assertIn(b"Cyber Operations Specialist", response.data)
         self.assertIn(b"Branford High School", response.data)
         self.assertIn(b"Guilford High School", response.data)
-        self.assertIn(b"your selected file never leaves this browser", response.data)
+        self.assertIn(b"No photo is needed", response.data)
+        self.assertIn(b"Fictional student selected automatically", response.data)
+        self.assertNotIn(b"Photo selection is required", response.data)
+        self.assertIn(b"const detailsState=ARMY_MODE?'':' open';", response.data)
         self.assertNotIn(b"Choose a fictional student and school", response.data)
         response.close()
 

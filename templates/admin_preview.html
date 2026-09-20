@@ -24,13 +24,13 @@ main{width:min(1120px,calc(100% - 28px));margin:28px auto 54px}.card{background:
 <main>
 <section class="card setup">
 <div class="eyebrow">{% if pilot_mode|default(false) %}Your personal career roadmap{% else %}Protected demonstration{% endif %}</div><h1>{% if army_mode|default(false) %}Let Armie show you a possible path.{% elif pilot_mode|default(false) %}See a future. Find your pathway.{% else %}Choose a fictional student.{% endif %}</h1>{% if army_mode|default(false) %}<div class="armyhero"><div class="big">SEE IT. <span>PLAN IT.</span> START IT.</div><p>Your future does not have to be perfectly mapped out. Start with what interests you, see a possibility, then discover what you can begin doing at your own school today.</p></div><div class="reflection"><div class="reflect">What problems in the world would I like to help solve?</div><div class="reflect">What skills would I like to become great at?</div><div class="reflect">What qualities do I admire — and want to build in myself?</div></div><div class="potential">YOUR POTENTIAL IS BUILT, NOT BORN.</div>{% endif %}
-<p>{% if army_mode|default(false) and pilot_mode|default(false) %}Choose a photo and school, then select one of six career areas and a specific Army opportunity. Armie connects that choice to courses at the selected high school and creates a future-self roadmap using a fictional student substitute.{% elif army_mode|default(false) %}Choose a fictional student and school, then pick one of six career areas and a specific Army opportunity. Armie connects that choice to courses at the student’s own school and creates a live future-self roadmap.{% elif pilot_mode|default(false) %}Choose a photo, grade, career and future age. This simulation follows the regular student experience and returns a future-career visualization with a complete school-specific roadmap.{% else %}Pick a sample student, career and future age. The application will create the transformation live and return an illustrative career roadmap.{% endif %}</p>
-<div class="notice"><strong>{% if pilot_mode|default(false) %}Safe presentation simulation:{% else %}Privacy by design:{% endif %}</strong> {% if pilot_mode|default(false) %}your selected file never leaves this browser. A bundled fictional student is substituted automatically, and every generated portrait is permanently marked as fictional.{% else %}both starting portraits were created by AI and represent people who do not exist. Administrator Preview sends only the selected bundled image and career choices to the image service. It does not accept personal photo uploads.{% endif %}</div>
+<p>{% if army_mode|default(false) and pilot_mode|default(false) %}Choose a school, grade, career area and specific Army opportunity. Armie automatically uses a bundled fictional student to create the future-self roadmap—no photo selection is required.{% elif army_mode|default(false) %}Choose a fictional student and school, then pick one of six career areas and a specific Army opportunity. Armie connects that choice to courses at the student’s own school and creates a live future-self roadmap.{% elif pilot_mode|default(false) %}Choose a photo, grade, career and future age. This simulation follows the regular student experience and returns a future-career visualization with a complete school-specific roadmap.{% else %}Pick a sample student, career and future age. The application will create the transformation live and return an illustrative career roadmap.{% endif %}</p>
+<div class="notice"><strong>{% if pilot_mode|default(false) %}Safe presentation simulation:{% else %}Privacy by design:{% endif %}</strong> {% if army_mode|default(false) and pilot_mode|default(false) %}a bundled fictional student is selected automatically. No personal photograph is requested, opened, uploaded or stored, and every generated portrait is permanently marked as fictional.{% elif pilot_mode|default(false) %}your selected file never leaves this browser. A bundled fictional student is substituted automatically, and every generated portrait is permanently marked as fictional.{% else %}both starting portraits were created by AI and represent people who do not exist. Administrator Preview sends only the selected bundled image and career choices to the image service. It does not accept personal photo uploads.{% endif %}</div>
 <p id="previewStatus" class="status {{ 'ready' if preview_ready else 'blocked' }}">{{ preview_status }}{% if preview_ready %} {{ generations_left }} generation(s) remain in this browser session.{% endif %}</p>
 {% if pilot_mode|default(false) %}
 <div class="pilotphoto">
 <img id="simulatedPhoto" src="/demo-student/grade9.png" alt="Fictional demonstration student used in place of the selected file">
-<div><span class="pilotbadge">PHOTO STEP SIMULATION</span><h2>Select or take a photo</h2><p>Choose any JPEG, PNG or WebP file to demonstrate the normal student step. The file is not opened, uploaded or stored; the fictional student shown here is used instead.</p><label class="field">Student photo<input id="pilotPhoto" type="file" accept="image/jpeg,image/png,image/webp"><span class="fieldhint" id="pilotPhotoStatus">No file selected. A photo selection is required to continue.</span></label></div>
+{% if army_mode|default(false) %}<div><span class="pilotbadge">FICTIONAL STUDENT DEMONSTRATION</span><h2>Fictional student selected automatically</h2><p>No photo is needed. Armie uses the fictional student shown here, matched to the selected grade, and permanently marks the generated portrait as fictional.</p></div>{% else %}<div><span class="pilotbadge">PHOTO STEP SIMULATION</span><h2>Select or take a photo</h2><p>Choose any JPEG, PNG or WebP file to demonstrate the normal student step. The file is not opened, uploaded or stored; the fictional student shown here is used instead.</p><label class="field">Student photo<input id="pilotPhoto" type="file" accept="image/jpeg,image/png,image/webp"><span class="fieldhint" id="pilotPhotoStatus">No file selected. A photo selection is required to continue.</span></label></div>{% endif %}
 </div>
 <div class="samples" hidden aria-hidden="true">
 {% else %}
@@ -57,7 +57,7 @@ main{width:min(1120px,calc(100% - 28px));margin:28px auto 54px}.card{background:
 <label class="field">What matters most?<select id="priority"><option>Doing work I enjoy</option><option>Helping people</option><option>High income potential</option><option>Creativity</option><option>Job stability</option><option>Being my own boss</option></select></label>
 {% endif %}
 </div>
-<div class="action"><button class="primary" id="generate" {% if not preview_ready or pilot_mode|default(false) %}disabled{% endif %}>{% if army_mode|default(false) %}Ask Armie to Create My Future →{% elif pilot_mode|default(false) %}Create My Future →{% else %}Create Fictional Future →{% endif %}</button><a class="button secondary" href="{{ '/' if army_mode|default(false) else ('/ghs' if school == 'ghs' else ('/chs' if school == 'chs' else '/')) }}">Return</a>{% if not army_mode|default(false) and not pilot_mode|default(false) %}<span class="cost">Each creation uses one paid image-generation request.</span>{% endif %}</div>
+<div class="action"><button class="primary" id="generate" {% if not preview_ready or (pilot_mode|default(false) and not army_mode|default(false)) %}disabled{% endif %}>{% if army_mode|default(false) %}Ask Armie to Create My Future →{% elif pilot_mode|default(false) %}Create My Future →{% else %}Create Fictional Future →{% endif %}</button><a class="button secondary" href="{{ '/' if army_mode|default(false) else ('/ghs' if school == 'ghs' else ('/chs' if school == 'chs' else '/')) }}">Return</a>{% if not army_mode|default(false) and not pilot_mode|default(false) %}<span class="cost">Each creation uses one paid image-generation request.</span>{% endif %}</div>
 <div id="error" class="error" role="alert"></div>
 <div id="loading" class="loading"><div class="spinner"></div><h2>{% if pilot_mode|default(false) %}Creating your possible future…{% else %}Creating the fictional future…{% endif %}</h2><p>The live transformation may take a little while.</p></div>
 </section>
@@ -78,7 +78,7 @@ const CSRF={{ csrf_token|tojson }}, SCHOOL={{ school|tojson }}, ARMY_MODE={{ arm
 const ARMY_GROUPS={{ (army_career_groups if army_mode|default(false) else {})|tojson }};
 const ARMY_NOTES={{ (army_category_notes if army_mode|default(false) else {})|tojson }};
 const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let pilotPhotoReady=false;
+let pilotPhotoReady=ARMY_MODE;
 const syncPilotStudent=()=>{
  if(!PILOT_MODE)return;
  const grade=$('grade').value;
@@ -90,11 +90,12 @@ const syncPilotStudent=()=>{
 if(PILOT_MODE){
  syncPilotStudent();
  $('grade').addEventListener('change',syncPilotStudent);
- $('pilotPhoto').addEventListener('change',()=>{
-  pilotPhotoReady=Boolean($('pilotPhoto').files&&$('pilotPhoto').files.length);
-  $('pilotPhotoStatus').textContent=pilotPhotoReady?'Photo step completed. Your file remains on this device; the fictional student shown at left will be used.':'No file selected. A photo selection is required to continue.';
-  $('generate').disabled=!PREVIEW_READY||!pilotPhotoReady;
- });
+ const pilotPhoto=$('pilotPhoto');
+ if(pilotPhoto)pilotPhoto.addEventListener('change',()=>{
+   pilotPhotoReady=Boolean(pilotPhoto.files&&pilotPhoto.files.length);
+   $('pilotPhotoStatus').textContent=pilotPhotoReady?'Photo step completed. Your file remains on this device; the fictional student shown at left will be used.':'No file selected. A photo selection is required to continue.';
+   $('generate').disabled=!PREVIEW_READY||!pilotPhotoReady;
+  });
 }
 if(ARMY_MODE){
  const fillArmyCareers=()=>{
@@ -118,26 +119,28 @@ $('generate').onclick=async()=>{
   $('timeline').textContent=data.timeline||'';$('keys').innerHTML=(data.keys||[]).map(k=>'<li>'+esc(k)+'</li>').join('');
   if(data.bhs){
    const b=data.bhs;
+   const detailsState=ARMY_MODE?'':' open';
    const bhsCards=(items,planned=false)=>(items||[]).map(c=>'<article class="coursecard"><strong>'+esc(c.name)+'</strong><p>'+esc(c.focus)+'</p>'+(c.prerequisite?'<p><b>'+(planned?'Plan ahead: ':'Entry notes: ')+'</b>'+esc(c.prerequisite)+'</p>':'')+'<div class="coursemeta">'+esc(c.department)+' · Grade(s) '+esc(c.grades)+'</div></article>').join('');
    let html='<h3>BHS courses and opportunities</h3><p><strong>'+esc(b.grade_note)+'</strong></p>';
    html+='<section class="coursegroup"><h4>Strongest matches to discuss</h4>'+(bhsCards(b.course_details)||'<p>Use current core courses to build the foundation and discuss later options with a counselor.</p>')+'</section>';
-   if((b.supporting_course_details||[]).length)html+='<details class="coursegroup" open><summary>Helpful supporting courses · '+b.supporting_course_details.length+' options</summary>'+bhsCards(b.supporting_course_details)+'</details>';
-   if((b.future_course_details||[]).length)html+='<details class="coursegroup" open><summary>Plan ahead at BHS · '+b.future_course_details.length+' options</summary>'+bhsCards(b.future_course_details,true)+'</details>';
+   if((b.supporting_course_details||[]).length)html+='<details class="coursegroup"'+detailsState+'><summary>Helpful supporting courses · '+b.supporting_course_details.length+' options</summary>'+bhsCards(b.supporting_course_details)+'</details>';
+   if((b.future_course_details||[]).length)html+='<details class="coursegroup"'+detailsState+'><summary>Plan ahead at BHS · '+b.future_course_details.length+' options</summary>'+bhsCards(b.future_course_details,true)+'</details>';
    html+='<div class="callout"><strong>Try the work</strong><p>'+esc(b.experience)+'</p></div>';
-   if((b.programs||[]).length)html+='<details class="coursegroup" open><summary>Additional BHS programs and experiences · '+b.programs.length+' options</summary>'+b.programs.map(p=>'<div class="program"><strong>'+esc(p.name)+' · '+esc(p.state)+'</strong><p>'+esc(p.detail)+'</p><div class="coursemeta">'+esc(p.grades)+'</div></div>').join('')+'</details>';
+   if((b.programs||[]).length)html+='<details class="coursegroup"'+detailsState+'><summary>Additional BHS programs and experiences · '+b.programs.length+' options</summary>'+b.programs.map(p=>'<div class="program"><strong>'+esc(p.name)+' · '+esc(p.state)+'</strong><p>'+esc(p.detail)+'</p><div class="coursemeta">'+esc(p.grades)+'</div></div>').join('')+'</details>';
    if(b.good)html+='<div class="callout"><strong>Good to know</strong><p>'+esc(b.good)+'</p></div>';
    html+='<p><strong>Your next step:</strong> '+esc(b.next||'Discuss the pathway with a school counselor.')+'</p>';
    $('courses').innerHTML=html;
   }
   else if(data.ghs){
    const g=data.ghs;
+   const detailsState=ARMY_MODE?'':' open';
    const cards=items=>(items||[]).map(c=>'<article class="coursecard"><strong>'+esc(c.name)+'</strong><p>'+esc(c.why)+'</p><p><b>'+(c.planned?'Plan ahead: ':'Entry notes: ')+'</b>'+esc(c.prerequisite)+'</p><div class="coursemeta">Grades '+esc(c.grades)+' · GHS Catalog p. '+esc(c.page)+'</div></article>').join('');
    let html='<h3>GHS courses and opportunities</h3><p><strong>'+esc(g.grade_note)+'</strong></p>';
    html+='<section class="coursegroup"><h4>Strongest matches to discuss</h4>'+(cards(g.primary_course_details)||'<p>The most direct electives are later options; use current core courses to build the foundation.</p>')+'</section>';
-   if((g.supporting_course_details||[]).length)html+='<details class="coursegroup" open><summary>Helpful supporting courses · '+g.supporting_course_details.length+' options</summary>'+cards(g.supporting_course_details)+'</details>';
-   if((g.future_course_details||[]).length)html+='<details class="coursegroup" open><summary>Plan ahead at GHS · '+g.future_course_details.length+' options</summary>'+cards(g.future_course_details)+'</details>';
+   if((g.supporting_course_details||[]).length)html+='<details class="coursegroup"'+detailsState+'><summary>Helpful supporting courses · '+g.supporting_course_details.length+' options</summary>'+cards(g.supporting_course_details)+'</details>';
+   if((g.future_course_details||[]).length)html+='<details class="coursegroup"'+detailsState+'><summary>Plan ahead at GHS · '+g.future_course_details.length+' options</summary>'+cards(g.future_course_details)+'</details>';
    html+='<div class="callout"><strong>Try the work</strong><p>'+esc(g.experience)+'</p></div>';
-   if((g.programs||[]).length)html+='<details class="coursegroup" open><summary>Additional GHS programs and experiences · '+g.programs.length+' options</summary>'+g.programs.map(p=>'<div class="program"><strong>'+esc(p.name)+'</strong><p>'+esc(p.detail)+'</p></div>').join('')+'</details>';
+   if((g.programs||[]).length)html+='<details class="coursegroup"'+detailsState+'><summary>Additional GHS programs and experiences · '+g.programs.length+' options</summary>'+g.programs.map(p=>'<div class="program"><strong>'+esc(p.name)+'</strong><p>'+esc(p.detail)+'</p></div>').join('')+'</details>';
    html+='<div class="callout"><strong>Good to know</strong><p>'+esc(g.good)+'</p></div><p><strong>Your next step:</strong> '+esc(g.next)+'</p><p><strong>Think about:</strong> '+esc(g.reflection)+'</p>';
    $('courses').innerHTML=html;
   }
