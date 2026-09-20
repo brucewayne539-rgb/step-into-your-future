@@ -238,15 +238,23 @@ def _army_school_match(job, category):
     j = job.lower()
     if category == "Science & Medicine":
         if any(w in j for w in ("veterinary", "animal")): return "Veterinarian"
-        if any(w in j for w in ("psych", "social worker", "behavioral")): return "School Counselor / Mental Health Counselor"
-        if any(w in j for w in ("dental", "dentist", "orthodont", "periodont", "prosthodont", "endodont", "oral & maxillofacial")): return "Dental Hygienist"
         if any(w in j for w in ("nurse", "nursing", "midwife")): return "Registered Nurse"
+        if "psychiatrist" in j: return "Doctor / Physician"
+        if "psychologist" in j: return "Psychologist"
+        if any(w in j for w in ("social worker", "behavioral")): return "School Counselor / Mental Health Counselor"
+        if any(w in j for w in ("dental", "dentist", "orthodont", "periodont", "prosthodont", "endodont", "oral & maxillofacial")): return "Dental Hygienist"
         if any(w in j for w in ("physical therapist", "physical therapy", "occupational therapist", "occupational therapy")): return "Physical Therapist"
         if any(w in j for w in ("administrator", "administration", "system management", "patient administration")): return "Medical & Health Services Manager"
-        if any(w in j for w in ("biomedical", "environmental science", "water treatment", "laboratory", "microbiologist", "biochemist", "entomologist")): return "Engineer"
+        # Laboratory and life-science careers need biology/chemistry preparation,
+        # not the mechanical-design sequence used for engineering occupations.
+        if any(w in j for w in ("laboratory", "microbiologist", "biochemist", "entomologist", "optical laboratory")): return "Doctor / Physician"
+        if any(w in j for w in ("biomedical equipment", "environmental science & engineering", "water treatment")): return "Engineer"
         return "Doctor / Physician"
     if category == "Signal & Intelligence":
         if "public affairs" in j: return "TV News Reporter / Local Anchor"
+        if any(w in j for w in ("foreign language", "voice interceptor", "human intelligence collector")): return "TV News Reporter / Local Anchor"
+        if "counterintelligence agent" in j: return "Police Officer"
+        if "systems maintainer/integrator" in j: return "Cybersecurity Specialist"
         if any(w in j for w in ("intelligence", "analyst", "geospatial", "language", "collector", "interceptor")): return "Data Scientist / AI Specialist"
         return "Cybersecurity Specialist"
     if category == "Aviation & Aerial Defense":
@@ -258,19 +266,27 @@ def _army_school_match(job, category):
         if "carpentry" in j or "masonry" in j: return "Carpenter"
         if any(w in j for w in ("mechanic", "maintainer", "repairer", "vehicle")): return "Automotive Technician"
         if "allied trade" in j: return "Welder / Fabricator"
+        if j == "diver": return "Military / Armed Forces"
         return "Engineer"
     if category == "Support & Logistics":
         if "attorney" in j or "paralegal" in j: return "Lawyer / Attorney"
         if "firefighter" in j: return "Firefighter"
+        if "chemical, biological, radiological" in j: return "Firefighter"
         if any(w in j for w in ("military police", "corrections", "working dog")): return "Police Officer"
         if "culinary" in j: return "Chef / Restaurant Owner"
-        if any(w in j for w in ("visual information", "musician", "band")): return "TV News Reporter / Local Anchor"
+        if "visual information" in j: return "TV News Reporter / Local Anchor"
+        if "musician" in j or "band" in j: return "Broadway Director / Actor"
+        if "chaplain" in j or "religious affairs" in j: return "School Counselor / Mental Health Counselor"
+        if "utilities equipment repairer" in j: return "HVAC Technician"
+        if "motor transport" in j: return "Automotive Technician"
+        if "parachute rigger" in j: return "Engineer"
         if any(w in j for w in ("financial", "comptroller")): return "Accountant / Financial Manager"
         return "Business Administration / Manager"
     # Ground Forces: keep school guidance broad and preparation-oriented.
     if "civil affairs" in j or "psychological operations" in j: return "TV News Reporter / Local Anchor"
+    if "chemical, biological, radiological" in j: return "Firefighter"
     if any(w in j for w in ("engineer", "eod", "explosive", "radar", "fire control", "artillery")): return "Engineer"
-    return "Police Officer"
+    return "Military / Armed Forces"
 
 def _army_scene(job, category):
     # Keep student-facing future images professional, non-graphic and non-combat.
@@ -289,6 +305,9 @@ def _army_scene(job, category):
 def _army_career_info(job, category):
     school_match = _army_school_match(job, category)
     note = ARMY_CATEGORY_NOTES[category]
+    keys = [note.split(',')[0], "Problem solving", "Teamwork", "Reliability"]
+    if school_match == "Doctor / Physician" and any(w in job.lower() for w in ("laboratory", "microbiologist", "biochemist", "entomologist")):
+        keys = ["Biology and chemistry", "Laboratory accuracy", "Data analysis", "Scientific communication"]
     return {
         "category": category,
         "school_match": school_match,
@@ -302,7 +321,7 @@ def _army_career_info(job, category):
         ],
         "scene": _army_scene(job, category),
         "timeline": "You can start preparing in high school. Exact training length, entry path and service commitment depend on the specific Army job and current requirements.",
-        "keys": [note.split(',')[0], "Problem solving", "Teamwork", "Reliability"],
+        "keys": keys,
     }
 
 ARMY_CAREERS = {

@@ -252,6 +252,59 @@ class AdministratorPreviewTests(unittest.TestCase):
                 self.assertIn(school_match, application.CAREERS)
                 self.assertIn(school_match, application.GHS_CAREERS)
 
+    def test_armie_mapping_semantics_for_known_high_risk_roles(self):
+        expected = {
+            "Microbiologist": "Doctor / Physician",
+            "Biochemist Physiologist": "Doctor / Physician",
+            "Clinical Laboratory Scientist": "Doctor / Physician",
+            "Medical Laboratory Specialist": "Doctor / Physician",
+            "Psychiatric Nurse Practitioner": "Registered Nurse",
+            "Psychiatric / Behavioral Health Nurse": "Registered Nurse",
+            "Psychiatrist": "Doctor / Physician",
+            "Research Psychologist": "Psychologist",
+            "Musician": "Broadway Director / Actor",
+            "Chaplain": "School Counselor / Mental Health Counselor",
+            "Chemical, Biological, Radiological, and Nuclear (CBRN) Specialist": "Firefighter",
+            "Chemical, Biological, Radiological And Nuclear (CBRN) Officer": "Firefighter",
+            "Motor Transport Operator": "Automotive Technician",
+            "Foreign Language Specialist": "TV News Reporter / Local Anchor",
+            "Counterintelligence Agent": "Police Officer",
+            "Military Intelligence (MI) Systems Maintainer/Integrator": "Cybersecurity Specialist",
+            "Infantryman": "Military / Armed Forces",
+        }
+        for career, school_match in expected.items():
+            with self.subTest(career=career):
+                self.assertEqual(application.ARMY_CAREERS[career]["school_match"], school_match)
+
+    def test_microbiologist_uses_science_courses_at_every_school(self):
+        school_match = application.ARMY_CAREERS["Microbiologist"]["school_match"]
+        bhs = application.bhs_for_grade(school_match, "9", "explore")
+        ghs = application.ghs_for_grade(school_match, "9", "explore", "Doing work I enjoy")
+        chs = application.generate_chs_roadmap(school_match, "9")
+        bhs_names = {item["name"] for item in bhs["course_details"] + bhs["supporting_course_details"] + bhs["future_course_details"]}
+        ghs_names = {item["name"] for item in ghs["primary_course_details"] + ghs["supporting_course_details"] + ghs["future_course_details"]}
+        chs_names = {item["name"] for key in ("primary_course_details", "supporting_course_details", "future_course_details") for item in chs["chs"][key]}
+        self.assertTrue(any("Biology" in name for name in bhs_names))
+        self.assertTrue(any("Chemistry" in name for name in bhs_names))
+        self.assertTrue(any("Biology" in name for name in ghs_names))
+        self.assertTrue(any("Chemistry" in name for name in ghs_names))
+        self.assertTrue(any("Biology" in name for name in chs_names))
+        self.assertTrue(any("Chemistry" in name for name in chs_names))
+
+    def test_every_armie_career_has_grade_appropriate_courses_at_every_school(self):
+        for career, info in application.ARMY_CAREERS.items():
+            school_match = info["school_match"]
+            for grade in ("8", "9", "10", "11", "12"):
+                with self.subTest(career=career, grade=grade, school="bhs"):
+                    result = application.bhs_for_grade(school_match, grade, "explore")
+                    self.assertTrue(result["course_details"] or result["supporting_course_details"] or result["future_course_details"])
+                with self.subTest(career=career, grade=grade, school="ghs"):
+                    result = application.ghs_for_grade(school_match, grade, "explore", "Doing work I enjoy")
+                    self.assertTrue(result["primary_course_details"] or result["supporting_course_details"] or result["future_course_details"])
+                with self.subTest(career=career, grade=grade, school="chs"):
+                    result = application.generate_chs_roadmap(school_match, grade)
+                    self.assertTrue(result["chs"]["primary_course_details"] or result["chs"]["supporting_course_details"] or result["chs"]["future_course_details"])
+
     @patch.object(application, "load_key", return_value="sk-test")
     @patch.object(application, "OpenAI", FakeOpenAIClient)
     def test_armie_live_preview_returns_grade_specific_bhs_path(self, _key):
