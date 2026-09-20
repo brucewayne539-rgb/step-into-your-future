@@ -15,7 +15,7 @@ class ReviewRejected(RoadmapValidationError):
     def __init__(self, review):
         super().__init__('The educational quality review did not approve the plan.')
         codes=[key.upper() for key,check in review['checks'].items() if not check['passed']]
-        codes.extend(check['course_id'] for check in review['course_checks'] if not check['passed'])
+        codes.extend(check['course_id'] for check in review['course_checks'] if not check['passed'] or check['relevance']=='weak_or_unrelated')
         self.reference='REVIEW'+(':'+','.join(codes) if codes else '')
 
 logger = logging.getLogger(__name__)
@@ -48,6 +48,7 @@ VALIDATION_REFERENCES = {
     'Unreadable model output.': 'JSON',
     'Roadmap contains an unfinished sentence.': 'UNFINISHED',
     'Include a relevant later-year option when high-school years remain.': 'PROGRESSION',
+    'Roadmap skips a remaining high-school year.': 'YEAR-GAP',
 }
 
 def validation_reference(error):
@@ -118,7 +119,8 @@ TRAINING_PROFILES = {
 }
 PROFILE_SOURCES = {career:[url] for career,url in CAREER_SOURCES.items()}
 PROFILE_SOURCES['Nurse Practitioner'].append('https://www.bls.gov/ooh/healthcare/registered-nurses.htm')
-ENGINE_REVISION = 'chs-grounding-2026-09-20'
+ENGINE_REVISION = 'chs-relevance-2026-09-20'
+DEFAULT_ROADMAP_MODEL = 'gpt-5.4-2026-03-05'
 
 
 def training_profile(career):
@@ -147,12 +149,22 @@ SYSTEM = '''You are an experienced high-school career and curriculum counselor w
 Use educational reasoning: understand the occupation's actual work and training, identify relevant
 skills, and compare those skills with the complete supplied school catalog. NEVER match only career
 keywords, assume every course in a pathway fits, or pad a list with weak electives.
+For each proposed course identify a concrete task in this occupation, a skill actually taught in
+that course, and the connection between them. Generic creativity, digital fluency, teamwork or
+problem solving alone is not enough. For example, 3D product modeling is not network security
+architecture, and sports leadership is not patient assessment. Do not stretch a distant connection.
+Supporting electives are OPTIONAL; an empty supporting_selections array is often the best choice.
+Prefer a shorter coherent plan to filling every slot. Core communication and mathematics can be
+valuable when connected to an actual task such as explaining treatment or interpreting evidence.
 The only known student information is school, current grade and career. Do not invent interests,
 ability, disability, completed courses, enrollment in a CTE program, or academic level. Do not call
 this a transcript-personalized schedule. It is a thoughtful plan personalized to known selections.
 Return direct_selections, foundation_selections, and supporting_selections arrays. Together they
 must contain 3–10 unique course options, including 2–5 useful starting options and a selective progression
-when years remain. For grades 8–11, include at least one meaningful later-year option. Grade 8 plans start at grade 9; other grades start at the current grade. Grade 12
+when years remain. Include relevant options in EVERY remaining high-school year through grade 12,
+not only the starting year and one distant advanced elective. Build a coherent progression in the
+career's important subjects; do not skip essential scientific or technical foundations on the way
+to an advanced option. Grade 8 plans start at grade 9; other grades start at the current grade. Grade 12
 has no future high-school years: focus on remaining options and postsecondary transition. Courses
 are discussion options, not a simultaneous schedule. Use detailed catalog grade limits, not the
 suggested grade on pathway charts. Honor prerequisite order if both courses are selected. When an
@@ -202,6 +214,8 @@ and counselor/teacher placement. A generic note elsewhere is not enough for an A
 OR prerequisites are alternatives: do not tell a student they must finish all the alternatives.
 Do not repeat a course they may already have completed as though their transcript were known.
 No markdown/HTML. Keep the whole student roadmap concise enough to read comfortably.
+Do not describe a particular high-school elective as required for professional qualification or
+college admission unless an authoritative supplied source establishes that requirement.
 '''
 
 REVIEW_SYSTEM = '''Review this proposed career roadmap as an independent curriculum counselor.
@@ -222,7 +236,13 @@ Reject all invented school courses or resources mentioned anywhere in prose, not
 The three named occupational anchors are binding. Medical careers should not be diverted to athletic
 leadership/robotics; an NP is not trained through medical school; cyber needs computing and security.
 First audit EACH selected course in course_checks. Identify the actual source-supported skill and
-assess its career value and entry conditions in one concise finding. Mark passed=false for unsupported
+assess its career value and entry conditions in one concise finding. Name the concrete occupational
+task and source-supported skill, not merely a broad transferable benefit. Set relevance to direct,
+foundation, meaningful_support, or weak_or_unrelated. Digital fluency, creativity, teamwork or
+problem solving alone do not justify a career recommendation. Distinguish the actual taught subject
+from similarly named occupational concepts: 3D product design does not teach secure network design.
+No supporting elective is required. Reject distant connections even if a benefit can be imagined.
+Mark passed=false for unsupported
 claims, weak fit, or assumed readiness. Account for EVERY selected ID exactly once.
 Then examine six separate criteria and state a concrete finding for each BEFORE deciding approval:
 source_support: does each full course description support the skills claimed? Distinguish course
@@ -231,6 +251,8 @@ career_fit: are these the strongest useful options for this career, without padd
 grade_readiness: are grades correct, entry conditions honest, and EVERY AP course explicitly optional
 and conditional on readiness/placement within its own rationale? Do not accept only a general caveat.
 sequence: do planned years respect selected prerequisites, OR alternatives and limited remaining time?
+Does the plan develop relevant foundations across every remaining year, without a leap from an
+introductory course to a distant advanced elective that omits important intermediate preparation?
 Do not imply additional mandatory prerequisites after one valid alternative has already been planned.
 training_route: does the postsecondary route match the occupation and distinguish optional credentials?
 readability: does every prose field end as a coherent complete sentence, without clipped words, overload,
@@ -267,7 +289,9 @@ PLAN_SCHEMA=obj({
 REVIEW_CRITERIA = ('source_support','career_fit','grade_readiness','sequence','training_route','readability')
 REVIEW_SCHEMA=obj({
     'course_checks':{'type':'array','minItems':3,'maxItems':10,'items':obj({
-        'course_id':STR,'finding':prose(20,400),'passed':{'type':'boolean'}})},
+        'course_id':STR,'finding':prose(20,400),
+        'relevance':{'type':'string','enum':['direct','foundation','meaningful_support','weak_or_unrelated']},
+        'passed':{'type':'boolean'}})},
     'checks':obj({key:obj({'finding':STR,'passed':{'type':'boolean'}}) for key in REVIEW_CRITERIA}),
     'issues':{'type':'array','items':STR}, 'approved':{'type':'boolean'}
 })
@@ -321,7 +345,9 @@ def review_issues(review, selections=None):
         raise RoadmapValidationError('The educational quality review did not approve the plan.')
     reviewed_ids=[]
     for check in course_checks:
-        if not isinstance(check,dict) or set(check)!={'course_id','finding','passed'} or not isinstance(check['course_id'],str) or check['course_id'] not in SELECTABLE or type(check['passed']) is not bool or not isinstance(check['finding'],str) or not 20<=len(check['finding'])<=400:
+        if not isinstance(check,dict) or set(check)!={'course_id','finding','relevance','passed'} or not isinstance(check['course_id'],str) or check['course_id'] not in SELECTABLE or type(check['passed']) is not bool or not isinstance(check['finding'],str) or not 20<=len(check['finding'])<=400:
+            raise RoadmapValidationError('The educational quality review did not approve the plan.')
+        if not isinstance(check['relevance'],str) or check['relevance'] not in {'direct','foundation','meaningful_support','weak_or_unrelated'}:
             raise RoadmapValidationError('The educational quality review did not approve the plan.')
         reviewed_ids.append(check['course_id'])
     if len(set(reviewed_ids))!=len(reviewed_ids) or (selections is not None and set(reviewed_ids)!={s['course_id'] for s in selections}):
@@ -330,7 +356,7 @@ def review_issues(review, selections=None):
     if not isinstance(checks,dict) or set(checks)!=set(REVIEW_CRITERIA):
         raise RoadmapValidationError('The educational quality review did not approve the plan.')
     issues=list(review['issues'])
-    issues.extend(check['course_id']+': '+check['finding'] for check in course_checks if not check['passed'])
+    issues.extend(check['course_id']+': '+check['finding'] for check in course_checks if not check['passed'] or check['relevance']=='weak_or_unrelated')
     for key,check in checks.items():
         if not isinstance(check,dict) or set(check)!={'finding','passed'} or type(check['passed']) is not bool or not isinstance(check['finding'],str) or not check['finding'].strip():
             raise RoadmapValidationError('The educational quality review did not approve the plan.')
@@ -435,6 +461,8 @@ def validate_plan(plan, career, grade):
     validate_selections(plan['selections'], grade)
     if int(grade)<12 and not any(s['planned_grade']>max(9,int(grade)) for s in plan['selections']):
         raise RoadmapValidationError('Include a relevant later-year option when high-school years remain.')
+    if not set(range(max(9,int(grade)),13)).issubset({s['planned_grade'] for s in plan['selections']}):
+        raise RoadmapValidationError('Roadmap skips a remaining high-school year.')
     prose_fields=[plan[k] for k in ('summary','experience','next_step','reflection','caveat')]
     prose_fields += [step['detail'] for step in steps] + [item['why'] for item in plan['selections']]
     if not all(complete_sentence(value) for value in prose_fields):
@@ -487,25 +515,29 @@ def rate_wait(error):
 
 
 def _response(client, model, instructions, payload, schema, name, *, deadline=None):
+    reasoning_model=model.startswith(('gpt-5','gpt-6'))
+    request_timeout=90.0 if reasoning_model else 40.0
+    model_options={'reasoning':{'effort':'medium'}} if reasoning_model else {}
+    output_limit=12000 if reasoning_model else (3500 if name=='chs_career_plan' else 2800)
     for attempt in range(2):
-        remaining = 40 if deadline is None else deadline - time.monotonic()
+        remaining = request_timeout if deadline is None else deadline - time.monotonic()
         if remaining <= 0:
             raise RoadmapUnavailable('The roadmap service reached its time limit. Please try again later. Support reference: CHS-TIMEOUT.')
         try:
             response=client.responses.create(model=model,instructions=instructions,
                 input=json.dumps(payload,ensure_ascii=False,separators=(',',':')),
-                store=False,max_output_tokens=3500 if name=='chs_career_plan' else 2800,
-                timeout=min(40.0, remaining),
+                store=False,max_output_tokens=output_limit,
+                timeout=min(request_timeout, remaining),**model_options,
                 text={'format':{'type':'json_schema','name':name,'strict':True,'schema':schema}})
             break
         except Exception as error:
             wait = rate_wait(error)
-            if attempt or wait is None or (deadline is not None and time.monotonic()+wait+40 > deadline):
+            if attempt or wait is None or (deadline is not None and time.monotonic()+wait+request_timeout > deadline):
                 raise
             logger.warning('CHS roadmap waiting for provider rate reset (%d seconds)', wait)
             time.sleep(wait)
     if response.status!='completed' or not response.output_text:
-        raise RoadmapUnavailable('The roadmap service did not complete a verified response. Please try again later.')
+        raise RoadmapUnavailable('The roadmap service did not complete a verified response. Please try again later. Support reference: CHS-INCOMPLETE.')
     try:return json.loads(response.output_text)
     except (TypeError,ValueError) as e:raise RoadmapValidationError('Unreadable model output.') from e
 
@@ -533,8 +565,10 @@ def generate_chs_roadmap(career, grade, *, api_key='', client=None):
             raise RoadmapUnavailable('The AI roadmap service is not configured. Ask the administrator to check the server API key.')
         from openai import OpenAI
         client=OpenAI(api_key=api_key,timeout=40.0,max_retries=0)
-    model=os.getenv('ROADMAP_MODEL','gpt-4.1')
+    model=os.getenv('ROADMAP_MODEL',DEFAULT_ROADMAP_MODEL)
+    review_model=os.getenv('ROADMAP_REVIEW_MODEL',DEFAULT_ROADMAP_MODEL)
     context={'catalog':catalog_context(),'student':{'school':'chs','current_grade':int(grade),'career':career},
+             'planning_years':list(range(max(9,int(grade)),13)),
              'occupational_anchor':CAREER_ANCHORS.get(career,'Reason carefully about this occupation; distinguish required credentials from optional routes.')}
     if career in TRAINING_PROFILES:
         context['verified_training_profile']=training_profile(career)
@@ -542,7 +576,7 @@ def generate_chs_roadmap(career, grade, *, api_key='', client=None):
     try:
         request_context = context
         generation_schema = plan_schema(career,grade)
-        deadline = time.monotonic() + 220
+        deadline = time.monotonic() + 270
         # At most one correction, always followed by the same deterministic and
         # independent review gates. Only temporary rate limits get a bounded wait;
         # authentication, quota and oversized requests are never retried.
@@ -558,7 +592,7 @@ def generate_chs_roadmap(career, grade, *, api_key='', client=None):
                     'correction_required':[str(error)],
                     'instruction':'Return a complete corrected plan. Preserve all source and educational requirements. Return only fields in the generation schema; source evidence and counselor guidance are supplied by the server.'}
                 continue
-            review=_response(client,os.getenv('ROADMAP_REVIEW_MODEL',model),REVIEW_SYSTEM,
+            review=_response(client,review_model,REVIEW_SYSTEM,
                              review_context(context,plan),review_schema(plan),'chs_career_review',deadline=deadline)
             issues = review_issues(review,plan['selections'])
             if not issues:
@@ -585,6 +619,6 @@ def generate_chs_roadmap(career, grade, *, api_key='', client=None):
         good=plan['caveat']+' Source: CHS 2025–26 Program of Studies; current-year availability is not verified. Ask your counselor to confirm prerequisites, placement and pathway entry.',
         source='CHS 2025–26 Program of Studies',programs=[],engine='catalog-grounded-ai-v1',catalog_year='2025-26',current_year_verified=False,
         career_source=CAREER_SOURCES.get(career,''),career_sources=PROFILE_SOURCES.get(career,[]),
-        engine_revision=ENGINE_REVISION)
+        engine_revision=ENGINE_REVISION,models={'planner':model,'reviewer':review_model})
     steps=[[s['title'],s['detail']] for s in plan['postsecondary']]
     return dict(summary=plan['summary'],steps=steps,rich_steps=[{'title':s[0],'bullets':[s[1]]} for s in steps],timeline='Training time varies by route and prior preparation.',keys=[],chs=chs)
