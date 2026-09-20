@@ -54,3 +54,22 @@ def plan(career='Neurosurgeon',grade=9):
         steps=[('Undergraduate preparation','Build a strong university science foundation, complete medical-school admission requirements and explore supervised clinical exposure.'),('Medical school','Complete medical school leading to an MD or DO and gain supervised clinical training across medical specialties.'),('Neurosurgery residency','Complete specialized neurosurgical residency and the applicable licensing requirements before independent practice; this extends well beyond age 25 for a typical route.')]
         summary='Neurosurgeons diagnose and surgically treat conditions affecting the nervous system. Begin with careful scientific reasoning and a realistic understanding of the long medical training route.'
     return dict(career=career,grade=grade,summary=summary,selections=selections,experience=('Ask a teacher about an authorized virtual security lab where you can document how to protect a test system.' if career=='Cybersecurity Specialist' else 'Ask your counselor about an age-appropriate healthcare career conversation or supervised observation; patient access depends on the host.'),next_step='Bring these options to your counselor and compare them with courses you have already completed before choosing your next schedule.',reflection='Which part of the work would you most like to investigate through a supervised activity?',caveat='Advanced courses are conditional on your preparation. If you are entering a multi-year pathway late, discuss what can fit before graduation.',postsecondary=[dict(title=t,detail=d) for t,d in steps])
+
+
+def review_result(approved=True, issues=None):
+    from chs_roadmap import REVIEW_CRITERIA
+    return dict(checks={key:dict(finding='Simulated review of a human-authored test plan; not live quality evidence.',passed=True) for key in REVIEW_CRITERIA},approved=approved,issues=issues or [])
+
+
+def model_draft(document):
+    from chs_roadmap import source_passages
+    import copy
+    document=copy.deepcopy(document)
+    items=document.pop('selections')
+    for role in ('direct','foundation','supporting'):
+        document[role+'_selections']=[]
+    for item in items:
+        role=item.pop('role')
+        item['evidence']=item['course_id']+':E1'
+        document[role+'_selections'].append(item)
+    return document

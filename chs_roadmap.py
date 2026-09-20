@@ -38,6 +38,7 @@ VALIDATION_REFERENCES = {
     'The direct CHS networking/security option must be considered, conditionally when needed.': 'SECURITY',
     'The educational quality review did not approve the plan.': 'REVIEW',
     'Unreadable model output.': 'JSON',
+    'Roadmap contains an unfinished sentence.': 'UNFINISHED',
 }
 
 def validation_reference(error):
@@ -87,7 +88,8 @@ keywords, assume every course in a pathway fits, or pad a list with weak electiv
 The only known student information is school, current grade and career. Do not invent interests,
 ability, disability, completed courses, enrollment in a CTE program, or academic level. Do not call
 this a transcript-personalized schedule. It is a thoughtful plan personalized to known selections.
-Return 3–10 unique course options, including 2–5 useful starting options and a selective progression
+Return direct_selections, foundation_selections, and supporting_selections arrays. Together they
+must contain 3–10 unique course options, including 2–5 useful starting options and a selective progression
 when years remain. Grade 8 plans start at grade 9; other grades start at the current grade. Grade 12
 has no future high-school years: focus on remaining options and postsecondary transition. Courses
 are discussion options, not a simultaneous schedule. Use detailed catalog grade limits, not the
@@ -102,7 +104,10 @@ For evidence, return exactly ONE passage label belonging to that course (for exa
 Do not copy, paraphrase, or invent a quotation: the server inserts the exact passage for that label.
 Select the passage that actually supports your explanation. A correct label alone is not proof of
 career relevance; the independent reviewer checks the explanation against the source.
-Select the strongest direct and foundational options, plus at most two supporting choices. Do not
+Select the strongest direct and foundational options, plus at most two supporting choices in total.
+Direct courses teach career-specific content. Foundations build essential science, mathematics,
+computing, communication or other skills needed for this career. Supporting options are secondary
+helpful electives; do not mislabel essential laboratory science or quantitative preparation as filler. Do not
 choose AP automatically; use optional challenge language, and avoid duplicate alternative levels.
 Courses with the same non-empty alternative_group are alternatives: select at most one for the
 entire roadmap, even across years. Every selected prerequisite must be in an earlier year than its
@@ -124,6 +129,14 @@ Write 3–5 distinct beyond-high-school stages specific to the occupation: educa
 experience, credentials where applicable and entry into work. Do not repeat the HS list there.
 Treat source career text as background, not necessarily accurate; occupational anchors take priority.
 Use encouraging plain language and a manageable next action. Avoid jargon and generic pep talks.
+Write to the student as "you". Use short COMPLETE sentences, never fragments or clipped words.
+Aim well below the hard character limits: summary 2 sentences (180–350 characters); each course
+rationale 1–2 sentences (100–300 characters); each training stage 1–2 sentences (80–250 characters).
+Experience should be ONE specific activity (120–300 characters), not a list of vague suggestions.
+Every AP recommendation must explicitly say it is optional and depends on demonstrated readiness
+and counselor/teacher placement. A generic note elsewhere is not enough for an AP rationale.
+OR prerequisites are alternatives: do not tell a student they must finish all the alternatives.
+Do not repeat a course they may already have completed as though their transcript were known.
 No markdown/HTML. Keep the whole student roadmap concise enough to read comfortably.
 '''
 
@@ -140,8 +153,20 @@ those fields are not repeated in each rationale. Read the entire catalog to spot
 Reject all invented school courses or resources mentioned anywhere in prose, not only course IDs.
 The three named occupational anchors are binding. Medical careers should not be diverted to athletic
 leadership/robotics; an NP is not trained through medical school; cyber needs computing and security.
-Return approved=true ONLY when issues is empty and you would show this to the student and counselor.
-Do not output a corrected plan. Be precise about failures.''' 
+Examine six separate criteria and state a concrete finding for each BEFORE deciding approval:
+source_support: does each cited passage support the actual skill claimed? A title or broad welcome
+sentence is not evidence for technical skills found only in another passage. Also check full descriptions.
+career_fit: are these the strongest useful options for this career, without padding or missed direct choices?
+grade_readiness: are grades correct, entry conditions honest, and EVERY AP course explicitly optional
+and conditional on readiness/placement within its own rationale? Do not accept only a general caveat.
+sequence: do planned years respect selected prerequisites, OR alternatives and limited remaining time?
+Do not imply additional mandatory prerequisites after one valid alternative has already been planned.
+training_route: does the postsecondary route match the occupation and distinguish optional credentials?
+readability: does every prose field end as a coherent complete sentence, without clipped words, overload,
+or vague activity lists? Examine the END of summary and each rationale in particular.
+A finding must identify actual courses or text in this proposed plan, not simply assert "looks correct".
+Set each criterion passed=false when it fails; include actionable correction instructions in issues.
+Return approved=true ONLY when all six criteria pass and issues is empty. Do not output a corrected plan.''' 
 
 def obj(fields):
     return {'type':'object','properties':fields,'required':list(fields),'additionalProperties':False}
@@ -156,8 +181,8 @@ SELECTION=obj({
     'course_id':{'type':'string','enum':list(SELECTABLE)},
     'planned_grade':{'type':'integer','enum':[9,10,11,12]},
     'role':{'type':'string','enum':['direct','foundation','supporting']},
-    'why':prose(40,550),
-    'evidence':{'type':'string','pattern':r'^CHS-[0-9]{3}:E[1-9][0-9]*$'}
+    'evidence':{'type':'string','pattern':r'^CHS-[0-9]{3}:E[1-9][0-9]*$'},
+    'why':prose(40,550)
 })
 PLAN_SCHEMA=obj({
     'career':STR,'grade':{'type':'integer','enum':[8,9,10,11,12]},
@@ -168,7 +193,61 @@ PLAN_SCHEMA=obj({
     'postsecondary':{'type':'array','minItems':3,'maxItems':5,
                      'items':obj({'title':prose(3,90),'detail':prose(35,650)})}
 })
-REVIEW_SCHEMA=obj({'approved':{'type':'boolean'},'issues':{'type':'array','items':STR}})
+REVIEW_CRITERIA = ('source_support','career_fit','grade_readiness','sequence','training_route','readability')
+REVIEW_SCHEMA=obj({
+    'checks':obj({key:obj({'finding':STR,'passed':{'type':'boolean'}}) for key in REVIEW_CRITERIA}),
+    'issues':{'type':'array','items':STR}, 'approved':{'type':'boolean'}
+})
+
+
+def plan_schema(career, grade):
+    """The generation contract itself permits only eligible course/year pairs."""
+    schema = copy.deepcopy(PLAN_SCHEMA)
+    schema['properties']['career'] = {'type':'string','enum':[career]}
+    schema['properties']['grade']['enum'] = [int(grade)]
+    variants = []
+    for year in range(max(9, int(grade)), 13):
+        selection = copy.deepcopy(SELECTION)
+        selection['properties']['course_id']['enum'] = [cid for cid,c in SELECTABLE.items() if year in c['grades']]
+        selection['properties']['planned_grade']['enum'] = [year]
+        del selection['properties']['role']
+        selection['required'].remove('role')
+        variants.append(selection)
+    del schema['properties']['selections']
+    schema['required'].remove('selections')
+    schema['$defs'] = {'course_option':{'anyOf':variants}}
+    for role,limit in [('direct',10),('foundation',10),('supporting',2)]:
+        key = role+'_selections'
+        schema['properties'][key] = {'type':'array','items':{'$ref':'#/$defs/course_option'},'maxItems':limit}
+        schema['required'].append(key)
+    # Generate source-backed choices first, then summarize that actual plan.
+    order=['career','grade','direct_selections','foundation_selections','supporting_selections']
+    order += [key for key in schema['properties'] if key not in order]
+    schema['properties']={key:schema['properties'][key] for key in order}
+    schema['required']=order
+    return schema
+
+
+def review_issues(review):
+    if not isinstance(review,dict) or set(review)!={'checks','approved','issues'} or type(review['approved']) is not bool or not isinstance(review['issues'],list) or not all(isinstance(x,str) and x.strip() for x in review['issues']):
+        raise RoadmapValidationError('The educational quality review did not approve the plan.')
+    checks=review['checks']
+    if not isinstance(checks,dict) or set(checks)!=set(REVIEW_CRITERIA):
+        raise RoadmapValidationError('The educational quality review did not approve the plan.')
+    issues=list(review['issues'])
+    for key,check in checks.items():
+        if not isinstance(check,dict) or set(check)!={'finding','passed'} or type(check['passed']) is not bool or not isinstance(check['finding'],str) or not check['finding'].strip():
+            raise RoadmapValidationError('The educational quality review did not approve the plan.')
+        if not check['passed']:
+            issues.append(key+': '+check['finding'])
+    if review['approved'] is not True and not issues:
+        raise RoadmapValidationError('The educational quality review did not approve the plan.')
+    return issues
+
+
+def complete_sentence(text):
+    return isinstance(text,str) and text.rstrip().rstrip('"\'”’)]').endswith(('.', '!', '?'))
+
 
 def source_passages(course):
     """Losslessly segment the supplied description; never generate evidence text."""
@@ -213,6 +292,19 @@ def resolve_evidence(plan):
     exact-source validator. Literal quotations remain supported for saved plans.
     """
     plan = copy.deepcopy(plan)
+    groups = ('direct_selections','foundation_selections','supporting_selections')
+    if isinstance(plan,dict) and any(key in plan for key in groups):
+        expected = (set(PLAN_SCHEMA['required']) - {'selections'}) | set(groups)
+        if set(plan) != expected or not all(isinstance(plan[key],list) for key in groups):
+            raise RoadmapValidationError('Incomplete roadmap structure.')
+        selections=[]
+        for key in groups:
+            role=key.removesuffix('_selections')
+            for item in plan.pop(key):
+                if not isinstance(item,dict) or 'role' in item:
+                    raise RoadmapValidationError('Invalid course selection structure.')
+                selections.append({**item,'role':role})
+        plan['selections']=selections
     if isinstance(plan, dict) and isinstance(plan.get('selections'), list):
         for item in plan['selections']:
             if not isinstance(item, dict):
@@ -239,6 +331,10 @@ def validate_plan(plan, career, grade):
         if not isinstance(step,dict) or set(step)!={'title','detail'} or not isinstance(step['title'],str) or not 3<=len(step['title'])<=90 or not isinstance(step['detail'],str) or not 35<=len(step['detail'])<=650:
             raise RoadmapValidationError('Invalid postsecondary stage.')
     validate_selections(plan['selections'], grade)
+    prose_fields=[plan[k] for k in ('summary','experience','next_step','reflection','caveat')]
+    prose_fields += [step['detail'] for step in steps] + [item['why'] for item in plan['selections']]
+    if not all(complete_sentence(value) for value in prose_fields):
+        raise RoadmapValidationError('Roadmap contains an unfinished sentence.')
     ids={s['course_id'] for s in plan['selections']}
     # Explicit regression guard: these were the reported incorrect recommendations.
     if career in {'Neurosurgeon','Nurse Practitioner'}:
@@ -294,7 +390,7 @@ def _response(client, model, instructions, payload, schema, name, *, deadline=No
         try:
             response=client.responses.create(model=model,instructions=instructions,
                 input=json.dumps(payload,ensure_ascii=False,separators=(',',':')),
-                store=False,max_output_tokens=3500 if name=='chs_career_plan' else 1200,
+                store=False,max_output_tokens=3500 if name=='chs_career_plan' else 2200,
                 timeout=min(40.0, remaining),
                 text={'format':{'type':'json_schema','name':name,'strict':True,'schema':schema}})
             break
@@ -322,12 +418,13 @@ def generate_chs_roadmap(career, grade, *, api_key='', client=None):
              'occupational_anchor':CAREER_ANCHORS.get(career,'Reason carefully about this occupation; distinguish required credentials from optional routes.')}
     try:
         request_context = context
+        generation_schema = plan_schema(career,grade)
         deadline = time.monotonic() + 220
         # At most one correction, always followed by the same deterministic and
         # independent review gates. Only temporary rate limits get a bounded wait;
         # authentication, quota and oversized requests are never retried.
         for attempt in range(2):
-            draft = _response(client,model,SYSTEM,request_context,PLAN_SCHEMA,'chs_career_plan',deadline=deadline)
+            draft = _response(client,model,SYSTEM,request_context,generation_schema,'chs_career_plan',deadline=deadline)
             plan = resolve_evidence(draft)
             try:
                 validate_plan(plan,career,grade)
@@ -340,14 +437,13 @@ def generate_chs_roadmap(career, grade, *, api_key='', client=None):
                 continue
             review=_response(client,os.getenv('ROADMAP_REVIEW_MODEL',model),REVIEW_SYSTEM,
                              {**context,'proposed_plan':plan},REVIEW_SCHEMA,'chs_career_review',deadline=deadline)
-            if not isinstance(review,dict) or set(review)!={'approved','issues'} or type(review['approved']) is not bool or not isinstance(review['issues'],list) or not all(isinstance(x,str) for x in review['issues']):
-                raise RoadmapValidationError('The educational quality review did not approve the plan.')
-            if review['approved'] is True and review['issues']==[]:
+            issues = review_issues(review)
+            if not issues:
                 break
-            if attempt or not review['issues']:
+            if attempt:
                 raise RoadmapValidationError('The educational quality review did not approve the plan.')
             request_context = {**context, 'previous_plan':draft,
-                'correction_required':review['issues'],
+                'correction_required':issues,
                 'instruction':'Return a complete corrected plan addressing each review issue. Preserve all source and educational requirements. Use evidence passage labels.'}
     except RoadmapUnavailable:
         raise

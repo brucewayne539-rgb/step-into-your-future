@@ -12,11 +12,12 @@ from chs_catalog import SELECTABLE, normalized
 from chs_roadmap import (source_passages, resolve_evidence, validate_plan,
                         generate_chs_roadmap, RoadmapUnavailable, PLAN_SCHEMA,
                         catalog_context, rate_wait, _response, service_failure)
-from chs_fixtures import plan
+from chs_fixtures import plan, review_result
 
 
 def client_for(*outputs):
     client = MagicMock()
+    outputs = [({'checks':review_result()['checks'],**x} if isinstance(x,dict) and set(x)=={'approved','issues'} else x) for x in outputs]
     client.responses.create.side_effect = [
         SimpleNamespace(status='completed', output_text=json.dumps(x))
         for x in outputs

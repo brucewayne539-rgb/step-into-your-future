@@ -37,7 +37,7 @@ def main():
     careers=PRIORITY if args.scope=='priority' else list(CAREERS)
     output=Path(args.output);output.mkdir(parents=True,exist_ok=True)
     count=len(careers)*5*args.repeat
-    print(f'Running {count} real roadmaps, up to {2*count} paid text requests. No portrait calls.',flush=True)
+    print(f'Running {count} real roadmaps, up to {4*count} planning/review calls, plus bounded retries for temporary rate limits. No portrait calls.',flush=True)
     results=[]
     for repeat in range(args.repeat):
         for career in careers:

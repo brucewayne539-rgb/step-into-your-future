@@ -9,12 +9,16 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import app as application
 from chs_catalog import CATALOG, COURSES, SELECTABLE, validate_selections, RoadmapValidationError
 from chs_roadmap import generate_chs_roadmap, validate_plan, RoadmapUnavailable, PLAN_SCHEMA, REVIEW_SCHEMA
-from chs_fixtures import plan
+from chs_fixtures import plan, review_result
 
 PRIORITY=['Neurosurgeon','Nurse Practitioner','Cybersecurity Specialist']
 
 def fake_client(document,review=None):
     client=MagicMock()
+    if review is None:
+        review=review_result()
+    elif set(review)=={'approved','issues'}:
+        review={'checks':review_result()['checks'],**review}
     client.responses.create.side_effect=[SimpleNamespace(status='completed',output_text=json.dumps(document)),SimpleNamespace(status='completed',output_text=json.dumps(review or dict(approved=True,issues=[])))]
     return client
 
@@ -213,7 +217,7 @@ def test_sdk_http_serialization_and_response_parsing():
     except ImportError:
         import httpx as httpx2
     captured=[]
-    outputs=[plan(),{'approved':True,'issues':[]}]
+    outputs=[plan(),review_result()]
     def handle(request):
         body=json.loads(request.content);captured.append(body)
         result=outputs[len(captured)-1]
@@ -222,6 +226,7 @@ def test_sdk_http_serialization_and_response_parsing():
     result=generate_chs_roadmap('Neurosurgeon',9,client=client)
     assert result['chs']['engine']=='catalog-grounded-ai-v1'
     assert len(captured)==2 and all(b['store'] is False for b in captured)
-    assert captured[0]['text']['format']['schema']==PLAN_SCHEMA
+    from chs_roadmap import plan_schema
+    assert captured[0]['text']['format']['schema']==plan_schema('Neurosurgeon',9)
     assert captured[1]['text']['format']['schema']==REVIEW_SCHEMA
     client.close()
