@@ -134,6 +134,11 @@ def generate_chs_roadmap(career, grade, *, path='explore', priority='Doing work 
         personalization={'career':career,'grade':grade,'path':path,'priority':priority},
         models={'planner':None,'reviewer':None})
     steps=copy.deepcopy(training['steps'])
+    high_school={'title':'High School','bullets':[
+        f'Explore {career} through the CHS courses below, beginning with {names}.',
+        next_step,
+        profile['activity']+' '+age_note]}
+    rich_steps=[high_school]+copy.deepcopy(training['rich_steps'])
     return dict(summary=training['summary'], steps=steps,
-        rich_steps=[{'title':title,'bullets':[detail]} for title,detail in steps],
-        timeline='Training time varies by route and prior preparation.',keys=[],chs=cards)
+        rich_steps=rich_steps, timeline=training['timeline'],
+        keys=list(training['keys']),chs=cards)
