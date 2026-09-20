@@ -4,6 +4,7 @@ import logging
 import copy
 import re
 import os
+import time
 from chs_catalog import CATALOG, COURSES, SELECTABLE, validate_selections, present_courses, RoadmapValidationError
 
 class RoadmapUnavailable(RuntimeError):
@@ -51,6 +52,9 @@ def service_failure(error):
     if code == 'insufficient_quota':
         return 'QUOTA', 'The AI account has no available API quota. Ask the administrator to check API billing and project limits.'
     if status == 429:
+        numbers = rate_numbers(error)
+        if numbers.get('requested', 0) > numbers.get('limit', float('inf')):
+            return 'RATE-SIZE', 'The roadmap request exceeds the AI account’s token allowance. The administrator needs to adjust request size or the API limit.'
         return 'RATE', 'The AI service reached its request or token limit. Please wait a minute before trying again.'
     if status == 401:
         return 'AUTH', 'The AI service could not authenticate. Ask the administrator to check the server API key.'
@@ -184,14 +188,22 @@ def source_passages(course):
 
 
 def catalog_context():
+    # Table rows remove repeated JSON field names. The numbered passage lists
+    # retain every description word; only the common planning note is deduplicated.
+    columns = ['id','name','grades','prerequisite','prerequisite_groups',
+               'alternative_group','planning_note','description_passages']
+    common_note = 'Course completion and placement are unknown. Confirm level, eligibility and schedule with your counselor.'
     courses = []
     for c in SELECTABLE.values():
-        item = {k: c[k] for k in ['id','name','grades','prerequisite','prerequisite_groups','planning_note']}
-        item['alternative_group'] = c.get('alternative_group', '')
-        item['description_passages'] = source_passages(c)
-        courses.append(item)
+        item = {**c, 'alternative_group':c.get('alternative_group',''),
+                'planning_note':'' if c['planning_note']==common_note else c['planning_note'],
+                'description_passages':list(source_passages(c).values())}
+        courses.append([item[k] for k in columns])
     return {'school':CATALOG['school'],'catalog_year':CATALOG['catalog_year'],
-            'current_year_verified':False,'courses':courses}
+            'current_year_verified':False, 'columns':columns,
+            'common_planning_note':common_note,
+            'passage_reference':'Each description_passages list is numbered E1, E2, etc. Evidence is the course ID, colon, and passage number: CHS-131:E2.',
+            'courses':courses}
 
 
 def resolve_evidence(plan):
@@ -238,10 +250,60 @@ def validate_plan(plan, career, grade):
         raise RoadmapValidationError('The direct CHS networking/security option must be considered, conditionally when needed.')
     return plan
 
-def _response(client, model, instructions, payload, schema, name):
-    response=client.responses.create(model=model,instructions=instructions,
-        input=json.dumps(payload,ensure_ascii=False),store=False,max_output_tokens=4500,
-        text={'format':{'type':'json_schema','name':name,'strict':True,'schema':schema}})
+def rate_numbers(error):
+    """Read only numeric allowance information, never expose the provider body."""
+    message = str(error)
+    result = {}
+    for field in ('Limit', 'Requested'):
+        match = re.search(r'\b' + field + r'\s*:?\s*([0-9]+)', message)
+        if match:
+            result[field.lower()] = int(match.group(1))
+    return result
+
+
+def rate_wait(error):
+    if getattr(error, 'status_code', None) != 429 or getattr(error, 'code', None) == 'insufficient_quota':
+        return None
+    numbers = rate_numbers(error)
+    if numbers.get('requested', 0) > numbers.get('limit', float('inf')):
+        return None  # A request larger than the allowance cannot be fixed by waiting.
+    headers = getattr(getattr(error, 'response', None), 'headers', {})
+    for key, scale in [('retry-after-ms', 0.001), ('retry-after', 1)]:
+        value = headers.get(key, '')
+        if value == '':
+            continue
+        try:
+            seconds = float(value) * scale
+        except (TypeError, ValueError):
+            return None  # An unfamiliar reset format must not trigger an early retry.
+        if 0 <= seconds <= 60:
+            return max(1, seconds)
+        return None  # Honor a longer reset by stopping, not retrying prematurely.
+    match = re.search(r'try again in ([0-9.]+)s', str(error), re.IGNORECASE)
+    if match:
+        seconds = float(match.group(1))
+        return min(60, max(1, seconds + 0.5)) if seconds <= 59.5 else None
+    return 60  # One bounded wait when the provider supplies no reset header.
+
+
+def _response(client, model, instructions, payload, schema, name, *, deadline=None):
+    for attempt in range(2):
+        remaining = 40 if deadline is None else deadline - time.monotonic()
+        if remaining <= 0:
+            raise RoadmapUnavailable('The roadmap service reached its time limit. Please try again later. Support reference: CHS-TIMEOUT.')
+        try:
+            response=client.responses.create(model=model,instructions=instructions,
+                input=json.dumps(payload,ensure_ascii=False,separators=(',',':')),
+                store=False,max_output_tokens=3500 if name=='chs_career_plan' else 1200,
+                timeout=min(40.0, remaining),
+                text={'format':{'type':'json_schema','name':name,'strict':True,'schema':schema}})
+            break
+        except Exception as error:
+            wait = rate_wait(error)
+            if attempt or wait is None or (deadline is not None and time.monotonic()+wait+40 > deadline):
+                raise
+            logger.warning('CHS roadmap waiting for provider rate reset (%d seconds)', wait)
+            time.sleep(wait)
     if response.status!='completed' or not response.output_text:
         raise RoadmapUnavailable('The roadmap service did not complete a verified response. Please try again later.')
     try:return json.loads(response.output_text)
@@ -260,28 +322,31 @@ def generate_chs_roadmap(career, grade, *, api_key='', client=None):
              'occupational_anchor':CAREER_ANCHORS.get(career,'Reason carefully about this occupation; distinguish required credentials from optional routes.')}
     try:
         request_context = context
+        deadline = time.monotonic() + 220
         # At most one correction, always followed by the same deterministic and
-        # independent review gates. Provider/auth/quota failures are not retried.
+        # independent review gates. Only temporary rate limits get a bounded wait;
+        # authentication, quota and oversized requests are never retried.
         for attempt in range(2):
-            plan = resolve_evidence(_response(client,model,SYSTEM,request_context,PLAN_SCHEMA,'chs_career_plan'))
+            draft = _response(client,model,SYSTEM,request_context,PLAN_SCHEMA,'chs_career_plan',deadline=deadline)
+            plan = resolve_evidence(draft)
             try:
                 validate_plan(plan,career,grade)
             except RoadmapValidationError as error:
                 if attempt:
                     raise
-                request_context = {**context, 'previous_plan':plan,
+                request_context = {**context, 'previous_plan':draft,
                     'correction_required':[str(error)],
                     'instruction':'Return a complete corrected plan. Preserve all source and educational requirements. Use evidence passage labels.'}
                 continue
             review=_response(client,os.getenv('ROADMAP_REVIEW_MODEL',model),REVIEW_SYSTEM,
-                             {**context,'proposed_plan':plan},REVIEW_SCHEMA,'chs_career_review')
+                             {**context,'proposed_plan':plan},REVIEW_SCHEMA,'chs_career_review',deadline=deadline)
             if not isinstance(review,dict) or set(review)!={'approved','issues'} or type(review['approved']) is not bool or not isinstance(review['issues'],list) or not all(isinstance(x,str) for x in review['issues']):
                 raise RoadmapValidationError('The educational quality review did not approve the plan.')
             if review['approved'] is True and review['issues']==[]:
                 break
             if attempt or not review['issues']:
                 raise RoadmapValidationError('The educational quality review did not approve the plan.')
-            request_context = {**context, 'previous_plan':plan,
+            request_context = {**context, 'previous_plan':draft,
                 'correction_required':review['issues'],
                 'instruction':'Return a complete corrected plan addressing each review issue. Preserve all source and educational requirements. Use evidence passage labels.'}
     except RoadmapUnavailable:

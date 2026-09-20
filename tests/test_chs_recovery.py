@@ -4,12 +4,14 @@ import json
 import re
 from types import SimpleNamespace
 from unittest.mock import MagicMock
+from unittest.mock import patch
 
 import pytest
 
 from chs_catalog import SELECTABLE, normalized
 from chs_roadmap import (source_passages, resolve_evidence, validate_plan,
-                        generate_chs_roadmap, RoadmapUnavailable, PLAN_SCHEMA)
+                        generate_chs_roadmap, RoadmapUnavailable, PLAN_SCHEMA,
+                        catalog_context, rate_wait, _response, service_failure)
 from chs_fixtures import plan
 
 
@@ -101,8 +103,9 @@ def test_provider_errors_are_not_retried_or_exposed(caplog):
     client = MagicMock()
     error = RuntimeError('private-token-SENTINEL')
     error.status_code = 429
+    error.code = 'insufficient_quota'
     client.responses.create.side_effect = error
-    with pytest.raises(RoadmapUnavailable, match='CHS-RATE') as caught:
+    with pytest.raises(RoadmapUnavailable, match='CHS-QUOTA') as caught:
         generate_chs_roadmap('Neurosurgeon', 9, client=client)
     assert client.responses.create.call_count == 1
     assert 'SENTINEL' not in str(caught.value) + caplog.text
@@ -117,3 +120,63 @@ def test_generation_contract_enforces_prose_boundaries(field,minimum,maximum):
     assert re.fullmatch(pattern, 'x'*minimum)
     assert re.fullmatch(pattern, 'x'*maximum)
     assert not re.fullmatch(pattern, 'x'*(maximum+1))
+
+
+def test_compact_catalog_preserves_all_course_facts_and_complete_descriptions():
+    context = catalog_context()
+    assert len(context['courses']) == len(SELECTABLE)
+    for row in context['courses']:
+        packed = dict(zip(context['columns'], row))
+        original = SELECTABLE[packed['id']]
+        for field in ('name','grades','prerequisite','prerequisite_groups'):
+            assert packed[field] == original[field]
+        assert packed['alternative_group'] == original.get('alternative_group','')
+        assert (packed['planning_note'] or context['common_planning_note']) == original['planning_note']
+        assert normalized(' '.join(packed['description_passages'])) == normalized(original['description'])
+
+
+def rate_error(message='temporary limit', headers=None):
+    error = RuntimeError(message)
+    error.status_code = 429
+    error.response = SimpleNamespace(headers=headers or {})
+    return error
+
+
+def test_transient_rate_limit_honors_reset_once_then_uses_normal_response():
+    client = MagicMock()
+    client.responses.create.side_effect = [rate_error(headers={'retry-after':'17'}),
+        SimpleNamespace(status='completed',output_text='{"approved":true,"issues":[]}')]
+    with patch('chs_roadmap.time.sleep') as sleep:
+        result = _response(client,'test','review',{}, {}, 'chs_career_review')
+    sleep.assert_called_once_with(17)
+    assert result == {'approved':True,'issues':[]}
+    assert client.responses.create.call_count == 2
+
+
+def test_rate_failure_does_not_start_an_unbounded_retry_loop():
+    client = MagicMock()
+    client.responses.create.side_effect = rate_error(headers={'retry-after-ms':'2000'})
+    with patch('chs_roadmap.time.sleep') as sleep, pytest.raises(RuntimeError):
+        _response(client,'test','review',{}, {}, 'chs_career_review')
+    sleep.assert_called_once_with(2)
+    assert client.responses.create.call_count == 2
+
+
+def test_oversized_request_and_quota_failures_do_not_wait():
+    oversized = rate_error('Limit 30000, Requested 34000, account private-SENTINEL')
+    assert rate_wait(oversized) is None
+    code, message = service_failure(oversized)
+    assert code == 'RATE-SIZE' and 'SENTINEL' not in message
+    quota = rate_error()
+    quota.code = 'insufficient_quota'
+    assert rate_wait(quota) is None
+    assert rate_wait(rate_error(headers={'retry-after':'90'})) is None
+
+
+def test_retry_cannot_overrun_total_roadmap_time_budget():
+    client = MagicMock()
+    client.responses.create.side_effect = rate_error(headers={'retry-after':'50'})
+    with patch('chs_roadmap.time.monotonic', return_value=100), patch('chs_roadmap.time.sleep') as sleep, pytest.raises(RuntimeError):
+        _response(client,'test','review',{}, {}, 'chs_career_review',deadline=160)
+    sleep.assert_not_called()
+    assert client.responses.create.call_count == 1
