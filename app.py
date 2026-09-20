@@ -2,7 +2,7 @@ import os, io, base64, socket, json, secrets, time, hashlib, hmac
 from collections import defaultdict, deque
 from datetime import timedelta
 from pathlib import Path
-from chs_catalog import chs_for_grade
+from chs_pathways import generate_chs_roadmap, RoadmapUnavailable
 from bhs_catalog import (
     CAREER_COURSES as BHS_CAREER_COURSES,
     COURSES as BHS_CATALOG,
@@ -1406,13 +1406,15 @@ def chs_roadmap():
         return jsonify(ok=False,error="Unexpected roadmap fields."),400
     career,grade=data.get("career"),data.get("grade")
     path,priority=data.get("path","explore"),data.get("priority","Doing work I enjoy")
-    if career not in CAREERS or grade not in {"8","9","10","11","12"}:
+    if not isinstance(career, str) or not isinstance(grade, str) or career not in CAREERS or grade not in {"8","9","10","11","12"}:
         return jsonify(ok=False,error="Choose a career and a grade from 8 through 12."),400
-    if path not in {"employee","owner","explore"} or priority not in {"Doing work I enjoy","Helping people","High income potential","Creativity","Job stability","Being my own boss"}:
+    if not isinstance(path, str) or not isinstance(priority, str) or path not in {"employee","owner","explore"} or priority not in {"Doing work I enjoy","Helping people","High income potential","Creativity","Job stability","Being my own boss"}:
         return jsonify(ok=False,error="Choose valid pathway selections."),400
-    info=CAREERS[career]
-    rich,timeline,keys=rich_roadmap(career,info["steps"])
-    return jsonify(ok=True,career=career,grade=grade,school="CHS",summary=info["summary"],steps=info["steps"],rich_steps=rich,timeline=timeline,keys=keys,chs=chs_for_grade(career,grade,path,priority))
+    try:
+        plan = generate_chs_roadmap(career, grade, path=path, priority=priority)
+    except RoadmapUnavailable as error:
+        return jsonify(ok=False, error=str(error)), 503
+    return jsonify(ok=True, career=career, grade=grade, school="CHS", **plan)
 
 @app.route("/healthz")
 def healthz():
@@ -1565,6 +1567,12 @@ def admin_preview_generate():
     if grade not in {"8", "9", "10", "11", "12"}:
         return jsonify(ok=False, error="Choose a grade from 8 through 12."), 400
 
+    chs_plan = None
+    if school == "chs":
+        try:
+            chs_plan = generate_chs_roadmap(career_data[career].get("school_match", career), grade, path=path, priority=priority)
+        except RoadmapUnavailable as error:
+            return jsonify(ok=False, error=str(error)), 503
     info = career_data[career]
     if mode == "army":
         business_note = {
@@ -1613,6 +1621,9 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             timeline, keys = info["timeline"], info["keys"]
         elif school == "ghs":
             timeline, keys = GHS_DATA["meta"][career]
+        if chs_plan is not None:
+            info = {**info, "summary": chs_plan["summary"], "steps": chs_plan["steps"]}
+            rich_steps, timeline, keys = chs_plan["rich_steps"], chs_plan["timeline"], chs_plan["keys"]
         return jsonify(
             ok=True,
             fictional_demo=True,
@@ -1631,7 +1642,7 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             timeline=timeline,
             keys=keys,
             generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-count-1),
-            **({"chs": chs_for_grade(school_career, grade, path, priority)} if school == "chs" else ({"ghs": ghs_for_grade(school_career, grade, "explore", "Doing work I enjoy")} if school == "ghs" else {"bhs": bhs_for_grade(school_career, grade, "explore")})),
+            **({"chs": chs_plan["chs"]} if school == "chs" else ({"ghs": ghs_for_grade(school_career, grade, "explore", "Doing work I enjoy")} if school == "ghs" else {"bhs": bhs_for_grade(school_career, grade, "explore")})),
         )
     except Exception as error:
         category = type(error).__name__
@@ -1724,6 +1735,13 @@ def generate():
         # provider infrastructure cannot honestly guarantee a secure memory wipe.
         raw = b""
 
+    chs_plan = None
+    if is_chs:
+        try:
+            chs_plan = generate_chs_roadmap(career, grade, path=path, priority=priority)
+        except RoadmapUnavailable as error:
+            cleaned.close()
+            return jsonify(ok=False, error=str(error)), 503
     info=career_data[career]
     business_note = "The person should look like an established professional and small-business owner." if path=="owner" else ""
 
@@ -1796,6 +1814,9 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
         rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
         if is_ghs:
             timeline, keys = GHS_DATA["meta"][career]
+        if chs_plan is not None:
+            info = {**info, "summary": chs_plan["summary"], "steps": chs_plan["steps"]}
+            rich_steps, timeline, keys = chs_plan["rich_steps"], chs_plan["timeline"], chs_plan["keys"]
         return jsonify({
             "ok":True,
             "image":"data:image/png;base64,"+b64,
@@ -1811,7 +1832,7 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             "grade":grade,
             "school":"CHS" if is_chs else ("GHS" if is_ghs else "BHS"),
             "generations_left":max(0, MAX_GENERATIONS_PER_SESSION-count-1),
-            **({"chs":chs_for_grade(career,grade,path,priority)} if is_chs else ({} if is_ghs else {"bhs":bhs_for_grade(career,grade,path)}))
+            **({"chs":chs_plan["chs"]} if is_chs else ({} if is_ghs else {"bhs":bhs_for_grade(career,grade,path)}))
         })
     except Exception as e:
         # Keep provider diagnostics/credentials out of student-facing responses.

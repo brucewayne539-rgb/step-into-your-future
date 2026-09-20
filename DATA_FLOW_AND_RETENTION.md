@@ -1,10 +1,12 @@
-# Data Flow and Retention — V21
+## Cumberland catalog-backed roadmap — 20 September 2026
+
+Cumberland uses explicit, grade-specific pathways and the local CHS catalog. The current runtime does not call the OpenAI text API for roadmaps. The historical chs_roadmap module is retained for shared definitions and regression records; its AI planning functions are not used by the current routes. Portrait behavior and privacy gates are unchanged.
 
 ## No-photo roadmap (default)
 
 1. The browser sends four selected values: career, current grade, path, and priority.
 2. The Flask app validates each against fixed allowlists.
-3. Local BHS/GHS catalog data produces the roadmap.
+3. Local BHS/GHS/CHS catalog data produces the roadmap.
 4. No photo, future age, student name, OpenAI call, profile, or application database record is involved.
 
 ## Optional portrait (disabled by default on hosted deployments)
