@@ -1267,6 +1267,9 @@ def ghs_login():
         session.permanent = True
         session["generation_count"] = 0
         session["admin_preview_count"] = 0
+        pilot_school = session.pop("pending_pilot_school", None)
+        if pilot_school:
+            return redirect(url_for("school_pilot_demo", school=pilot_school))
         school = session.pop("pending_admin_school", "ghs")
         return redirect(url_for("admin_preview", school=school))
     return render_template_string(GHS_LOGIN, csrf_token=csrf_token(), error="That access code is not correct."), 403
@@ -1339,6 +1342,32 @@ def admin_preview():
         preview_status=status,
         csrf_token=csrf_token(),
         generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-int(session.get("admin_preview_count", 0))),
+    )
+
+
+@app.route("/pilot-demo", defaults={"school": "bhs"})
+@app.route("/ghs/pilot-demo", defaults={"school": "ghs"})
+@app.route("/chs/pilot-demo", defaults={"school": "chs"})
+def school_pilot_demo(school):
+    """Normal student-flow simulation backed only by bundled fictional faces."""
+    if ACCESS_CODE and not session.get("demo_access"):
+        session["pending_pilot_school"] = school
+        if school == "ghs":
+            return render_template_string(GHS_LOGIN, csrf_token=csrf_token())
+        return render_template("login.html", csrf_token=csrf_token())
+    ready, status = admin_preview_gate()
+    careers = GHS_CAREERS if school == "ghs" else CAREERS
+    return render_template(
+        "admin_preview.html",
+        school=school,
+        school_name={"ghs":"Guilford High School", "chs":"Cumberland High School", "bhs":"Branford High School"}[school],
+        careers=list(careers.keys()),
+        samples=DEMO_STUDENTS,
+        preview_ready=ready,
+        preview_status=status,
+        csrf_token=csrf_token(),
+        generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-int(session.get("admin_preview_count", 0))),
+        pilot_mode=True,
     )
 
 
@@ -1446,6 +1475,9 @@ def login():
         session["admin_preview_count"] = 0
         if session.pop("pending_armie", False):
             return redirect(url_for("armie_preview"))
+        pilot_school = session.pop("pending_pilot_school", None)
+        if pilot_school:
+            return redirect(url_for("school_pilot_demo", school=pilot_school))
         school = session.pop("pending_admin_school", "bhs")
         return redirect(url_for("admin_preview", school=school))
     code=(request.form.get("access_code") or "").strip()
@@ -1456,6 +1488,9 @@ def login():
         session["admin_preview_count"] = 0
         if session.pop("pending_armie", False):
             return redirect(url_for("armie_preview"))
+        pilot_school = session.pop("pending_pilot_school", None)
+        if pilot_school:
+            return redirect(url_for("school_pilot_demo", school=pilot_school))
         school = session.pop("pending_admin_school", "bhs")
         return redirect(url_for("admin_preview", school=school))
     return render_template("login.html", csrf_token=csrf_token(), error="That access code is not correct."), 403

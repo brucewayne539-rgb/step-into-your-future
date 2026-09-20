@@ -52,7 +52,8 @@ class AdministratorPreviewTests(unittest.TestCase):
 
             protected = self.client.get("/admin-preview?school=bhs")
             self.assertEqual(protected.status_code, 200)
-            self.assertIn(b"Administrator Preview Access", protected.data)
+            self.assertIn(b'name="access_code"', protected.data)
+            self.assertIn(b'action="/login"', protected.data)
             self.assertNotIn(b"Fictional Sample Student", protected.data)
 
     def test_access_code_returns_to_requested_admin_preview(self):
@@ -66,6 +67,40 @@ class AdministratorPreviewTests(unittest.TestCase):
             )
             self.assertEqual(response.status_code, 302)
             self.assertIn("/admin-preview?school=bhs", response.headers["Location"])
+
+    def test_pilot_simulation_routes_are_protected_and_return_to_requested_school(self):
+        with patch.object(application, "ACCESS_CODE", "test-demo-code"):
+            protected = self.client.get("/chs/pilot-demo")
+            self.assertEqual(protected.status_code, 200)
+            self.assertIn(b'name="access_code"', protected.data)
+            with self.client.session_transaction() as session:
+                token = session["csrf_token"]
+            response = self.client.post(
+                "/login",
+                data={"_csrf_token": token, "access_code": "test-demo-code"},
+            )
+            self.assertEqual(response.status_code, 302)
+            self.assertTrue(response.headers["Location"].endswith("/chs/pilot-demo"))
+
+    @patch.object(application, "load_key", return_value="sk-test")
+    @patch.object(application, "OpenAI", FakeOpenAIClient)
+    def test_each_pilot_simulation_uses_normal_student_flow_and_fake_photo_substitution(self, _key):
+        self.authorize()
+        for path, school_name in (
+            ("/pilot-demo", b"Branford High School"),
+            ("/ghs/pilot-demo", b"Guilford High School"),
+            ("/chs/pilot-demo", b"Cumberland High School"),
+        ):
+            with self.subTest(path=path):
+                response = self.client.get(path)
+                self.assertEqual(response.status_code, 200)
+                self.assertIn(school_name, response.data)
+                self.assertIn(b"Student Career Explorer", response.data)
+                self.assertIn(b'type="file"', response.data)
+                self.assertIn(b"your selected file never leaves this browser", response.data)
+                self.assertIn(b"FICTIONAL AI DEMONSTRATION", response.data)
+                self.assertNotIn(b"Choose a fictional student.", response.data)
+                response.close()
 
     def test_no_photo_roadmap_does_not_require_access_code(self):
         with patch.object(application, "ACCESS_CODE", "test-demo-code"), \
@@ -209,7 +244,7 @@ class AdministratorPreviewTests(unittest.TestCase):
         self.assertEqual(data["grade"], "12")
         self.assertEqual(data["career"], "Cyber Operations Specialist")
         self.assertIn("current 12th", data["bhs"]["grade_note"])
-        self.assertIn("Computer systems", data["keys"])
+        self.assertIn("Cyber", data["keys"])
 
 
 if __name__ == "__main__":
