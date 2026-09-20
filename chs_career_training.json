@@ -1,0 +1,884 @@
+{
+  "Architect": {
+    "summary": "Design buildings and spaces by combining creativity, math, technology, codes and collaboration.",
+    "steps": [
+      [
+        "College / Degree",
+        "Explore an accredited architecture degree or another approved route toward professional licensure."
+      ],
+      [
+        "Experience",
+        "Job-shadow, intern, build a portfolio, and seek design/engineering exposure."
+      ],
+      [
+        "Licensure",
+        "Complete required professional experience and licensing examinations for the state where you plan to practice."
+      ],
+      [
+        "Launch",
+        "Join a design firm, specialize, or eventually create your own practice."
+      ]
+    ]
+  },
+  "Electrician": {
+    "summary": "Install, troubleshoot and maintain electrical systems in homes, businesses, industry and new construction.",
+    "steps": [
+      [
+        "Apprenticeship",
+        "Apply for a registered apprenticeship or employer/union training route combining paid work and classroom instruction."
+      ],
+      [
+        "Licensing",
+        "Complete required hours and state examinations for the appropriate electrical credential."
+      ],
+      [
+        "Experience",
+        "Build residential, commercial or industrial troubleshooting, code and customer-service skills."
+      ],
+      [
+        "Business Option",
+        "With experience and proper licensing, explore estimating, insurance, accounting and owning a company."
+      ]
+    ]
+  },
+  "Registered Nurse": {
+    "summary": "Provide direct patient care, coordinate treatment, and educate patients and families.",
+    "steps": [
+      [
+        "Nursing Program",
+        "Complete an approved ADN or BSN nursing program."
+      ],
+      [
+        "Clinical Experience",
+        "Complete supervised clinical rotations in approved healthcare settings."
+      ],
+      [
+        "Licensure",
+        "Pass the NCLEX-RN and satisfy state licensing requirements."
+      ],
+      [
+        "Launch",
+        "Work in hospitals, clinics, schools, community health or a specialty area."
+      ]
+    ]
+  },
+  "Veterinarian": {
+    "summary": "Diagnose and treat animals while advising owners about health, prevention and care.",
+    "steps": [
+      [
+        "Bachelor's Preparation",
+        "Complete college prerequisites and gain animal/veterinary experience."
+      ],
+      [
+        "Veterinary School",
+        "Complete an accredited Doctor of Veterinary Medicine program."
+      ],
+      [
+        "Licensure",
+        "Complete applicable national and state licensing requirements."
+      ],
+      [
+        "Launch",
+        "Work in a clinic, specialty practice, public health, research or eventually own a practice."
+      ]
+    ]
+  },
+  "Software Developer": {
+    "summary": "Design and build software, websites, apps and digital systems.",
+    "steps": [
+      [
+        "Build Skills",
+        "Programming fundamentals, Git, web development, databases and problem solving."
+      ],
+      [
+        "Education",
+        "Compare computer science, software engineering, IT, community college, certificates or validated training routes."
+      ],
+      [
+        "Portfolio",
+        "Build real projects, internships, hackathons or open-source work."
+      ],
+      [
+        "Launch",
+        "Apply for junior developer roles, apprenticeships or internships and keep building a portfolio."
+      ]
+    ]
+  },
+  "Teacher": {
+    "summary": "Help students learn, grow and build skills in a classroom or specialized educational setting.",
+    "steps": [
+      [
+        "College",
+        "Complete an approved educator-preparation program and degree appropriate to the intended subject/grade level."
+      ],
+      [
+        "Student Teaching",
+        "Complete supervised field experiences and student teaching."
+      ],
+      [
+        "Certification",
+        "Meet state educator certification requirements for the intended endorsement."
+      ],
+      [
+        "Launch",
+        "Apply to districts, continue professional learning and consider additional endorsements."
+      ]
+    ]
+  },
+  "Firefighter": {
+    "summary": "Respond to fires, medical emergencies, rescues and community safety needs.",
+    "steps": [
+      [
+        "Emergency Skills",
+        "EMT training is commonly valuable or required depending on department."
+      ],
+      [
+        "Hiring",
+        "Meet department testing, background, medical and physical ability standards."
+      ],
+      [
+        "Academy",
+        "Complete required fire academy/recruit training."
+      ],
+      [
+        "Grow",
+        "Advance through experience, EMS/fire certifications and specialty training."
+      ]
+    ]
+  },
+  "Police Officer": {
+    "summary": "Protect the community, respond to emergencies, investigate incidents and work with residents.",
+    "steps": [
+      [
+        "Preparation",
+        "Explore criminal justice, public safety, military service or community-college pathways if useful."
+      ],
+      [
+        "Hiring Process",
+        "Meet agency age, education, background, medical, physical and examination requirements."
+      ],
+      [
+        "Academy",
+        "Complete an approved police academy and field training."
+      ],
+      [
+        "Grow",
+        "Develop expertise in community policing, investigations, youth services or leadership."
+      ]
+    ]
+  },
+  "TV News Reporter / Local Anchor": {
+    "summary": "Research, report and explain news stories clearly on camera and across digital platforms.",
+    "steps": [
+      [
+        "College / Training",
+        "Explore journalism, communications, broadcasting, political science or a related field."
+      ],
+      [
+        "Create a Reel",
+        "Work on school media, podcasts or video projects; learn interviewing, editing and fact-checking."
+      ],
+      [
+        "Internships",
+        "Seek newsroom, local-TV, radio, digital-media or communications internships."
+      ],
+      [
+        "Launch",
+        "Build an on-air/digital portfolio and begin in reporting, production or multimedia journalism."
+      ]
+    ]
+  },
+  "Broadway Director / Actor": {
+    "summary": "Build a professional life in theatre through acting, directing, auditions, rehearsal and production experience.",
+    "steps": [
+      [
+        "Training",
+        "Consider BFA/BA theatre programs, conservatory study, workshops, voice, movement and directing training."
+      ],
+      [
+        "Portfolio",
+        "Develop headshots, résumé, reels, directing materials and a record of productions."
+      ],
+      [
+        "Experience",
+        "Audition, assist directors, join productions, pursue internships and build professional relationships."
+      ],
+      [
+        "Launch",
+        "Pursue regional theatre, touring and New York opportunities; understand representation and union pathways."
+      ]
+    ]
+  },
+  "Chef / Restaurant Owner": {
+    "summary": "Create food, lead kitchen teams and potentially build a restaurant or food business.",
+    "steps": [
+      [
+        "Training",
+        "Choose culinary school, community college or direct kitchen apprenticeship/work experience."
+      ],
+      [
+        "Experience",
+        "Learn prep, line cooking, inventory, costing, sanitation and customer service."
+      ],
+      [
+        "Business Skills",
+        "Study bookkeeping, pricing, purchasing, staffing, marketing and licensing."
+      ],
+      [
+        "Ownership Option",
+        "Develop a concept and business plan; verify local food-service, health and business requirements."
+      ]
+    ]
+  },
+  "Automotive Technician": {
+    "summary": "Diagnose, repair and maintain cars and light trucks using mechanical and computerized systems.",
+    "steps": [
+      [
+        "Training",
+        "Consider technical school, community college, manufacturer programs or employer apprenticeship."
+      ],
+      [
+        "Hands-On Practice",
+        "Build diagnostic, electrical, brake, engine and computer-scanning skills."
+      ],
+      [
+        "Credentials",
+        "Work toward recognized industry certifications as experience requirements are met."
+      ],
+      [
+        "Launch",
+        "Join a dealership, independent shop, fleet operation or eventually operate a repair business."
+      ]
+    ]
+  },
+  "Physical Therapist": {
+    "summary": "Help people restore movement, strength and function after injury or illness.",
+    "steps": [
+      [
+        "Bachelor's Degree",
+        "Complete prerequisite coursework for Doctor of Physical Therapy programs."
+      ],
+      [
+        "DPT Program",
+        "Complete an accredited Doctor of Physical Therapy program and clinical rotations."
+      ],
+      [
+        "Licensure",
+        "Pass required national/state examinations and satisfy state licensing rules."
+      ],
+      [
+        "Launch",
+        "Work in hospitals, outpatient clinics, schools, sports medicine, home care or specialty practice."
+      ]
+    ]
+  },
+  "Plumber": {
+    "summary": "Install, repair and maintain water, drainage and piping systems in homes, businesses and construction projects.",
+    "steps": [
+      [
+        "Apprenticeship",
+        "Pursue a registered apprenticeship or approved employer/union training route with paid on-the-job learning."
+      ],
+      [
+        "Licensing",
+        "Complete required training hours and state or local licensing examinations where required."
+      ],
+      [
+        "Experience",
+        "Develop strong service, code, troubleshooting, estimating and customer-communication skills."
+      ],
+      [
+        "Business Option",
+        "With experience and proper licensing, explore estimating, insurance, bookkeeping and owning a plumbing company."
+      ]
+    ]
+  },
+  "Business Administration / Manager": {
+    "summary": "Plan, organize and lead people, budgets and operations so an organization can reach its goals.",
+    "steps": [
+      [
+        "Education",
+        "Explore business administration, management, accounting, marketing or related college and certificate pathways."
+      ],
+      [
+        "Experience",
+        "Seek internships, part-time work, clubs or projects that build leadership and customer-service experience."
+      ],
+      [
+        "Build Skills",
+        "Learn budgeting, spreadsheets, project management, hiring, communication and data-informed decision making."
+      ],
+      [
+        "Launch",
+        "Begin in an entry-level business role and grow toward supervision, operations, department leadership or entrepreneurship."
+      ]
+    ]
+  },
+  "Carpenter": {
+    "summary": "Build, install and repair structures and finishes using wood and other construction materials.",
+    "steps": [
+      [
+        "Training",
+        "Consider a registered apprenticeship, technical program or supervised employer training route."
+      ],
+      [
+        "Hands-On Skills",
+        "Develop framing, finish carpentry, blueprint reading, layout, installation and job-site safety skills."
+      ],
+      [
+        "Experience",
+        "Build a strong work record and learn estimating, scheduling, codes and customer service."
+      ],
+      [
+        "Business Option",
+        "With experience, explore specialty work, foreperson roles, contracting requirements and business ownership."
+      ]
+    ]
+  },
+  "Graphic Designer": {
+    "summary": "Create visual communications for print, digital media, brands, campaigns, products and organizations.",
+    "steps": [
+      [
+        "Training",
+        "Explore graphic design, visual communication, digital media or related college/certificate programs."
+      ],
+      [
+        "Portfolio",
+        "Create strong examples of logos, layouts, posters, social media, web and motion/digital design."
+      ],
+      [
+        "Experience",
+        "Seek school projects, internships, freelance assignments and real-client work while learning feedback and deadlines."
+      ],
+      [
+        "Launch",
+        "Apply for junior design roles, agency/in-house positions or build a freelance design practice."
+      ]
+    ]
+  },
+  "Neurosurgeon": {
+    "summary": "Diagnose and surgically treat complex conditions affecting the brain, spine and nervous system.",
+    "steps": [
+      [
+        "Undergraduate preparation",
+        "Typically, earn a bachelor’s degree and complete medical-school admission requirements. No single undergraduate major is required; plan science preparation with an academic adviser."
+      ],
+      [
+        "Medical school",
+        "Complete an MD or DO program, including supervised clinical training. Admission is competitive and preparation does not guarantee acceptance."
+      ],
+      [
+        "Neurosurgery residency",
+        "Complete specialized neurosurgery residency after medical school. This is an extended period of supervised clinical and surgical training."
+      ],
+      [
+        "Licensing and specialty practice",
+        "Meet medical licensing requirements, including the required examinations. Further fellowship training may support subspecialization; board certification is distinct from state licensure."
+      ]
+    ]
+  },
+  "Cybersecurity Specialist": {
+    "summary": "Protect computers, networks and information from attacks, misuse and security failures.",
+    "steps": [
+      [
+        "Compare education routes",
+        "A computing-related bachelor’s degree is a common route. Some people enter through relevant industry training and certifications; employer requirements vary."
+      ],
+      [
+        "Build practical IT experience",
+        "Develop skills in operating systems, networking and troubleshooting through authorized labs and relevant IT work. Related experience often helps with security roles."
+      ],
+      [
+        "Consider useful certifications",
+        "Compare certifications with the requirements of roles that interest you. Employers may prefer them, but no single certification guarantees employment."
+      ],
+      [
+        "Apply and keep learning",
+        "Use your training and experience to pursue suitable security roles. Continue developing your knowledge as systems, threats and defensive practices change."
+      ]
+    ]
+  },
+  "Data Scientist / AI Specialist": {
+    "summary": "Use statistics, programming and machine learning to find patterns in data and build useful predictive or AI systems.",
+    "steps": [
+      [
+        "Education",
+        "Explore data science, statistics, computer science, mathematics, engineering or related college pathways."
+      ],
+      [
+        "Technical Skills",
+        "Learn Python, SQL, statistics, data visualization, machine learning and responsible AI practices."
+      ],
+      [
+        "Portfolio",
+        "Build projects using public or authorized data and explain both the method and business/social value."
+      ],
+      [
+        "Launch",
+        "Seek internships and analyst/data roles; continue developing specialty expertise as tools change."
+      ]
+    ]
+  },
+  "Dental Hygienist": {
+    "summary": "Provide preventive oral-health care, clean teeth, assess patients and teach healthy dental habits.",
+    "steps": [
+      [
+        "Program",
+        "Complete an accredited dental hygiene education program and required clinical experiences."
+      ],
+      [
+        "Licensure",
+        "Pass the examinations and satisfy the licensing requirements for the state where you plan to work."
+      ],
+      [
+        "Experience",
+        "Develop strong patient-care, prevention, documentation and teamwork skills in clinical settings."
+      ],
+      [
+        "Launch",
+        "Work in dental practices, public-health settings or other approved oral-health roles."
+      ]
+    ]
+  },
+  "Doctor / Physician": {
+    "summary": "Diagnose illness, provide treatment and guide patients in maintaining or restoring health.",
+    "steps": [
+      [
+        "College",
+        "Complete a bachelor's degree and pre-medical requirements while gaining healthcare, research or service experience."
+      ],
+      [
+        "Medical School",
+        "Complete an accredited MD or DO program and required licensing examinations."
+      ],
+      [
+        "Residency",
+        "Train in a chosen specialty through a supervised residency; some specialties require fellowship training."
+      ],
+      [
+        "Practice",
+        "Complete licensing/credentialing requirements and practice in hospitals, clinics, academic medicine or other settings."
+      ]
+    ]
+  },
+  "HVAC Technician": {
+    "summary": "Install, maintain and repair heating, ventilation, air-conditioning and refrigeration systems.",
+    "steps": [
+      [
+        "Training",
+        "Explore technical school, community college, apprenticeship or employer-based HVAC training."
+      ],
+      [
+        "Credentials",
+        "Earn required refrigerant-handling and other applicable certifications and licenses."
+      ],
+      [
+        "Experience",
+        "Build diagnostic, electrical, airflow, controls and customer-service skills."
+      ],
+      [
+        "Grow",
+        "Advance into commercial systems, controls, estimating, supervision or properly licensed business ownership."
+      ]
+    ]
+  },
+  "Lawyer / Attorney": {
+    "summary": "Advise clients, interpret laws, research issues and advocate in negotiations, transactions or court proceedings.",
+    "steps": [
+      [
+        "College",
+        "Complete a bachelor's degree in a field that develops strong reasoning, research and communication skills."
+      ],
+      [
+        "Law School",
+        "Complete an accredited law degree program and gain practical experience through clinics, internships or summer work."
+      ],
+      [
+        "Licensure",
+        "Meet character-and-fitness and bar-examination requirements for the jurisdiction where you plan to practice."
+      ],
+      [
+        "Launch",
+        "Begin in a firm, government, nonprofit, corporate legal department or another legal setting and build specialty expertise."
+      ]
+    ]
+  },
+  "Marketing / Advertising Professional": {
+    "summary": "Connect products, services and causes with audiences through research, strategy, storytelling and campaigns.",
+    "steps": [
+      [
+        "Education",
+        "Explore marketing, business, communications, advertising, analytics or related college/certificate programs."
+      ],
+      [
+        "Portfolio",
+        "Create campaigns, social content, research projects and measurable examples of audience growth or engagement."
+      ],
+      [
+        "Experience",
+        "Seek internships, school organizations, local businesses or nonprofit projects to learn real deadlines and clients."
+      ],
+      [
+        "Launch",
+        "Apply for marketing coordinator, content, digital, account or analytics roles and develop a specialty."
+      ]
+    ]
+  },
+  "Medical & Health Services Manager": {
+    "summary": "Lead the business and operational side of healthcare organizations, departments and services.",
+    "steps": [
+      [
+        "Education",
+        "Explore healthcare administration, business, public health or related bachelor's programs; some roles value graduate study."
+      ],
+      [
+        "Experience",
+        "Seek healthcare, office, customer-service, internship or project-management experience."
+      ],
+      [
+        "Build Skills",
+        "Learn budgeting, compliance, staffing, data, quality improvement and healthcare operations."
+      ],
+      [
+        "Launch",
+        "Begin in healthcare administration or operations and advance toward department or facility leadership."
+      ]
+    ]
+  },
+  "Nurse Practitioner": {
+    "summary": "Provide advanced nursing care, assess patients and diagnose and manage many health conditions within state scope-of-practice rules.",
+    "steps": [
+      [
+        "Nursing education",
+        "Complete an approved nursing program that prepares you for RN licensure, such as a BSN or an associate nursing degree. Pre-nursing prerequisites alone do not qualify you as an RN."
+      ],
+      [
+        "RN licensure and preparation",
+        "Pass the NCLEX-RN and meet state RN requirements. Compare graduate NP admission requirements; bridge programs may be available for RNs without a BSN."
+      ],
+      [
+        "Graduate nurse practitioner education",
+        "Complete an appropriate graduate NP program, at the master's or doctoral level, including supervised clinical preparation for your chosen patient population."
+      ],
+      [
+        "Certification and advanced practice",
+        "Meet national NP certification and state advanced-practice licensing requirements before practicing in that role. Requirements depend on the state and specialty."
+      ]
+    ]
+  },
+  "Occupational Therapist": {
+    "summary": "Help people develop or regain the everyday skills they need for school, work, home and independent living.",
+    "steps": [
+      [
+        "College Preparation",
+        "Complete bachelor's-level prerequisites for an accredited occupational therapy graduate program."
+      ],
+      [
+        "OT Program",
+        "Complete an accredited occupational therapy graduate program and required fieldwork."
+      ],
+      [
+        "Certification / Licensure",
+        "Meet national certification and state licensing requirements."
+      ],
+      [
+        "Launch",
+        "Work in hospitals, schools, rehabilitation, pediatrics, mental health, home care or specialty practice."
+      ]
+    ]
+  },
+  "Physician Assistant": {
+    "summary": "Provide medical care on healthcare teams by evaluating patients, diagnosing conditions and helping manage treatment.",
+    "steps": [
+      [
+        "College / Prerequisites",
+        "Complete a bachelor's degree and the science/experience prerequisites required by PA programs."
+      ],
+      [
+        "PA Program",
+        "Complete an accredited physician-assistant graduate program and supervised clinical rotations."
+      ],
+      [
+        "Certification / Licensure",
+        "Pass required national certification and meet state licensing requirements."
+      ],
+      [
+        "Launch",
+        "Work in primary care, hospitals, surgery, emergency medicine or a specialty and maintain continuing education."
+      ]
+    ]
+  },
+  "School Counselor / Mental Health Counselor": {
+    "summary": "Support people with academic, career, social-emotional or mental-health goals through counseling and guidance.",
+    "steps": [
+      [
+        "Choose the counseling role",
+        "Compare school counseling with clinical mental-health counseling. Their graduate programs, supervised practice and state credentials differ."
+      ],
+      [
+        "College and graduate preparation",
+        "Complete relevant undergraduate preparation and a graduate program appropriate to the counseling role and jurisdiction you choose."
+      ],
+      [
+        "Supervised practice and credentials",
+        "Meet the supervised experience and certification or licensing requirements for that role before independent practice."
+      ],
+      [
+        "Enter the field",
+        "Seek positions matching your qualifications and continue professional learning and supervision as required."
+      ]
+    ]
+  },
+  "Web / Digital Designer": {
+    "summary": "Design useful, attractive websites and digital experiences by combining visual design, user needs and technology.",
+    "steps": [
+      [
+        "Training",
+        "Explore web design, UX/UI, digital media, graphic design or front-end development pathways."
+      ],
+      [
+        "Skills",
+        "Learn layout, accessibility, responsive design, prototyping, HTML/CSS basics and user-centered design."
+      ],
+      [
+        "Portfolio",
+        "Create several polished websites or app prototypes and explain the design decisions behind them."
+      ],
+      [
+        "Launch",
+        "Apply for junior web, UI/UX or digital-design roles or begin carefully scoped freelance work."
+      ]
+    ]
+  },
+  "Welder / Fabricator": {
+    "summary": "Join and shape metal to build, repair and manufacture structures, equipment and products.",
+    "steps": [
+      [
+        "Training",
+        "Explore technical school, community college, apprenticeship or employer welding programs."
+      ],
+      [
+        "Hands-On Skills",
+        "Practice appropriate welding processes, cutting, fabrication, inspection and safe equipment use."
+      ],
+      [
+        "Credentials",
+        "Earn employer- or industry-recognized qualifications needed for the type of welding you want to do."
+      ],
+      [
+        "Launch",
+        "Work in construction, manufacturing, shipbuilding, repair or specialty fabrication and continue developing advanced skills."
+      ]
+    ]
+  },
+  "Engineer": {
+    "summary": "Use math, science and design to solve practical problems and create systems, products, structures or technology.",
+    "steps": [
+      [
+        "College",
+        "Explore an accredited engineering program in a field such as mechanical, civil, electrical, chemical or biomedical engineering."
+      ],
+      [
+        "Projects",
+        "Join design teams, labs, competitions, co-ops or internships and build evidence of hands-on problem solving."
+      ],
+      [
+        "Professional Path",
+        "Learn whether your specialty benefits from or requires engineering-in-training and professional licensure steps."
+      ],
+      [
+        "Launch",
+        "Begin as an entry-level engineer, develop technical expertise and grow toward project or team leadership."
+      ]
+    ]
+  },
+  "Accountant / Financial Manager": {
+    "summary": "Help people and organizations understand money, budgets, reporting, controls and financial decisions.",
+    "steps": [
+      [
+        "Education",
+        "Explore accounting, finance or business degree pathways and understand credential requirements for your goals."
+      ],
+      [
+        "Experience",
+        "Seek internships or entry-level work involving bookkeeping, budgeting, audit, tax, banking or financial analysis."
+      ],
+      [
+        "Credentials",
+        "For accounting roles that require or value CPA licensure, verify the education, exam and experience rules in your state."
+      ],
+      [
+        "Launch",
+        "Start in accounting or finance and grow toward senior analyst, controller, financial manager or advisory roles."
+      ]
+    ]
+  },
+  "Entrepreneur / Business Owner": {
+    "summary": "Create and grow a business by solving a customer problem, managing money and leading day-to-day operations.",
+    "steps": [
+      [
+        "Learn the Industry",
+        "Gain real work experience in the field where you might eventually start a business."
+      ],
+      [
+        "Business Skills",
+        "Learn pricing, bookkeeping, taxes, insurance, marketing, sales, customer service and hiring basics."
+      ],
+      [
+        "Test the Idea",
+        "Research customers and competitors, estimate startup costs and test a small version before taking large risks."
+      ],
+      [
+        "Launch / Grow",
+        "Create a realistic business plan, meet legal/licensing requirements, track cash flow and grow carefully."
+      ]
+    ]
+  },
+  "Special Education Teacher": {
+    "summary": "Help students with disabilities learn, build independence and reach individualized academic, social and transition goals.",
+    "steps": [
+      [
+        "College / Special-Education Curriculum",
+        "Typical coursework: exceptional learners, IEP development, assessment, behavior supports, assistive technology, literacy/numeracy interventions, inclusive instruction, collaboration and special-education law/ethics."
+      ],
+      [
+        "Experience",
+        "Complete supervised field placements and student teaching with students who have varied learning and support needs."
+      ],
+      [
+        "Credentials / Qualifications",
+        "Complete an approved special-education teacher-preparation program and meet state certification/endorsement requirements."
+      ],
+      [
+        "Career Launch",
+        "Begin in resource, inclusion, life-skills or other special-education settings and continue specialty training."
+      ]
+    ]
+  },
+  "Military / Armed Forces": {
+    "summary": "Serve in one of the U.S. Armed Forces in a military specialty that may involve leadership, technology, logistics, medicine, engineering, aviation, communications or other fields.",
+    "steps": [
+      [
+        "Service / Officer-Training Curriculum",
+        "Enlisted route: basic training plus a job-specific technical school. Officer routes may include college + ROTC, a service academy or Officer Candidate/Training School. Technical curriculum depends on specialty: aviation, cyber, logistics, medicine, intelligence, engineering and more."
+      ],
+      [
+        "Experience",
+        "Research branches and specialties carefully, compare service commitments/benefits and speak with family, counselors, veterans and official recruiters before deciding."
+      ],
+      [
+        "Credentials / Qualifications",
+        "Meet service eligibility, testing, medical/fitness and training requirements; some specialties also provide civilian-recognized technical credentials."
+      ],
+      [
+        "Career Launch",
+        "Enter an enlisted specialty or commissioning path and deliberately track civilian-transferable skills, education and certifications."
+      ]
+    ]
+  },
+  "Customer Service Representative": {
+    "summary": "Help customers solve problems, understand products or services, and have a positive experience with a business or organization.",
+    "steps": [
+      [
+        "Workplace / Business Training",
+        "Common training topics: customer communication, de-escalation, product/service knowledge, CRM software, data entry, business writing, privacy/security and problem resolution. College is not always required."
+      ],
+      [
+        "Experience",
+        "Use retail, hospitality, office, school-help-desk or volunteer roles to practice solving problems for real people."
+      ],
+      [
+        "Credentials / Qualifications",
+        "No universal license; role-specific product, software or industry certifications may help."
+      ],
+      [
+        "Career Launch",
+        "Begin in customer service/support and progress into senior support, quality, training, sales, operations or supervision."
+      ]
+    ]
+  },
+  "Elected Official / Politician": {
+    "summary": "Represent a community in public office by listening to constituents, studying issues, building coalitions and helping shape laws, budgets and policy.",
+    "steps": [
+      [
+        "College / Public-Policy Curriculum",
+        "Common useful college study includes political science, public policy, economics, communications or law, with courses such as American government, constitutional law, public policy, statistics, economics and public speaking. A specific degree is not legally required for elected office."
+      ],
+      [
+        "Experience",
+        "Volunteer on campaigns/community boards, attend public meetings, organize around an issue and learn constituent communication."
+      ],
+      [
+        "Credentials / Qualifications",
+        "Eligibility rules depend on the office and jurisdiction; credibility comes from community involvement, knowledge, ethics and leadership."
+      ],
+      [
+        "Career Launch",
+        "Begin with community/campaign service, appointed boards or local office and build a public record before seeking larger roles."
+      ]
+    ]
+  },
+  "Caregiver / Personal Care Aide": {
+    "summary": "Support older adults or people with disabilities with daily living, safety, companionship and independence in homes or care settings.",
+    "steps": [
+      [
+        "Direct-Care Training Curriculum",
+        "Typical training: personal care, infection control, mobility/transfers, nutrition, dementia/disability support, communication, documentation, emergency response and client rights. CNA/HHA training may be useful or required for certain roles/settings."
+      ],
+      [
+        "Experience",
+        "Build supervised experience helping people with daily participation, independence and social/emotional support."
+      ],
+      [
+        "Credentials / Qualifications",
+        "Requirements vary by job and setting; CPR/first aid and CNA/HHA or agency training may be required."
+      ],
+      [
+        "Career Launch",
+        "Work in home care, assisted living, disability support, senior care or community programs and build specialty credentials."
+      ]
+    ]
+  },
+  "Construction Manager": {
+    "summary": "Plan and coordinate construction projects by managing schedules, budgets, safety, contractors, materials, quality and communication.",
+    "steps": [
+      [
+        "College / Construction-Management Curriculum",
+        "Typical coursework: construction methods/materials, estimating, scheduling, contracts, safety, blueprint reading/BIM, cost control, project management, accounting and field operations."
+      ],
+      [
+        "Experience",
+        "Pursue construction-site internships/co-ops and learn how superintendents, trades, designers, owners and inspectors coordinate."
+      ],
+      [
+        "Credentials / Qualifications",
+        "A bachelor’s degree is common for management-track roles; industry safety/project credentials can strengthen advancement."
+      ],
+      [
+        "Career Launch",
+        "Begin as project engineer/assistant PM/field coordinator and progress toward project manager or superintendent."
+      ]
+    ]
+  },
+  "Psychologist": {
+    "summary": "Study behavior and mental processes and, depending on specialty and licensure, assess, research or help people improve mental health and functioning.",
+    "steps": [
+      [
+        "College + Psychology Graduate Curriculum",
+        "Typical undergraduate psychology: developmental, abnormal, social, cognitive and biological psychology, research methods and statistics. Clinical/counseling graduate study adds assessment, psychotherapy, ethics, advanced research, practicum and internship."
+      ],
+      [
+        "Experience",
+        "Build research/helping experience; clinical psychologists complete extensive supervised practicum/internship training."
+      ],
+      [
+        "Credentials / Qualifications",
+        "Independent clinical psychologist practice typically requires a doctoral degree, supervised experience, examination and state licensure; other psychology careers have different requirements."
+      ],
+      [
+        "Career Launch",
+        "Work in clinical, school, research, organizational or community settings depending on degree/credential path."
+      ]
+    ]
+  }
+}

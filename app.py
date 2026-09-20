@@ -2,7 +2,7 @@ import os, io, base64, socket, json, secrets, time, hashlib, hmac
 from collections import defaultdict, deque
 from datetime import timedelta
 from pathlib import Path
-from chs_roadmap import generate_chs_roadmap, RoadmapUnavailable
+from chs_pathways import generate_chs_roadmap, RoadmapUnavailable
 from bhs_catalog import (
     CAREER_COURSES as BHS_CAREER_COURSES,
     COURSES as BHS_CATALOG,
@@ -1411,7 +1411,7 @@ def chs_roadmap():
     if not isinstance(path, str) or not isinstance(priority, str) or path not in {"employee","owner","explore"} or priority not in {"Doing work I enjoy","Helping people","High income potential","Creativity","Job stability","Being my own boss"}:
         return jsonify(ok=False,error="Choose valid pathway selections."),400
     try:
-        plan = generate_chs_roadmap(career, grade, api_key=load_key())
+        plan = generate_chs_roadmap(career, grade, path=path, priority=priority)
     except RoadmapUnavailable as error:
         return jsonify(ok=False, error=str(error)), 503
     return jsonify(ok=True, career=career, grade=grade, school="CHS", **plan)
@@ -1570,7 +1570,7 @@ def admin_preview_generate():
     chs_plan = None
     if school == "chs":
         try:
-            chs_plan = generate_chs_roadmap(career_data[career].get("school_match", career), grade, api_key=load_key())
+            chs_plan = generate_chs_roadmap(career_data[career].get("school_match", career), grade, path=path, priority=priority)
         except RoadmapUnavailable as error:
             return jsonify(ok=False, error=str(error)), 503
     info = career_data[career]
@@ -1738,7 +1738,7 @@ def generate():
     chs_plan = None
     if is_chs:
         try:
-            chs_plan = generate_chs_roadmap(career, grade, api_key=load_key())
+            chs_plan = generate_chs_roadmap(career, grade, path=path, priority=priority)
         except RoadmapUnavailable as error:
             cleaned.close()
             return jsonify(ok=False, error=str(error)), 503
