@@ -1,3 +1,8 @@
+CUMBERLAND REVIEW CANDIDATE — 20 September 2026
+Read README_CHS_AI_REVIEW.txt first. Live AI educational validation is pending.
+Use a separate test branch/service; the existing live demonstration is unchanged.
+
+--- Earlier package instructions ---
 STEP INTO YOUR FUTURE — TODAY!
 BHS + GHS SCHOOL-READINESS BUILD V22
 

@@ -1,0 +1,15 @@
+CUMBERLAND SMALL UPDATE - REVIEW BUILD ONLY
+
+This smaller package contains the changed files and Cumberland artwork.
+It keeps the large, unchanged BHS/GHS files and fictional portraits in your
+existing GitHub repository. It is an update, not a standalone application.
+
+1. Download the ZIP to your computer.
+2. In Windows Downloads, right-click CHS_Update_Small.zip > Extract All.
+3. Read README_CHS_AI_REVIEW.txt for the separate GitHub test branch and
+   Render test-service instructions. Upload the extracted files and folders
+   onto that branch; do not delete the existing files or upload the ZIP itself.
+
+Live AI educational validation is still pending. Do not replace your live demo.
+This update was checked against your September 19 repository ZIP and reconstructs
+the full review candidate without re-downloading its unchanged assets.

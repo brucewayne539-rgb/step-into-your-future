@@ -52,7 +52,8 @@ class AdministratorPreviewTests(unittest.TestCase):
 
             protected = self.client.get("/admin-preview?school=bhs")
             self.assertEqual(protected.status_code, 200)
-            self.assertIn(b"Administrator Preview Access", protected.data)
+            self.assertIn(b'name="access_code"', protected.data)
+            self.assertIn(b'action="/login"', protected.data)
             self.assertNotIn(b"Fictional Sample Student", protected.data)
 
     def test_access_code_returns_to_requested_admin_preview(self):
@@ -209,7 +210,7 @@ class AdministratorPreviewTests(unittest.TestCase):
         self.assertEqual(data["grade"], "12")
         self.assertEqual(data["career"], "Cyber Operations Specialist")
         self.assertIn("current 12th", data["bhs"]["grade_note"])
-        self.assertIn("Computer systems", data["keys"])
+        self.assertIn("Cyber", data["keys"])
 
 
 if __name__ == "__main__":

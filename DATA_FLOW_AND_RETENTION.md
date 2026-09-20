@@ -1,3 +1,7 @@
+## Cumberland AI roadmap update — 20 September 2026
+
+Cumberland now sends school, grade, career and public course records to the OpenAI text API for planning and a second review. It sends no name, transcript or photo to the text planner. Both requests use `store=false`; this does not establish provider zero retention. BHS/GHS local roadmap behavior and all real-photo privacy gates remain unchanged. Earlier local-only roadmap descriptions below apply to BHS/GHS, not the new CHS engine.
+
 # Data Flow and Retention — V21
 
 ## No-photo roadmap (default)
