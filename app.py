@@ -2,6 +2,7 @@ import os, io, base64, socket, json, secrets, time, hashlib, hmac
 from collections import defaultdict, deque
 from datetime import timedelta
 from pathlib import Path
+from chs_catalog import chs_for_grade
 from bhs_catalog import (
     CAREER_COURSES as BHS_CAREER_COURSES,
     COURSES as BHS_CATALOG,
@@ -1319,7 +1320,7 @@ def demo_student_asset(sample_id):
 @app.route("/admin-preview")
 def admin_preview():
     school = (request.args.get("school") or "bhs").lower()
-    if school not in {"bhs", "ghs"}:
+    if school not in {"bhs", "ghs", "chs"}:
         school = "bhs"
     if ACCESS_CODE and not session.get("demo_access"):
         session["pending_admin_school"] = school
@@ -1327,11 +1328,11 @@ def admin_preview():
             return render_template_string(GHS_LOGIN, csrf_token=csrf_token())
         return render_template("login.html", csrf_token=csrf_token())
     ready, status = admin_preview_gate()
-    careers = GHS_CAREERS if school == "ghs" else CAREERS
+    careers = CAREERS if school == "chs" else (GHS_CAREERS if school == "ghs" else CAREERS)
     return render_template(
         "admin_preview.html",
         school=school,
-        school_name="Guilford High School" if school == "ghs" else "Branford High School",
+        school_name={"ghs":"Guilford High School", "chs":"Cumberland High School", "bhs":"Branford High School"}[school],
         careers=list(careers.keys()),
         samples=DEMO_STUDENTS,
         preview_ready=ready,
@@ -1367,6 +1368,51 @@ def armie_preview():
         army_priorities=sorted(ARMIE_PRIORITIES),
     )
 
+
+
+@app.route("/chs-approved-hero.png")
+def chs_hero_final_asset():
+    return send_from_directory(app.root_path, "chs-approved-hero.png", mimetype="image/png")
+
+@app.route("/chs-app-icon.png")
+def chs_icon_asset():
+    return send_from_directory(app.root_path, "chs-app-icon.png", mimetype="image/png")
+
+@app.route("/chs-approved-hero.jpg")
+def chs_hero_asset():
+    return send_from_directory(app.root_path, "chs-approved-hero.jpg", mimetype="image/jpeg")
+
+@app.route("/chs-ocean-waves.jpg")
+def chs_wave_asset():
+    return send_from_directory(app.root_path,"chs-ocean-waves.jpg",mimetype="image/jpeg")
+
+@app.route("/chs")
+@app.route("/chs/")
+def chs_home():
+    """CHS school landing and catalog-backed, photo-free preview."""
+    portrait_enabled, portrait_status = portrait_gate()
+    return render_template("chs.html", careers=list(CAREERS.keys()), csrf_token=csrf_token(),
+                           portrait_enabled=portrait_enabled, portrait_status=portrait_status,
+                           admin_preview_enabled=ADMIN_PREVIEW_ENABLED)
+
+@app.route("/api/chs/roadmap", methods=["POST"])
+def chs_roadmap():
+    if rate_limited("chs-roadmap",60,10*60):
+        return jsonify(ok=False,error="Too many requests. Try again shortly."),429
+    if not request.is_json:
+        return jsonify(ok=False,error="Please send the roadmap selections."),400
+    data=request.get_json(silent=True)
+    if not isinstance(data,dict) or set(data)-{"career","grade","path","priority"}:
+        return jsonify(ok=False,error="Unexpected roadmap fields."),400
+    career,grade=data.get("career"),data.get("grade")
+    path,priority=data.get("path","explore"),data.get("priority","Doing work I enjoy")
+    if career not in CAREERS or grade not in {"8","9","10","11","12"}:
+        return jsonify(ok=False,error="Choose a career and a grade from 8 through 12."),400
+    if path not in {"employee","owner","explore"} or priority not in {"Doing work I enjoy","Helping people","High income potential","Creativity","Job stability","Being my own boss"}:
+        return jsonify(ok=False,error="Choose valid pathway selections."),400
+    info=CAREERS[career]
+    rich,timeline,keys=rich_roadmap(career,info["steps"])
+    return jsonify(ok=True,career=career,grade=grade,school="CHS",summary=info["summary"],steps=info["steps"],rich_steps=rich,timeline=timeline,keys=keys,chs=chs_for_grade(career,grade,path,priority))
 
 @app.route("/healthz")
 def healthz():
@@ -1504,7 +1550,7 @@ def admin_preview_generate():
     mode = data.get("mode") or "standard"
     sample = DEMO_STUDENTS.get(sample_id)
     grade = data.get("grade") or (sample["grade"] if sample else "9")
-    if school not in {"bhs", "ghs"} or not sample:
+    if school not in {"bhs", "ghs", "chs"} or not sample:
         return jsonify(ok=False, error="Choose one of the available fictional student previews."), 400
     career_data = ARMY_CAREERS if mode == "army" else (GHS_CAREERS if school == "ghs" else CAREERS)
     if career not in career_data:
@@ -1516,8 +1562,8 @@ def admin_preview_generate():
     allowed_priorities = ARMIE_PRIORITIES if mode == "army" else {"Doing work I enjoy", "Helping people", "High income potential", "Creativity", "Job stability", "Being my own boss"}
     if priority not in allowed_priorities:
         return jsonify(ok=False, error="Choose one of the available priorities."), 400
-    if grade not in {"9", "10", "11", "12"}:
-        return jsonify(ok=False, error="Choose a high-school grade from 9 through 12."), 400
+    if grade not in {"8", "9", "10", "11", "12"}:
+        return jsonify(ok=False, error="Choose a grade from 8 through 12."), 400
 
     info = career_data[career]
     if mode == "army":
@@ -1585,7 +1631,7 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             timeline=timeline,
             keys=keys,
             generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-count-1),
-            **({"ghs": ghs_for_grade(school_career, grade, "explore", "Doing work I enjoy")} if school == "ghs" else {"bhs": bhs_for_grade(school_career, grade, "explore")}),
+            **({"chs": chs_for_grade(school_career, grade, path, priority)} if school == "chs" else ({"ghs": ghs_for_grade(school_career, grade, "explore", "Doing work I enjoy")} if school == "ghs" else {"bhs": bhs_for_grade(school_career, grade, "explore")})),
         )
     except Exception as error:
         category = type(error).__name__
@@ -1603,6 +1649,7 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
         if bio is not None:
             bio.close()
 
+@app.route("/api/chs/generate", methods=["POST"])
 @app.route("/api/ghs/generate", methods=["POST"])
 @app.route("/api/generate", methods=["POST"])
 def generate():
@@ -1623,6 +1670,7 @@ def generate():
         return jsonify({"ok":False,"error":"The OpenAI Python package is not installed. Run START_APP.bat again."}),500
 
     is_ghs = request.path == "/api/ghs/generate"
+    is_chs = request.path == "/api/chs/generate"
     career_data = GHS_CAREERS if is_ghs else CAREERS
     photo=request.files.get("photo")
     career=(request.form.get("career") or "").strip()
@@ -1761,9 +1809,9 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             "path":path,
             "priority":priority,
             "grade":grade,
-            "school":"GHS" if is_ghs else "BHS",
+            "school":"CHS" if is_chs else ("GHS" if is_ghs else "BHS"),
             "generations_left":max(0, MAX_GENERATIONS_PER_SESSION-count-1),
-            **({} if is_ghs else {"bhs":bhs_for_grade(career, grade, path)})
+            **({"chs":chs_for_grade(career,grade,path,priority)} if is_chs else ({} if is_ghs else {"bhs":bhs_for_grade(career,grade,path)}))
         })
     except Exception as e:
         # Keep provider diagnostics/credentials out of student-facing responses.

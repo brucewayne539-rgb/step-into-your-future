@@ -6,7 +6,7 @@
 <title>{% if army_mode|default(false) %}Meet Armie | Army Career Exploration{% else %}Administrator Preview | Step Into Your Future{% endif %}</title>
 <style>
 :root{--ink:#102536;--muted:#5d6d78;--paper:#fff;--line:#d8e3e9;--blue:#0b5fa4;--gold:#e8ad2c;--green:#087049;--red:#a30e29}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:linear-gradient(145deg,#edf6fb,#f8fbfd);line-height:1.5}body.ghs{--accent:var(--green);--accent2:#0c3f2e}body.bhs{--accent:var(--red);--accent2:#171719}body.army{--accent:#b89a45;--accent2:#11170f;background:radial-gradient(circle at 85% 5%,#d8c47733,transparent 24%),linear-gradient(145deg,#e7e7dc,#f8f7ef)}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:linear-gradient(145deg,#edf6fb,#f8fbfd);line-height:1.5}body.chs{--accent:#277cb7;--accent2:#153e72;--ink:#183d61;--line:#d5e7f2}body.ghs{--accent:var(--green);--accent2:#0c3f2e}body.chs{--accent:#176eac;--accent2:#123c67;background:#fff url("/chs-ocean-waves.jpg") center bottom / 100% auto no-repeat fixed}body.bhs{--accent:var(--red);--accent2:#171719}body.army{--accent:#b89a45;--accent2:#11170f;background:radial-gradient(circle at 85% 5%,#d8c47733,transparent 24%),linear-gradient(145deg,#e7e7dc,#f8f7ef)}
 header{background:linear-gradient(120deg,var(--accent2),var(--accent));color:#fff;padding:24px clamp(18px,4vw,54px);box-shadow:0 10px 30px #10253620}.brand{font-size:clamp(25px,4vw,42px);font-weight:950;line-height:1}.brand span{color:#ffe59a}.school{margin-top:9px;font-size:12px;font-weight:900;letter-spacing:2px;text-transform:uppercase}.topnote{margin-top:13px;max-width:860px;color:#edf7f2;font-weight:650}
 main{width:min(1120px,calc(100% - 28px));margin:28px auto 54px}.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:clamp(20px,4vw,36px);box-shadow:0 18px 48px #10253614;margin-bottom:22px}h1,h2,h3{line-height:1.1;margin-top:0}h1{font-size:clamp(30px,5vw,48px);margin-bottom:10px}.eyebrow{font-size:12px;font-weight:950;letter-spacing:2px;color:var(--accent);text-transform:uppercase}.notice{border-left:6px solid var(--accent);background:#f2f7fa;border-radius:12px;padding:14px 16px;margin:18px 0}.status{font-weight:800}.status.ready{color:#075d3c}.status.blocked{color:#9c2736}
 .samples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:20px}.sample{position:relative;border:3px solid transparent;border-radius:20px;overflow:hidden;background:#f5f8fa;cursor:pointer;transition:.18s;box-shadow:0 10px 24px #10253613}.sample:hover{transform:translateY(-2px)}.sample:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent),0 12px 28px #10253620}.sample input{position:absolute;top:14px;left:14px;width:22px;height:22px;accent-color:var(--accent);z-index:2}.sample img{width:100%;height:300px;display:block;object-fit:cover;object-position:center 25%}.samplecopy{padding:14px 16px}.samplecopy strong{display:block;font-size:17px}.samplecopy span{font-size:12px;color:var(--muted)}
@@ -41,13 +41,14 @@ main{width:min(1120px,calc(100% - 28px));margin:28px auto 54px}.card{background:
 <label class="field">What interests you most?<select id="priority">{% for priority in army_priorities %}<option>{{ priority }}</option>{% endfor %}</select></label>
 <input type="hidden" id="path" value="explore">
 {% else %}
+{% if school == "chs" %}<label class="field">Current grade<select id="grade"><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select></label>{% endif %}
 <label class="field">Career<select id="career">{% for career in careers %}<option>{{ career }}</option>{% endfor %}</select></label>
 <label class="field">Future age<select id="age"><option>22</option><option selected>25</option><option>28</option><option>30</option><option>35</option></select></label>
 <label class="field">Path<select id="path"><option value="employee">Work in the profession</option><option value="owner">Own a business someday</option><option value="explore">Not sure — explore the path</option></select></label>
 <label class="field">What matters most?<select id="priority"><option>Doing work I enjoy</option><option>Helping people</option><option>High income potential</option><option>Creativity</option><option>Job stability</option><option>Being my own boss</option></select></label>
 {% endif %}
 </div>
-<div class="action"><button class="primary" id="generate" {% if not preview_ready %}disabled{% endif %}>{% if army_mode|default(false) %}Ask Armie to Create My Future →{% else %}Create Fictional Future →{% endif %}</button><a class="button secondary" href="{{ '/' if army_mode|default(false) else ('/ghs' if school == 'ghs' else '/') }}">Return</a>{% if not army_mode|default(false) %}<span class="cost">Each creation uses one paid image-generation request.</span>{% endif %}</div>
+<div class="action"><button class="primary" id="generate" {% if not preview_ready %}disabled{% endif %}>{% if army_mode|default(false) %}Ask Armie to Create My Future →{% else %}Create Fictional Future →{% endif %}</button><a class="button secondary" href="{{ '/' if army_mode|default(false) else ('/ghs' if school == 'ghs' else ('/chs' if school == 'chs' else '/')) }}">Return</a>{% if not army_mode|default(false) %}<span class="cost">Each creation uses one paid image-generation request.</span>{% endif %}</div>
 <div id="error" class="error" role="alert"></div>
 <div id="loading" class="loading"><div class="spinner"></div><h2>Creating the fictional future…</h2><p>The live transformation may take a little while.</p></div>
 </section>
@@ -79,7 +80,7 @@ if(ARMY_MODE){
 $('generate').onclick=async()=>{
  const selected=document.querySelector('input[name="sample"]:checked');
  const payload={school:SCHOOL,sample_id:selected.value,career:$('career').value,age:$('age').value,path:$('path').value,priority:$('priority').value};
- if(ARMY_MODE){payload.mode='army';payload.school=$('schoolChoice').value;payload.grade=$('grade').value;}
+ if(ARMY_MODE){payload.mode='army';payload.school=$('schoolChoice').value;payload.grade=$('grade').value;}else if(SCHOOL==='chs'){payload.grade=$('grade').value;}
  $('error').style.display='none';$('loading').style.display='block';$('generate').disabled=true;
  try{
   const response=await fetch('/api/admin-preview/generate',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':CSRF},body:JSON.stringify(payload)});
@@ -112,6 +113,7 @@ $('generate').onclick=async()=>{
    html+='<div class="callout"><strong>Good to know</strong><p>'+esc(g.good)+'</p></div><p><strong>Your next step:</strong> '+esc(g.next)+'</p><p><strong>Think about:</strong> '+esc(g.reflection)+'</p>';
    $('courses').innerHTML=html;
   }
+  if(data.chs){const c=data.chs;const cards=items=>(items||[]).map(x=>'<article class="coursecard"><strong>'+esc(x.name)+'</strong><p>'+esc(x.why)+'</p><div class="coursemeta">Grades '+esc(x.grades)+' · CHS 2025–26 catalog p. '+esc(x.page)+'</div></article>').join('');let html='<h3>CHS courses and opportunities</h3><p>'+esc(c.grade_note)+'</p><section class="coursegroup"><h4>Courses to discuss</h4>'+(cards(c.primary_course_details)||'<p>No career-specific CHS course verified in this prototype. Ask your counselor about relevant courses.</p>')+'</section>';if(c.future_course_details.length)html+='<section class="coursegroup"><h4>Plan ahead</h4>'+cards(c.future_course_details)+'</section>';html+='<div class="callout"><strong>Try the work</strong><p>'+esc(c.experience)+'</p></div>';html+='<p><strong>Good to know:</strong> '+esc(c.good)+'</p><p><strong>Next step:</strong> '+esc(c.next)+'</p>';$('courses').innerHTML=html;}
   $('previewStatus').textContent='Administrator Preview is ready for fictional sample students. '+data.generations_left+' generation(s) remain in this browser session.';
   if(data.generations_left<=0)$('generate').dataset.exhausted='1';
   $('result').style.display='block';$('result').scrollIntoView({behavior:'smooth',block:'start'});
