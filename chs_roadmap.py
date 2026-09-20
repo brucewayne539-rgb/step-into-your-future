@@ -1,10 +1,66 @@
 """Two-pass AI planning with deterministic catalog checks. No generic fallback."""
 import json
+import logging
 import os
 from chs_catalog import CATALOG, COURSES, SELECTABLE, validate_selections, present_courses, RoadmapValidationError
 
 class RoadmapUnavailable(RuntimeError):
     pass
+
+logger = logging.getLogger(__name__)
+
+# Only fixed messages and identifiers leave this module. Never log an API key,
+# provider exception body, request headers, or the full model response.
+VALIDATION_REFERENCES = {
+    'Incomplete roadmap structure.': 'STRUCTURE',
+    'Student selections do not match the roadmap.': 'STUDENT',
+    'Three to five postsecondary stages are required.': 'STAGES',
+    'Invalid postsecondary stage.': 'STAGE-TEXT',
+    'A plan must contain 3–10 justified course options.': 'COURSE-COUNT',
+    'Invalid course selection structure.': 'COURSE-STRUCTURE',
+    'Unknown, restricted or duplicate course ID.': 'COURSE-ID',
+    'Course is outside its catalog grade range or in the past.': 'GRADE',
+    'Invalid course purpose.': 'COURSE-ROLE',
+    'A specific, concise explanation is required.': 'RATIONALE',
+    'Course rationale lacks matching catalog evidence.': 'EVIDENCE',
+    'Select one of alternative course levels, not both.': 'ALTERNATIVES',
+    'No starting options for this grade.': 'START',
+    'Too many supporting electives.': 'SUPPORT',
+    'Missing starting career preparation.': 'START',
+    'Too many concurrent options.': 'CONCURRENT',
+    'Missing career preparation.': 'PREPARATION',
+    'A selected prerequisite must precede the advanced course.': 'SEQUENCE',
+    'Athletic conditioning/leadership and engineering are not the requested clinical pathway.': 'CLINICAL',
+    'Missing direct health/biomedical preparation.': 'HEALTH',
+    'The direct CHS networking/security option must be considered, conditionally when needed.': 'SECURITY',
+    'The educational quality review did not approve the plan.': 'REVIEW',
+    'Unreadable model output.': 'JSON',
+}
+
+def validation_reference(error):
+    message = str(error)
+    if message.startswith('Missing or excessive roadmap prose: '):
+        return 'TEXT-LENGTH'
+    return VALIDATION_REFERENCES.get(message, 'VALIDATION')
+
+def service_failure(error):
+    status = getattr(error, 'status_code', None)
+    code = getattr(error, 'code', None)
+    if code == 'insufficient_quota':
+        return 'QUOTA', 'The AI account has no available API quota. Ask the administrator to check API billing and project limits.'
+    if status == 429:
+        return 'RATE', 'The AI service reached its request or token limit. Please wait a minute before trying again.'
+    if status == 401:
+        return 'AUTH', 'The AI service could not authenticate. Ask the administrator to check the server API key.'
+    if status == 403:
+        return 'ACCESS', 'The AI account does not have permission for this request. Ask the administrator to check API project and model access.'
+    if status in (400, 404, 422):
+        return 'REQUEST', 'The AI provider rejected the roadmap request. The administrator needs to check the model and request configuration.'
+    if type(error).__name__ in {'APITimeoutError', 'TimeoutError'}:
+        return 'TIMEOUT', 'The AI service took too long to respond. Please try again later.'
+    if type(error).__name__ == 'APIConnectionError':
+        return 'CONNECTION', 'The server could not connect to the AI service. Please try again later.'
+    return 'SERVICE', 'The AI roadmap service is temporarily unavailable. Please try again later or ask the administrator to check API access and billing.'
 
 # These anchors prevent known occupational misconceptions; they are not course lists.
 CAREER_ANCHORS = {
@@ -139,9 +195,14 @@ def generate_chs_roadmap(career, grade, *, api_key='', client=None):
     except RoadmapUnavailable:
         raise
     except RoadmapValidationError as e:
-        raise RoadmapUnavailable('This roadmap did not pass its course and quality checks. Please try again; no unverified course list has been substituted.') from e
+        reference = 'CHS-' + validation_reference(e)
+        logger.warning('CHS roadmap stopped: %s', reference)
+        raise RoadmapUnavailable('This roadmap did not pass its course and quality checks. Please try again; no unverified course list has been substituted. Support reference: ' + reference + '.') from e
     except Exception as e:
-        raise RoadmapUnavailable('The AI roadmap service is temporarily unavailable. Please try again later or ask the administrator to check API access and billing.') from e
+        reference, message = service_failure(e)
+        reference = 'CHS-' + reference
+        logger.warning('CHS roadmap stopped: %s', reference)
+        raise RoadmapUnavailable(message + ' Support reference: ' + reference + '.') from e
     chs=present_courses(plan['selections'],grade)
     chs.update(grade_note=('Grade 8: begin planning grade 9.' if int(grade)==8 else f'Grade {grade}: course options for your remaining time at CHS.')+' These are options to discuss, not a confirmed schedule. Completed courses and placement have not been provided.',
         experience=plan['experience'],next=plan['next_step'],reflection=plan['reflection'],
