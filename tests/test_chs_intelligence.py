@@ -76,8 +76,9 @@ def test_cyber_cannot_omit_direct_school_course():
 
 def test_semantic_rejection_never_falls_back():
     client=fake_client(plan(),dict(approved=False,issues=['This is not educationally appropriate.']))
-    with pytest.raises(RoadmapUnavailable):generate_chs_roadmap('Neurosurgeon',9,client=client)
-    assert client.responses.create.call_count==2
+    client.responses.create.side_effect=list(client.responses.create.side_effect)*2
+    with pytest.raises(RoadmapUnavailable, match='CHS-REVIEW'):generate_chs_roadmap('Neurosurgeon',9,client=client)
+    assert client.responses.create.call_count==4
 
 @pytest.mark.parametrize('review',[{'approved':True,'issues':['Unsupported claim']},{'approved':'true','issues':[]},{'approved':True},{'approved':False,'issues':[]}])
 def test_malformed_or_negative_review_fails_closed(review):

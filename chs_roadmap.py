@@ -1,6 +1,8 @@
-"""Two-pass AI planning with deterministic catalog checks. No generic fallback."""
+"""Reviewed AI planning with source checks and one bounded correction. No generic fallback."""
 import json
 import logging
+import copy
+import re
 import os
 from chs_catalog import CATALOG, COURSES, SELECTABLE, validate_selections, present_courses, RoadmapValidationError
 
@@ -91,9 +93,19 @@ entry option. Never suggest joining a capstone simply because the student is a s
 entrants into a multi-year pathway, explain that remaining time may prevent completing it.
 Use course IDs only from the supplied catalog. Titles/grades/prerequisites/pages are supplied by the
 server, not invented by you. For EACH course explain which actual occupational skill it builds,
-why it is useful at this stage, and quote a short exact passage from its description as evidence.
+why it is useful at this stage. Each catalog description is divided into labeled source passages.
+For evidence, return exactly ONE passage label belonging to that course (for example CHS-131:E2).
+Do not copy, paraphrase, or invent a quotation: the server inserts the exact passage for that label.
+Select the passage that actually supports your explanation. A correct label alone is not proof of
+career relevance; the independent reviewer checks the explanation against the source.
 Select the strongest direct and foundational options, plus at most two supporting choices. Do not
 choose AP automatically; use optional challenge language, and avoid duplicate alternative levels.
+Courses with the same non-empty alternative_group are alternatives: select at most one for the
+entire roadmap, even across years. Every selected prerequisite must be in an earlier year than its
+advanced course; when only one year remains, choose a feasible option instead of pairing both.
+For each OR prerequisite group, one earlier selected alternative is enough. Never assume completion.
+Output character limits: summary 45–700; why 40–550; experience 40–700; next_step 30–600;
+reflection 15–300; caveat 20–650; stage title 3–90; stage detail 35–650.
 Core English/math/science can be meaningful when connected concretely to the profession, not filler.
 Distinguish a foundation from actual occupational training. If no direct vocational course is in
 this catalog, say so honestly; do not invent welding, plumbing, culinary or other offerings.
@@ -130,13 +142,74 @@ Do not output a corrected plan. Be precise about failures.'''
 def obj(fields):
     return {'type':'object','properties':fields,'required':list(fields),'additionalProperties':False}
 STR={'type':'string'}
-SELECTION=obj({'course_id':{'type':'string','enum':list(SELECTABLE)},'planned_grade':{'type':'integer','enum':[9,10,11,12]},'role':{'type':'string','enum':['direct','foundation','supporting']},'why':STR,'evidence':STR})
-PLAN_SCHEMA=obj({'career':STR,'grade':{'type':'integer','enum':[8,9,10,11,12]},'summary':STR,'selections':{'type':'array','items':SELECTION},'experience':STR,'next_step':STR,'reflection':STR,'caveat':STR,'postsecondary':{'type':'array','items':obj({'title':STR,'detail':STR})}})
+
+def prose(minimum, maximum):
+    # Structured Outputs supports string patterns. Mirror the application limits
+    # in the generation contract instead of discovering them only after a call.
+    return {'type':'string', 'pattern':r'^[\s\S]{' + str(minimum) + ',' + str(maximum) + '}$'}
+
+SELECTION=obj({
+    'course_id':{'type':'string','enum':list(SELECTABLE)},
+    'planned_grade':{'type':'integer','enum':[9,10,11,12]},
+    'role':{'type':'string','enum':['direct','foundation','supporting']},
+    'why':prose(40,550),
+    'evidence':{'type':'string','pattern':r'^CHS-[0-9]{3}:E[1-9][0-9]*$'}
+})
+PLAN_SCHEMA=obj({
+    'career':STR,'grade':{'type':'integer','enum':[8,9,10,11,12]},
+    'summary':prose(45,700),
+    'selections':{'type':'array','items':SELECTION,'minItems':3,'maxItems':10},
+    'experience':prose(40,700),'next_step':prose(30,600),
+    'reflection':prose(15,300),'caveat':prose(20,650),
+    'postsecondary':{'type':'array','minItems':3,'maxItems':5,
+                     'items':obj({'title':prose(3,90),'detail':prose(35,650)})}
+})
 REVIEW_SCHEMA=obj({'approved':{'type':'boolean'},'issues':{'type':'array','items':STR}})
 
+def source_passages(course):
+    """Losslessly segment the supplied description; never generate evidence text."""
+    parts = re.split(r'(?<=[.!?;])\s+', course['description'])
+    passages, pending = [], ''
+    for part in parts:
+        pending = (pending + ' ' + part).strip()
+        if len(pending) >= 18:
+            passages.append(pending)
+            pending = ''
+    if pending:
+        if passages:
+            passages[-1] += ' ' + pending
+        else:
+            passages.append(pending)
+    return {f"{course['id']}:E{i}": text for i, text in enumerate(passages, 1)}
+
+
 def catalog_context():
-    return {'school':CATALOG['school'],'catalog_year':CATALOG['catalog_year'],'current_year_verified':False,
-            'courses':[{k:c[k] for k in ['id','name','grades','description','prerequisite','prerequisite_groups','planning_note']} for c in SELECTABLE.values()]}
+    courses = []
+    for c in SELECTABLE.values():
+        item = {k: c[k] for k in ['id','name','grades','prerequisite','prerequisite_groups','planning_note']}
+        item['alternative_group'] = c.get('alternative_group', '')
+        item['description_passages'] = source_passages(c)
+        courses.append(item)
+    return {'school':CATALOG['school'],'catalog_year':CATALOG['catalog_year'],
+            'current_year_verified':False,'courses':courses}
+
+
+def resolve_evidence(plan):
+    """Expand only a valid reference to this course's own catalog passage.
+
+    Unknown/cross-course labels remain invalid and are rejected by the ordinary
+    exact-source validator. Literal quotations remain supported for saved plans.
+    """
+    plan = copy.deepcopy(plan)
+    if isinstance(plan, dict) and isinstance(plan.get('selections'), list):
+        for item in plan['selections']:
+            if not isinstance(item, dict):
+                continue
+            cid, evidence = item.get('course_id'), item.get('evidence')
+            if isinstance(cid, str) and cid in SELECTABLE and isinstance(evidence, str):
+                item['evidence'] = source_passages(SELECTABLE[cid]).get(evidence, evidence)
+    return plan
+
 
 def validate_plan(plan, career, grade):
     if not isinstance(plan,dict) or set(plan)!=set(PLAN_SCHEMA['required']):
@@ -186,12 +259,31 @@ def generate_chs_roadmap(career, grade, *, api_key='', client=None):
     context={'catalog':catalog_context(),'student':{'school':'chs','current_grade':int(grade),'career':career},
              'occupational_anchor':CAREER_ANCHORS.get(career,'Reason carefully about this occupation; distinguish required credentials from optional routes.')}
     try:
-        plan=_response(client,model,SYSTEM,context,PLAN_SCHEMA,'chs_career_plan')
-        validate_plan(plan,career,grade)
-        review=_response(client,os.getenv('ROADMAP_REVIEW_MODEL',model),REVIEW_SYSTEM,
-                         {**context,'proposed_plan':plan},REVIEW_SCHEMA,'chs_career_review')
-        if not isinstance(review,dict) or set(review)!={'approved','issues'} or review['approved'] is not True or review['issues']!=[]:
-            raise RoadmapValidationError('The educational quality review did not approve the plan.')
+        request_context = context
+        # At most one correction, always followed by the same deterministic and
+        # independent review gates. Provider/auth/quota failures are not retried.
+        for attempt in range(2):
+            plan = resolve_evidence(_response(client,model,SYSTEM,request_context,PLAN_SCHEMA,'chs_career_plan'))
+            try:
+                validate_plan(plan,career,grade)
+            except RoadmapValidationError as error:
+                if attempt:
+                    raise
+                request_context = {**context, 'previous_plan':plan,
+                    'correction_required':[str(error)],
+                    'instruction':'Return a complete corrected plan. Preserve all source and educational requirements. Use evidence passage labels.'}
+                continue
+            review=_response(client,os.getenv('ROADMAP_REVIEW_MODEL',model),REVIEW_SYSTEM,
+                             {**context,'proposed_plan':plan},REVIEW_SCHEMA,'chs_career_review')
+            if not isinstance(review,dict) or set(review)!={'approved','issues'} or type(review['approved']) is not bool or not isinstance(review['issues'],list) or not all(isinstance(x,str) for x in review['issues']):
+                raise RoadmapValidationError('The educational quality review did not approve the plan.')
+            if review['approved'] is True and review['issues']==[]:
+                break
+            if attempt or not review['issues']:
+                raise RoadmapValidationError('The educational quality review did not approve the plan.')
+            request_context = {**context, 'previous_plan':plan,
+                'correction_required':review['issues'],
+                'instruction':'Return a complete corrected plan addressing each review issue. Preserve all source and educational requirements. Use evidence passage labels.'}
     except RoadmapUnavailable:
         raise
     except RoadmapValidationError as e:
