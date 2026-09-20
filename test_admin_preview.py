@@ -102,6 +102,35 @@ class AdministratorPreviewTests(unittest.TestCase):
                 self.assertNotIn(b"Choose a fictional student.", response.data)
                 response.close()
 
+    def test_armie_pilot_simulation_returns_after_access_code(self):
+        with patch.object(application, "ACCESS_CODE", "test-demo-code"):
+            protected = self.client.get("/armie/pilot-demo")
+            self.assertEqual(protected.status_code, 200)
+            self.assertIn(b'name="access_code"', protected.data)
+            with self.client.session_transaction() as session:
+                token = session["csrf_token"]
+            response = self.client.post(
+                "/login",
+                data={"_csrf_token": token, "access_code": "test-demo-code"},
+            )
+            self.assertEqual(response.status_code, 302)
+            self.assertTrue(response.headers["Location"].endswith("/armie/pilot-demo"))
+
+    @patch.object(application, "load_key", return_value="sk-test")
+    @patch.object(application, "OpenAI", FakeOpenAIClient)
+    def test_armie_pilot_simulation_has_photo_step_and_army_career_choices(self, _key):
+        self.authorize()
+        response = self.client.get("/armie/pilot-demo")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Student Career Explorer", response.data)
+        self.assertIn(b'type="file"', response.data)
+        self.assertIn(b"Cyber Operations Specialist", response.data)
+        self.assertIn(b"Branford High School", response.data)
+        self.assertIn(b"Guilford High School", response.data)
+        self.assertIn(b"your selected file never leaves this browser", response.data)
+        self.assertNotIn(b"Choose a fictional student and school", response.data)
+        response.close()
+
     def test_no_photo_roadmap_does_not_require_access_code(self):
         with patch.object(application, "ACCESS_CODE", "test-demo-code"), \
              patch.object(application, "rate_limited", return_value=False):

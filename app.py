@@ -1398,6 +1398,33 @@ def armie_preview():
     )
 
 
+@app.route("/armie/pilot-demo")
+def armie_pilot_demo():
+    """Normal student-flow Armie simulation using bundled fictional faces."""
+    if ACCESS_CODE and not session.get("demo_access"):
+        session["pending_armie_pilot"] = True
+        return render_template("login.html", csrf_token=csrf_token())
+    ready, status = admin_preview_gate()
+    return render_template(
+        "admin_preview.html",
+        school="army",
+        school_name="Armie - Army Career Exploration",
+        careers=list(ARMY_CAREERS.keys()),
+        army_career_groups=ARMY_CAREER_GROUPS,
+        army_category_order=ARMY_CATEGORY_ORDER,
+        army_category_notes=ARMY_CATEGORY_NOTES,
+        army_career_count=len(ARMY_CAREERS),
+        samples=DEMO_STUDENTS,
+        preview_ready=ready,
+        preview_status=status,
+        csrf_token=csrf_token(),
+        generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-int(session.get("admin_preview_count", 0))),
+        army_mode=True,
+        army_priorities=sorted(ARMIE_PRIORITIES),
+        pilot_mode=True,
+    )
+
+
 
 @app.route("/chs-approved-hero.png")
 def chs_hero_final_asset():
@@ -1473,6 +1500,8 @@ def login():
         session.permanent = True
         session["generation_count"] = 0
         session["admin_preview_count"] = 0
+        if session.pop("pending_armie_pilot", False):
+            return redirect(url_for("armie_pilot_demo"))
         if session.pop("pending_armie", False):
             return redirect(url_for("armie_preview"))
         pilot_school = session.pop("pending_pilot_school", None)
@@ -1486,6 +1515,8 @@ def login():
         session.permanent = True
         session["generation_count"] = 0
         session["admin_preview_count"] = 0
+        if session.pop("pending_armie_pilot", False):
+            return redirect(url_for("armie_pilot_demo"))
         if session.pop("pending_armie", False):
             return redirect(url_for("armie_preview"))
         pilot_school = session.pop("pending_pilot_school", None)

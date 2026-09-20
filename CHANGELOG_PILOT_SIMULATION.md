@@ -6,6 +6,7 @@ student career-exploration flow while using only bundled fictional students:
 - `/pilot-demo` — Branford High School
 - `/ghs/pilot-demo` — Guilford High School
 - `/chs/pilot-demo` — Cumberland High School
+- `/armie/pilot-demo` — Armie Army-career exploration
 
 The visitor selects a local photo file to simulate the approved student flow.
 The browser does not open, preview, transmit, or store that selected file. The
