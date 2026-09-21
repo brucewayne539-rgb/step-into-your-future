@@ -239,12 +239,15 @@ def _army_school_match(job, category):
     j = job.lower()
     if category == "Science & Medicine":
         if any(w in j for w in ("veterinary", "animal")): return "Veterinarian"
+        if any(w in j for w in ("nurse practitioner", "nurse anesthetist", "certified nurse midwife")): return "Nurse Practitioner"
         if any(w in j for w in ("nurse", "nursing", "midwife")): return "Registered Nurse"
+        if "physician assistant" in j: return "Physician Assistant"
         if "psychiatrist" in j: return "Doctor / Physician"
         if "psychologist" in j: return "Psychologist"
         if any(w in j for w in ("social worker", "behavioral")): return "School Counselor / Mental Health Counselor"
         if any(w in j for w in ("dental", "dentist", "orthodont", "periodont", "prosthodont", "endodont", "oral & maxillofacial")): return "Dental Hygienist"
-        if any(w in j for w in ("physical therapist", "physical therapy", "occupational therapist", "occupational therapy")): return "Physical Therapist"
+        if any(w in j for w in ("occupational therapist", "occupational therapy")): return "Occupational Therapist"
+        if any(w in j for w in ("physical therapist", "physical therapy")): return "Physical Therapist"
         if any(w in j for w in ("administrator", "administration", "system management", "patient administration")): return "Medical & Health Services Manager"
         # Laboratory and life-science careers need biology/chemistry preparation,
         # not the mechanical-design sequence used for engineering occupations.
@@ -271,6 +274,7 @@ def _army_school_match(job, category):
         return "Engineer"
     if category == "Support & Logistics":
         if "attorney" in j or "paralegal" in j: return "Lawyer / Attorney"
+        if any(w in j for w in ("health care administrator", "patient administration officer", "health services plans", "health services materiel", "medical logistics specialist")): return "Medical & Health Services Manager"
         if "firefighter" in j: return "Firefighter"
         if "chemical, biological, radiological" in j: return "Firefighter"
         if any(w in j for w in ("military police", "corrections", "working dog")): return "Police Officer"
