@@ -264,15 +264,15 @@ class AdministratorPreviewTests(unittest.TestCase):
                 now = result["course_details"] + result["supporting_course_details"]
                 later = result["future_course_details"]
                 names = {x["name"] for x in now + later}
-                self.assertTrue({"Public Speaking", "Geometry", "Physics I"} <= names)
+                self.assertTrue({"Public Speaking: How to Develop Self-Confidence and Influence Others", "Geometry", "Physics I"} <= names)
                 self.assertFalse(any("Workshop" in n or "Drafting" in n or "Robotics" in n for n in names))
                 for item in now:
-                    self.assertIn(int(grade), application.BHS_CATALOG[item["name"]]["grades"])
+                    self.assertIn(int(grade), application.ARMY_SCHOOL_CATALOGS["bhs"][item["id"]]["grades"])
                     self.assertTrue(item["focus"])
                 for item in later:
-                    self.assertTrue(any(g > int(grade) for g in application.BHS_CATALOG[item["name"]]["grades"]))
+                    self.assertTrue(any(g > int(grade) for g in application.ARMY_SCHOOL_CATALOGS["bhs"][item["id"]]["grades"]))
                 physics = next(x for x in now + later if x["name"] == "Physics I")
-                self.assertEqual(physics["prerequisite"], application.BHS_CATALOG["Physics I"]["prerequisite"])
+                self.assertIn("Algebra I credit", physics["prerequisite"])
                 self.assertNotIn("engineering project", result["experience"].lower())
                 self.assertIn("Air Traffic Control", result["next"])
         engineer = application.bhs_for_grade("Engineer", "9")
@@ -285,7 +285,7 @@ class AdministratorPreviewTests(unittest.TestCase):
                 self.assertIn(school_match, application.CAREERS)
                 self.assertIn(school_match, application.GHS_CAREERS)
 
-    def test_armie_mapping_semantics_for_known_high_risk_roles(self):
+    def test_legacy_civilian_aliases_for_chs_compatibility(self):
         expected = {
             "Microbiologist": "Doctor / Physician",
             "Biochemist Physiologist": "Doctor / Physician",
@@ -337,7 +337,7 @@ class AdministratorPreviewTests(unittest.TestCase):
         self.assertTrue(any("Biology" in name for name in chs_names))
         self.assertTrue(any("Chemistry" in name for name in chs_names))
 
-    def test_every_armie_career_has_grade_appropriate_courses_at_every_school(self):
+    def test_legacy_civilian_aliases_have_catalog_results(self):
         for career, info in application.ARMY_CAREERS.items():
             school_match = info["school_match"]
             for grade in ("8", "9", "10", "11", "12"):
@@ -375,8 +375,8 @@ class AdministratorPreviewTests(unittest.TestCase):
         self.assertEqual(data["mode"], "army")
         self.assertEqual(data["grade"], "12")
         self.assertEqual(data["career"], "Cyber Operations Specialist")
-        self.assertIn("current 12th", data["bhs"]["grade_note"])
-        self.assertIn("Cyber", data["keys"])
+        self.assertIn("current Grade 12", data["bhs"]["grade_note"])
+        self.assertIn("programming", data["keys"])
 
 
 if __name__ == "__main__":

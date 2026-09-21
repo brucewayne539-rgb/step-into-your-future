@@ -1,0 +1,432 @@
+{
+  "bhs": {
+    "Concert Band": {
+      "name": "Concert Band",
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "focus": "Rehearsal, instrumental technique, ensemble listening and performance.",
+      "why": "Rehearsal, instrumental technique, ensemble listening and performance.",
+      "prerequisite": "Experience playing a band instrument or director approval; all rehearsals and performances required.",
+      "page": 52,
+      "department": "Music"
+    },
+    "Music Theory": {
+      "name": "Music Theory",
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "focus": "Harmony, notation, musical structure and analysis.",
+      "why": "Harmony, notation, musical structure and analysis.",
+      "prerequisite": "Intended for students who already read music and understand basic musical concepts.",
+      "page": 51,
+      "department": "Music"
+    },
+    "Introduction to Guitar": {
+      "name": "Introduction to Guitar",
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "focus": "Beginning guitar technique, chords, melodies and music reading.",
+      "why": "Beginning guitar technique, chords, melodies and music reading.",
+      "prerequisite": "For beginners; no prior musical experience required.",
+      "page": 51,
+      "department": "Music"
+    },
+    "Choir Basics": {
+      "name": "Choir Basics",
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "focus": "Vocal technique, music reading and choral performance.",
+      "why": "Vocal technique, music reading and choral performance.",
+      "prerequisite": "At least two concerts; no prior course prerequisite stated.",
+      "page": 51,
+      "department": "Music"
+    },
+    "Music Technology and Production": {
+      "name": "Music Technology and Production",
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "focus": "Digital audio production, songwriting, podcasting and scoring.",
+      "why": "Digital audio production, songwriting, podcasting and scoring.",
+      "prerequisite": "No prior musical experience required.",
+      "page": 51,
+      "department": "Music"
+    },
+    "Spanish I": {
+      "name": "Spanish I",
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "focus": "Beginning listening, speaking, reading, writing and cultural understanding.",
+      "why": "Beginning listening, speaking, reading, writing and cultural understanding.",
+      "prerequisite": "For beginners or students who did not meet the Grade 8 Spanish proficiency target.",
+      "page": 80,
+      "department": "World Language"
+    },
+    "Spanish II": {
+      "name": "Spanish II",
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "focus": "Build listening, speaking, reading and writing beyond introductory Spanish.",
+      "why": "Build listening, speaking, reading and writing beyond introductory Spanish.",
+      "prerequisite": "Review prior language proficiency and departmental placement before selecting a level.",
+      "page": 80,
+      "department": "World Language"
+    },
+    "French I": {
+      "name": "French I",
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "focus": "Beginning listening, speaking, reading and writing in cultural context.",
+      "why": "Beginning listening, speaking, reading and writing in cultural context.",
+      "prerequisite": "For students with no previous French study.",
+      "page": 79,
+      "department": "World Language"
+    },
+    "Spanish III": {
+      "name": "Spanish III",
+      "grades": [
+        10,
+        11,
+        12
+      ],
+      "focus": "Continue listening, speaking, reading and writing with more complex language and cultural texts.",
+      "why": "Continue listening, speaking, reading and writing with more complex language and cultural texts.",
+      "prerequisite": "Sequential language study: review prior level, proficiency and World Language department recommendations.",
+      "page": 81,
+      "department": "World Language"
+    },
+    "French II": {
+      "name": "French II",
+      "grades": [
+        10,
+        11,
+        12
+      ],
+      "focus": "Continue listening, speaking, reading and writing with more complex language and cultural texts.",
+      "why": "Continue listening, speaking, reading and writing with more complex language and cultural texts.",
+      "prerequisite": "Sequential language study: review prior level, proficiency and World Language department recommendations.",
+      "page": 79,
+      "department": "World Language"
+    },
+    "French III": {
+      "name": "French III",
+      "grades": [
+        11,
+        12
+      ],
+      "focus": "Continue listening, speaking, reading and writing with more complex language and cultural texts.",
+      "why": "Continue listening, speaking, reading and writing with more complex language and cultural texts.",
+      "prerequisite": "Sequential language study: review prior level, proficiency and World Language department recommendations.",
+      "page": 79,
+      "department": "World Language"
+    },
+    "Environmental Science A: Understanding Ecology": {
+      "name": "Environmental Science A: Understanding Ecology",
+      "grades": [
+        10,
+        11,
+        12
+      ],
+      "focus": "Ecosystems, populations, food webs, biodiversity and climate.",
+      "why": "Ecosystems, populations, food webs, biodiversity and climate.",
+      "prerequisite": "Recommended: two years of science including Biology or equivalent.",
+      "page": 59,
+      "department": "Science"
+    },
+    "Environmental Science B: Human Impacts on Earth’s Systems": {
+      "name": "Environmental Science B: Human Impacts on Earth’s Systems",
+      "grades": [
+        10,
+        11,
+        12
+      ],
+      "focus": "Human impacts, water and carbon systems, climate and community resilience.",
+      "why": "Human impacts, water and carbon systems, climate and community resilience.",
+      "prerequisite": "Recommended: two years of science including Biology or equivalent.",
+      "page": 59,
+      "department": "Science"
+    },
+    "Geometry": {
+      "name": "Geometry",
+      "prerequisite": "Recommended: C- in Algebra I.",
+      "page": 44
+    },
+    "Algebra II": {
+      "name": "Algebra II",
+      "prerequisite": "Recommended: C- in Algebra I.",
+      "page": 45
+    },
+    "Statistics & Probability": {
+      "name": "Statistics & Probability",
+      "prerequisite": "Completion of Algebra I; C- in Algebra I recommended. May be taken concurrently with another math course.",
+      "page": 46
+    },
+    "Chemistry": {
+      "name": "Chemistry I",
+      "prerequisite": "Required: Algebra I credit. Recommended: C+ in Algebra I.",
+      "page": 55
+    },
+    "Physics I": {
+      "name": "Physics I",
+      "prerequisite": "Required: Algebra I credit. Recommended: C+ in previous mathematics courses.",
+      "page": 56
+    },
+    "AP/ECE Biology": {
+      "name": "Advanced Placement Biology / UCONN Early College Experience",
+      "prerequisite": "Required: Biology credit. Review AP science recommendations, including preparatory work when needed.",
+      "page": 57
+    },
+    "AP Chemistry II": {
+      "name": "Advanced Placement Chemistry II",
+      "prerequisite": "Required: Chemistry I Honors credit. Review AP science recommendations.",
+      "page": 57
+    },
+    "Anatomy & Physiology": {
+      "name": "Anatomy & Physiology",
+      "prerequisite": "Recommended: successful completion of Biology or equivalent. Extensive dissection required; no alternative offered.",
+      "page": 59
+    },
+    "Dealing with Natural Disasters": {
+      "name": "Dealing with Natural Disasters",
+      "prerequisite": "Required: successful completion of Biology or equivalent.",
+      "page": 59
+    },
+    "Marine Biology": {
+      "name": "Marine Biology",
+      "prerequisite": "Recommended: successful completion of Biology or equivalent.",
+      "page": 60
+    },
+    "Public Speaking": {
+      "name": "Public Speaking: How to Develop Self-Confidence and Influence Others",
+      "prerequisite": "",
+      "page": 33
+    },
+    "Accounting I": {
+      "name": "Accounting/Computerized Accounting I",
+      "prerequisite": "",
+      "page": 26
+    },
+    "Accounting II": {
+      "name": "Accounting/Computerized Accounting II",
+      "prerequisite": "Accounting I recommended.",
+      "page": 26
+    },
+    "PE 9": {
+      "name": "PE 9",
+      "grades": [
+        9
+      ],
+      "focus": "Physical education foundations, participation and teamwork.",
+      "prerequisite": "Confirm required PE/Health scheduling.",
+      "department": "Physical & Health Education",
+      "page": 40
+    },
+    "PE 10": {
+      "name": "PE 10",
+      "grades": [
+        10
+      ],
+      "focus": "Continue physical education, participation and teamwork.",
+      "prerequisite": "Confirm required PE/Health scheduling.",
+      "department": "Physical & Health Education",
+      "page": 40
+    },
+    "Lifetime Fitness and Wellness": {
+      "name": "Lifetime Fitness and Wellness",
+      "grades": [
+        11,
+        12
+      ],
+      "focus": "Personal fitness assessment, goals, strength, flexibility, cardiovascular activity and lifelong wellness.",
+      "prerequisite": "Open to all students in grades 11 and 12.",
+      "department": "Physical & Health Education",
+      "page": 41
+    },
+    "ECE Fundamentals of Nutrition": {
+      "name": "ECE Fundamentals of Nutrition",
+      "grades": [
+        11,
+        12
+      ],
+      "focus": "Human nutrition, nutrient functions, dietary patterns and evidence-based nutrition recommendations.",
+      "prerequisite": "Confirm ECE registration and college-credit requirements.",
+      "department": "Physical & Health Education",
+      "page": 42
+    },
+    "ECE Kinesiology": {
+      "name": "ECE Kinesiology: Exercise and Wellness For Everyone",
+      "prerequisite": "Confirm ECE registration and requirements.",
+      "page": 41
+    },
+    "Exploration of Computer Science": {
+      "name": "Exploration of Computer Science Semester",
+      "page": 49
+    },
+    "Medical Terminology / UConn ECE": {
+      "name": "Medical Terminology / UCONN Early College Experience",
+      "prerequisite": "Required: successful completion of Anatomy & Physiology.",
+      "page": 61
+    },
+    "Certified Nursing Assistant (CNA) Program": {
+      "name": "Certified Nursing Assistant Program (CNA)",
+      "page": 61,
+      "prerequisite": "Confirm Excel Academy partnership enrollment, scheduling and current program requirements."
+    },
+    "AP Computer Science Principles": {
+      "prerequisite": "Strong algebra background highly recommended.",
+      "page": 49
+    }
+  },
+  "ghs": {
+    "band": {
+      "name": "Concert Band",
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "focus": "Instrumental performance, ensemble listening and musicianship.",
+      "why": "Instrumental performance, ensemble listening and musicianship.",
+      "prerequisite": "Proficiency on a band instrument; commitment to all performances.",
+      "page": 39,
+      "department": "Music"
+    },
+    "theory": {
+      "name": "Music Theory Part 1",
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "focus": "Notation, rhythm, scales, keys, chords, listening and analysis.",
+      "why": "Notation, rhythm, scales, keys, chords, listening and analysis.",
+      "prerequisite": "No prerequisite stated in the course entry.",
+      "page": 40,
+      "department": "Music"
+    },
+    "aptheory": {
+      "name": "A.P. Music Theory",
+      "grades": [
+        10,
+        11,
+        12
+      ],
+      "focus": "Advanced harmony, musical analysis, composition and musicianship.",
+      "why": "Advanced harmony, musical analysis, composition and musicianship.",
+      "prerequisite": "Teacher recommendation; music reading and writing fundamental. Prior theory preparation strongly recommended.",
+      "page": 41,
+      "department": "Music"
+    },
+    "spanish1": {
+      "name": "Spanish 1",
+      "grades": [
+        9,
+        10,
+        11
+      ],
+      "focus": "Beginning listening, speaking, reading, writing and cultural understanding.",
+      "why": "Beginning listening, speaking, reading, writing and cultural understanding.",
+      "prerequisite": "Introductory course; confirm placement based on previous language study.",
+      "page": 71,
+      "department": "World Language"
+    },
+    "spanish2": {
+      "name": "Spanish 2",
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "focus": "Continued listening, speaking, reading, writing and cultural interpretation.",
+      "why": "Continued listening, speaking, reading, writing and cultural interpretation.",
+      "prerequisite": "Catalog states C average in eighth-grade Spanish; counselor should confirm equivalent preparation from Spanish 1.",
+      "page": 71,
+      "department": "World Language"
+    },
+    "spanish3": {
+      "name": "Spanish 3",
+      "grades": [
+        10,
+        11,
+        12
+      ],
+      "focus": "Intermediate language skills with cultural perspectives.",
+      "why": "Intermediate language skills with cultural perspectives.",
+      "prerequisite": "C average in second-semester Spanish 2.",
+      "page": 71,
+      "department": "World Language"
+    },
+    "french2": {
+      "name": "French 2",
+      "grades": [
+        9,
+        10,
+        11
+      ],
+      "focus": "Continued French communication, vocabulary and grammar.",
+      "why": "Continued French communication, vocabulary and grammar.",
+      "prerequisite": "C average in second-semester French 1.",
+      "page": 69,
+      "department": "World Language"
+    },
+    "french3": {
+      "name": "French 3",
+      "grades": [
+        10,
+        11,
+        12
+      ],
+      "focus": "More complex French communication, grammar, reading and cultural interpretation.",
+      "why": "More complex French communication, grammar, reading and cultural interpretation.",
+      "prerequisite": "C average in second-semester French 2.",
+      "page": 69,
+      "department": "World Language"
+    },
+    "french4": {
+      "name": "French 4",
+      "grades": [
+        10,
+        11,
+        12
+      ],
+      "focus": "Active speaking and listening through cultural topics, readings and French-language clips.",
+      "why": "Active speaking and listening through cultural topics, readings and French-language clips.",
+      "prerequisite": "Successful completion of French 3.",
+      "page": 69,
+      "department": "World Language"
+    }
+  }
+}

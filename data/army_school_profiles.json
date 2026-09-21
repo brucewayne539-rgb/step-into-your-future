@@ -1,0 +1,1422 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "atc": {
+      "skills": "clear spoken instructions, spatial reasoning, and accurate decisions from changing information",
+      "bhs": [
+        "Geometry",
+        "Public Speaking",
+        "Algebra II",
+        "Exploration of Computer Science",
+        "Physics I",
+        "21st Century Communication",
+        "Algebra I"
+      ],
+      "ghs": [
+        "geometry",
+        "english9",
+        "english10",
+        "english11",
+        "english12",
+        "algebra2",
+        "physics",
+        "python"
+      ],
+      "project": "Use a teacher-supervised, non-operational traffic simulation to practice concise directions and tracking movement.",
+      "note": "School courses are foundations, not ATC certification or specialized radar training. Math choices depend on completed work and placement."
+    },
+    "flight": {
+      "skills": "spatial reasoning, physics, navigation, and precise communication",
+      "bhs": [
+        "Geometry",
+        "Physics I",
+        "Public Speaking",
+        "Algebra II",
+        "Exploration of Computer Science"
+      ],
+      "ghs": [
+        "geometry",
+        "physics",
+        "algebra2",
+        "english9",
+        "english10",
+        "english11",
+        "english12",
+        "python"
+      ],
+      "project": "Compare maps, weather information and time-distance calculations in a classroom flight-planning exercise.",
+      "note": "School coursework is not flight training or a pilot qualification."
+    },
+    "aviation_operations": {
+      "skills": "accurate scheduling, information management, and clear communication",
+      "bhs": [
+        "Geometry",
+        "Foundations of Business – Research",
+        "Public Speaking",
+        "Exploration of Computer Science",
+        "Algebra II"
+      ],
+      "ghs": [
+        "geometry",
+        "business",
+        "python",
+        "english9",
+        "english10",
+        "english11",
+        "english12",
+        "algebra2"
+      ],
+      "project": "Plan a fictional transport schedule and explain how changes affect timing and coordination.",
+      "note": ""
+    },
+    "air_defense": {
+      "skills": "interpreting technical displays, spatial reasoning, and electronics",
+      "bhs": [
+        "Geometry",
+        "Exploration of Computer Science",
+        "Physics I",
+        "Algebra II",
+        "Public Speaking"
+      ],
+      "ghs": [
+        "electronics",
+        "geometry",
+        "physics",
+        "python",
+        "algebra2",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Build a classroom exercise comparing moving objects on a coordinate grid; explain your decisions clearly.",
+      "note": "These are school-level technical foundations, not instruction in weapons operation."
+    },
+    "electronics": {
+      "skills": "circuits, measurement, systematic fault finding, and technical documentation",
+      "bhs": [
+        "Introductory Power Technology",
+        "Exploration of Computer Science",
+        "Physics I",
+        "Advanced Power Technology",
+        "Robotics Foundations",
+        "Algebra II"
+      ],
+      "ghs": [
+        "electronics",
+        "physics",
+        "python",
+        "engineering",
+        "algebra2"
+      ],
+      "project": "With a teacher, troubleshoot a low-voltage classroom circuit and document the measurements and solution.",
+      "note": "At BHS, introductory power and later advanced power courses provide some transferable electrical skills; they are not a dedicated avionics, radar, or medical-equipment repair qualification."
+    },
+    "mechanical": {
+      "skills": "mechanical systems, tool safety, measurement, and diagnostics",
+      "bhs": [
+        "Introductory Power Technology",
+        "Hands-On Engineering Workshop",
+        "Physics I",
+        "Automotive Mechanics Technology I",
+        "Automotive Mechanics Technology II",
+        "Geometry"
+      ],
+      "ghs": [
+        "auto",
+        "metal",
+        "physics",
+        "engineering",
+        "geometry"
+      ],
+      "project": "Document a supervised mechanical inspection, the evidence for a fault, and a safe repair plan.",
+      "note": ""
+    },
+    "aircraft_mechanical": {
+      "skills": "mechanical systems, forces, precision measurement, and maintenance documentation",
+      "bhs": [
+        "Introductory Power Technology",
+        "Physics I",
+        "Hands-On Engineering Workshop",
+        "Introductory Drafting & Design",
+        "Geometry"
+      ],
+      "ghs": [
+        "physics",
+        "metal",
+        "engineering",
+        "cad",
+        "geometry",
+        "auto"
+      ],
+      "project": "Use a teacher-approved model mechanism to explain force transfer and how a technician would inspect it.",
+      "note": "Automotive or power courses teach transferable mechanical basics; neither school course is aircraft maintenance certification."
+    },
+    "fabrication": {
+      "skills": "materials, technical drawings, precision measurement, and fabrication",
+      "bhs": [
+        "Hands-On Engineering Workshop",
+        "Introductory Drafting & Design",
+        "Geometry",
+        "Physics I"
+      ],
+      "ghs": [
+        "metal",
+        "cad",
+        "engineering",
+        "geometry",
+        "physics"
+      ],
+      "project": "Create a dimensioned drawing and a supervised model, then compare the result with the specification.",
+      "note": ""
+    },
+    "construction": {
+      "skills": "building plans, measurement, safe construction, and materials",
+      "bhs": [
+        "Introductory Woodworking",
+        "Introductory Drafting & Design",
+        "Geometry",
+        "Residential Construction",
+        "Hands-On Engineering Workshop"
+      ],
+      "ghs": [
+        "wood",
+        "draft",
+        "geometry",
+        "woodtech",
+        "engineering"
+      ],
+      "project": "Draw a small model structure, estimate materials, and check dimensions with a teacher.",
+      "note": ""
+    },
+    "engineering": {
+      "skills": "mathematical modeling, design, technical drawings, and physical systems",
+      "bhs": [
+        "Hands-On Engineering Workshop",
+        "Introductory Drafting & Design",
+        "Geometry",
+        "Physics I",
+        "Algebra II",
+        "Precalculus"
+      ],
+      "ghs": [
+        "engineering",
+        "cad",
+        "geometry",
+        "physics",
+        "algebra2"
+      ],
+      "project": "Design and test a small classroom structure; document constraints, calculations and improvements.",
+      "note": ""
+    },
+    "geospatial": {
+      "skills": "map interpretation, spatial measurement, computing, and geographic analysis",
+      "bhs": [
+        "Geometry",
+        "AP Human Geography",
+        "Exploration of Computer Science",
+        "Introductory Drafting & Design",
+        "Statistics & Probability"
+      ],
+      "ghs": [
+        "geometry",
+        "python",
+        "cad",
+        "stats",
+        "world1",
+        "world2"
+      ],
+      "project": "Compare public maps and measurements and explain uncertainty in a simple mapping project.",
+      "note": ""
+    },
+    "electrical_power": {
+      "skills": "electrical systems, energy, measurement, and safe troubleshooting",
+      "bhs": [
+        "Introductory Power Technology",
+        "Physics I",
+        "Advanced Power Technology",
+        "Geometry",
+        "Hands-On Engineering Workshop"
+      ],
+      "ghs": [
+        "electronics",
+        "physics",
+        "engineering",
+        "geometry"
+      ],
+      "project": "Create a teacher-supervised low-voltage circuit diagram and measure how changing a component changes the circuit.",
+      "note": ""
+    },
+    "plumbing": {
+      "skills": "fluid systems, measurement, building plans, and tool safety",
+      "bhs": [
+        "Introductory Drafting & Design",
+        "Geometry",
+        "Hands-On Engineering Workshop",
+        "Physics I",
+        "Residential Construction"
+      ],
+      "ghs": [
+        "draft",
+        "geometry",
+        "engineering",
+        "physics",
+        "metal"
+      ],
+      "project": "Draw and measure a model pipe layout, explaining flow and access for maintenance.",
+      "note": "These courses support a later plumbing or utilities training route; they do not constitute a plumbing apprenticeship."
+    },
+    "transport": {
+      "skills": "route planning, time-distance calculations, safe systems, and logistics",
+      "bhs": [
+        "Geometry",
+        "Foundations of Business – Research",
+        "Public Speaking",
+        "Introductory Power Technology",
+        "Algebra II"
+      ],
+      "ghs": [
+        "geometry",
+        "business",
+        "english9",
+        "english10",
+        "english11",
+        "english12",
+        "auto",
+        "algebra2"
+      ],
+      "project": "Plan a fictional delivery route, calculate timing and explain how delays would change the plan.",
+      "note": ""
+    },
+    "logistics": {
+      "skills": "inventory accuracy, scheduling, data handling, and resource planning",
+      "bhs": [
+        "Foundations of Business – Research",
+        "Accounting I",
+        "Exploration of Computer Science",
+        "Statistics & Probability",
+        "Public Speaking"
+      ],
+      "ghs": [
+        "business",
+        "accounting",
+        "python",
+        "stats",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Build a small inventory spreadsheet and reconcile a delivery with the original order.",
+      "note": ""
+    },
+    "finance": {
+      "skills": "accounting, numerical accuracy, budgeting, and clear reporting",
+      "bhs": [
+        "Foundations of Business – Research",
+        "Accounting I",
+        "Accounting II",
+        "Financial Literacy",
+        "Statistics & Probability"
+      ],
+      "ghs": [
+        "accounting",
+        "business",
+        "accounting2",
+        "stats",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Prepare a fictional budget, reconcile transactions and explain a discrepancy.",
+      "note": ""
+    },
+    "administration": {
+      "skills": "records accuracy, organization, communication, and people management",
+      "bhs": [
+        "Foundations of Business – Research",
+        "21st Century Communication",
+        "Public Speaking",
+        "Psychology",
+        "Statistics & Probability"
+      ],
+      "ghs": [
+        "business",
+        "english9",
+        "english10",
+        "english11",
+        "english12",
+        "human",
+        "stats"
+      ],
+      "project": "Create an anonymous fictional scheduling or records project and check it for accuracy.",
+      "note": ""
+    },
+    "health_administration": {
+      "skills": "health-system organization, records accuracy, and communication",
+      "bhs": [
+        "Foundations of Business – Research",
+        "Biology",
+        "Medical Terminology / UConn ECE",
+        "Accounting I",
+        "Public Speaking",
+        "Anatomy & Physiology"
+      ],
+      "ghs": [
+        "business",
+        "bio",
+        "healthcare",
+        "accounting",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Map a fictional patient appointment process using no real patient information.",
+      "note": ""
+    },
+    "law": {
+      "skills": "evidence-based arguments, legal reasoning, reading, and writing",
+      "bhs": [
+        "Criminal Justice",
+        "Public Speaking",
+        "Business Law",
+        "21st Century Communication",
+        "Sociology"
+      ],
+      "ghs": [
+        "law",
+        "bizlaw",
+        "english9",
+        "english10",
+        "english11",
+        "english12",
+        "civics"
+      ],
+      "project": "Compare two arguments in a classroom mock case and explain the evidence for each.",
+      "note": ""
+    },
+    "policing": {
+      "skills": "law, ethical judgment, communication, and understanding behavior",
+      "bhs": [
+        "Criminal Justice",
+        "Psychology",
+        "Public Speaking",
+        "Forensic Science",
+        "PE 9",
+        "PE 10",
+        "Lifetime Fitness and Wellness"
+      ],
+      "ghs": [
+        "law",
+        "human",
+        "english9",
+        "english10",
+        "english11",
+        "english12",
+        "forensic",
+        "health1",
+        "health2"
+      ],
+      "project": "Discuss a teacher-approved ethical scenario, distinguishing evidence from assumptions.",
+      "note": ""
+    },
+    "emergency": {
+      "skills": "hazard awareness, physical science, communication, and emergency readiness",
+      "bhs": [
+        "Dealing with Natural Disasters",
+        "Biology",
+        "Chemistry",
+        "Physics I",
+        "Public Speaking",
+        "PE 9",
+        "PE 10",
+        "Lifetime Fitness and Wellness"
+      ],
+      "ghs": [
+        "chem",
+        "bio",
+        "physics",
+        "english9",
+        "english10",
+        "english11",
+        "english12",
+        "health1",
+        "health2"
+      ],
+      "project": "Compare public emergency plans and prepare a classroom safety communication exercise.",
+      "note": ""
+    },
+    "cbrn": {
+      "skills": "chemistry, biological systems, measurement, and environmental safety",
+      "bhs": [
+        "Biology",
+        "Chemistry",
+        "Environmental Science B: Human Impacts on Earth’s Systems",
+        "Physics I",
+        "Statistics & Probability"
+      ],
+      "ghs": [
+        "chem",
+        "bio",
+        "physics",
+        "lab",
+        "stats"
+      ],
+      "project": "Analyze a teacher-provided environmental dataset using safe classroom methods only.",
+      "note": "Study scientific foundations and safety; no hazardous agents or operational procedures are involved."
+    },
+    "cyber": {
+      "skills": "programming, computing systems, logical reasoning, and responsible technology use",
+      "bhs": [
+        "Exploration of Computer Science",
+        "AP Computer Science Principles",
+        "Algebra II",
+        "Statistics & Probability",
+        "Web Design and Computer Applications"
+      ],
+      "ghs": [
+        "python",
+        "apcs",
+        "it",
+        "electronics",
+        "algebra2",
+        "web"
+      ],
+      "project": "Use an authorized classroom computing exercise to document a problem and explain a responsible solution.",
+      "note": ""
+    },
+    "signals": {
+      "skills": "electronic communication, technical measurement, computing, and analysis",
+      "bhs": [
+        "Exploration of Computer Science",
+        "Physics I",
+        "Introductory Power Technology",
+        "Statistics & Probability",
+        "Algebra II"
+      ],
+      "ghs": [
+        "electronics",
+        "python",
+        "physics",
+        "stats",
+        "algebra2"
+      ],
+      "project": "Study signals using a teacher-approved circuit or public dataset, then explain patterns and uncertainty.",
+      "note": ""
+    },
+    "intelligence": {
+      "skills": "source evaluation, pattern analysis, geography, and concise reporting",
+      "bhs": [
+        "Exploration of Computer Science",
+        "Statistics & Probability",
+        "AP Human Geography",
+        "Public Speaking",
+        "Current Issues / Current Issues Honors"
+      ],
+      "ghs": [
+        "stats",
+        "python",
+        "world1",
+        "world2",
+        "ushistory",
+        "issues",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Compare several public sources on a neutral topic and write a report separating facts from uncertainty.",
+      "note": ""
+    },
+    "language": {
+      "skills": "careful listening, language learning, cultural understanding, and accurate interpretation",
+      "bhs": [
+        "Spanish I",
+        "Spanish II",
+        "Spanish III",
+        "French I",
+        "Public Speaking",
+        "Sociology",
+        "21st Century Communication",
+        "French II",
+        "French III"
+      ],
+      "ghs": [
+        "spanish1",
+        "spanish2",
+        "spanish3",
+        "french2",
+        "english9",
+        "english10",
+        "english11",
+        "english12",
+        "world1",
+        "world2",
+        "french3",
+        "french4"
+      ],
+      "project": "Compare translations of a short public text and discuss how culture and context change its meaning.",
+      "note": "Choose a language and the next level appropriate to your experience, not all listed options. A school language is preparation for language learning, not a guarantee of an Army language assignment."
+    },
+    "community": {
+      "skills": "cultural understanding, communication, social systems, and evidence-based analysis",
+      "bhs": [
+        "Sociology",
+        "Psychology",
+        "Public Speaking",
+        "Spanish I",
+        "Spanish II",
+        "AP Human Geography"
+      ],
+      "ghs": [
+        "world1",
+        "world2",
+        "ushistory",
+        "english9",
+        "english10",
+        "english11",
+        "english12",
+        "human",
+        "spanish1",
+        "spanish2",
+        "spanish3"
+      ],
+      "project": "Research a community need using public information, then present an ethical, evidence-based communication plan.",
+      "note": ""
+    },
+    "media": {
+      "skills": "visual communication, writing, design, and accurate storytelling",
+      "bhs": [
+        "Graphic Design",
+        "Digital Media Communication",
+        "Photography",
+        "Digital Journalism",
+        "Public Speaking"
+      ],
+      "ghs": [
+        "design",
+        "film",
+        "imaging",
+        "photo",
+        "graphic",
+        "media",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Create a factual photo essay or short school-approved news story and verify each claim.",
+      "note": ""
+    },
+    "music": {
+      "skills": "musicianship, listening, notation, ensemble performance, and practice",
+      "bhs": [
+        "Concert Band",
+        "Music Theory",
+        "Introduction to Guitar",
+        "Choir Basics",
+        "Music Technology and Production",
+        "Public Speaking"
+      ],
+      "ghs": [
+        "band",
+        "theory",
+        "aptheory",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Ask a music teacher to help choose an instrument or voice pathway and prepare a short performance recording.",
+      "note": "Instrument choice and prior experience matter. Beginner courses and advanced ensembles are alternatives, not a checklist; Army performance auditions have separate standards."
+    },
+    "culinary": {
+      "skills": "food preparation, sanitation, measurement, and teamwork",
+      "bhs": [
+        "Culinary Arts",
+        "Principles of Food Preparation I",
+        "Advanced Culinary Arts",
+        "Chemistry",
+        "Foundations of Business – Research"
+      ],
+      "ghs": [
+        "chem",
+        "bio",
+        "business",
+        "health1",
+        "health2"
+      ],
+      "project": "Plan a simple menu, scaled ingredients and a food-safety checklist with a qualified teacher.",
+      "note": "GHS recommendations here are supporting science and business options; the reviewed catalog does not list a dedicated culinary course."
+    },
+    "nutrition": {
+      "skills": "biology, chemistry, nutrition, food preparation, and communication",
+      "bhs": [
+        "ECE Fundamentals of Nutrition",
+        "Biology",
+        "Chemistry",
+        "Anatomy & Physiology",
+        "Culinary Arts",
+        "Statistics & Probability"
+      ],
+      "ghs": [
+        "bio",
+        "chem",
+        "anatomy",
+        "health1",
+        "health2",
+        "stats"
+      ],
+      "project": "Compare a fictional menu with a public nutrition resource and explain the reasoning without giving anyone medical advice.",
+      "note": ""
+    },
+    "life_science": {
+      "skills": "biology, chemistry, laboratory accuracy, and scientific data analysis",
+      "bhs": [
+        "Biology",
+        "Chemistry",
+        "AP/ECE Biology",
+        "AP Chemistry II",
+        "Statistics & Probability",
+        "Environmental Science A: Understanding Ecology"
+      ],
+      "ghs": [
+        "bio",
+        "chem",
+        "lab",
+        "stats",
+        "python"
+      ],
+      "project": "Analyze a teacher-provided biological dataset and write a lab-style explanation with limitations.",
+      "note": ""
+    },
+    "chemistry_lab": {
+      "skills": "chemistry, laboratory measurement, quality control, and data analysis",
+      "bhs": [
+        "Chemistry",
+        "AP Chemistry II",
+        "Statistics & Probability",
+        "Physics I",
+        "Exploration of Computer Science"
+      ],
+      "ghs": [
+        "chem",
+        "lab",
+        "stats",
+        "physics",
+        "python"
+      ],
+      "project": "Use a safe teacher-supervised measurement exercise to compare repeated results and report uncertainty.",
+      "note": ""
+    },
+    "environment": {
+      "skills": "ecology, chemistry, water quality, and environmental measurement",
+      "bhs": [
+        "Biology",
+        "Chemistry",
+        "Environmental Science A: Understanding Ecology",
+        "Environmental Science B: Human Impacts on Earth’s Systems",
+        "Statistics & Probability"
+      ],
+      "ghs": [
+        "bio",
+        "chem",
+        "lab",
+        "stats",
+        "physics"
+      ],
+      "project": "Investigate a public water-quality dataset and explain what the measurements can and cannot show.",
+      "note": ""
+    },
+    "clinical": {
+      "skills": "human biology, chemistry, anatomy, patient communication, and careful observation",
+      "bhs": [
+        "Biology",
+        "Anatomy & Physiology",
+        "Chemistry",
+        "Medical Terminology / UConn ECE",
+        "AP/ECE Biology",
+        "Psychology"
+      ],
+      "ghs": [
+        "bio",
+        "anatomy",
+        "chem",
+        "healthcare",
+        "lab",
+        "human"
+      ],
+      "project": "Interview an approved health professional about the work and education needed for this exact occupation.",
+      "note": "High-school science builds a foundation. Clinical professions differ substantially in degree, licensing and Army entry requirements; verify the selected role individually."
+    },
+    "nursing": {
+      "skills": "human biology, anatomy, patient care, observation, and communication",
+      "bhs": [
+        "Biology",
+        "Anatomy & Physiology",
+        "Chemistry",
+        "Certified Nursing Assistant (CNA) Program",
+        "Medical Terminology / UConn ECE",
+        "Psychology"
+      ],
+      "ghs": [
+        "bio",
+        "anatomy",
+        "chem",
+        "healthcare",
+        "human",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Ask an approved nurse about patient care, teamwork and the education route for the selected nursing role.",
+      "note": "CNA is an exploration option, not a substitute for nursing education or advanced-practice qualifications."
+    },
+    "animal": {
+      "skills": "animal biology, chemistry, observation, and laboratory reasoning",
+      "bhs": [
+        "Biology",
+        "Chemistry",
+        "AP/ECE Biology",
+        "Statistics & Probability",
+        "Marine Biology"
+      ],
+      "ghs": [
+        "bio",
+        "chem",
+        "lab",
+        "stats"
+      ],
+      "project": "Ask about supervised animal-care observation and keep a factual observation journal.",
+      "note": "Human anatomy courses are not veterinary training. Animal-care, laboratory and veterinary officer roles have different entry requirements."
+    },
+    "dental": {
+      "skills": "biology, chemistry, anatomy, precision, and patient communication",
+      "bhs": [
+        "Biology",
+        "Chemistry",
+        "Anatomy & Physiology",
+        "Medical Terminology / UConn ECE",
+        "Public Speaking"
+      ],
+      "ghs": [
+        "bio",
+        "chem",
+        "anatomy",
+        "healthcare",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Ask an approved dental professional about the distinction between support, hygienist and dentist roles.",
+      "note": "These are shared school foundations, not a claim that dentists and dental support specialists require the same professional training."
+    },
+    "behavioral": {
+      "skills": "human behavior, biology, research evidence, and supportive communication",
+      "bhs": [
+        "Psychology",
+        "Biology",
+        "Sociology",
+        "Anatomy & Physiology",
+        "Statistics & Probability",
+        "AP Psychology",
+        "Public Speaking"
+      ],
+      "ghs": [
+        "human",
+        "ibpsych",
+        "bio",
+        "stats",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Review a public psychology study and distinguish findings, limitations and personal opinions.",
+      "note": "School psychology courses do not qualify a student to diagnose or provide therapy."
+    },
+    "rehabilitation": {
+      "skills": "anatomy, movement, human behavior, and supportive communication",
+      "bhs": [
+        "Biology",
+        "Anatomy & Physiology",
+        "Psychology",
+        "ECE Kinesiology",
+        "Physics I",
+        "Public Speaking"
+      ],
+      "ghs": [
+        "bio",
+        "anatomy",
+        "human",
+        "sports",
+        "physics",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Ask an approved therapist about rehabilitation goals and observe only where permission and privacy allow.",
+      "note": ""
+    },
+    "optical": {
+      "skills": "optics, precision measurement, materials, and visual attention",
+      "bhs": [
+        "Physics I",
+        "Geometry",
+        "Hands-On Engineering Workshop",
+        "Chemistry",
+        "Introductory Drafting & Design"
+      ],
+      "ghs": [
+        "physics",
+        "geometry",
+        "metal",
+        "chem",
+        "cad"
+      ],
+      "project": "Investigate lenses with a teacher-approved classroom optics experiment and record precise measurements.",
+      "note": "Optical fabrication is different from optometry or ophthalmology; later specialist training remains necessary."
+    },
+    "pastoral": {
+      "skills": "listening, cultural understanding, ethics, and supportive communication",
+      "bhs": [
+        "Psychology",
+        "Sociology",
+        "Public Speaking",
+        "21st Century Communication"
+      ],
+      "ghs": [
+        "human",
+        "world1",
+        "world2",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Practice respectful listening in a supervised community-service activity.",
+      "note": "Chaplain and religious-affairs support roles have distinct education and eligibility routes; high-school courses are only preparation."
+    },
+    "field": {
+      "skills": "teamwork, communication, physical readiness, navigation, and responsible judgment",
+      "bhs": [
+        "PE 9",
+        "PE 10",
+        "Lifetime Fitness and Wellness",
+        "Geometry",
+        "Public Speaking",
+        "Psychology",
+        "21st Century Communication"
+      ],
+      "ghs": [
+        "health1",
+        "health2",
+        "sports",
+        "geometry",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Plan a supervised team challenge and reflect on communication, preparation and responsibility.",
+      "note": "No school course guarantees military eligibility or selection."
+    },
+    "rigging": {
+      "skills": "precision inspection, measurement, materials, and procedural accuracy",
+      "bhs": [
+        "Geometry",
+        "Hands-On Engineering Workshop",
+        "Introductory Drafting & Design",
+        "Physics I"
+      ],
+      "ghs": [
+        "geometry",
+        "engineering",
+        "cad",
+        "physics",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Use a teacher-approved model to practice following a specification and documenting quality checks.",
+      "note": "School projects do not qualify anyone to inspect or prepare safety-critical parachute equipment."
+    },
+    "radiological": {
+      "skills": "human biology, radiation physics, chemistry, and measurement",
+      "bhs": [
+        "Biology",
+        "Physics I",
+        "Chemistry",
+        "Anatomy & Physiology",
+        "Statistics & Probability"
+      ],
+      "ghs": [
+        "bio",
+        "physics",
+        "chem",
+        "anatomy",
+        "stats"
+      ],
+      "project": "Use a public imaging or radiation-safety educational resource to explain how measurement supports healthcare.",
+      "note": "School science does not authorize use of radiation equipment; clinical, research and technical roles require different later qualifications."
+    },
+    "pharmacy": {
+      "skills": "chemistry, biology, accurate calculations, and medication terminology",
+      "bhs": [
+        "Chemistry",
+        "Biology",
+        "Anatomy & Physiology",
+        "Medical Terminology / UConn ECE",
+        "Statistics & Probability",
+        "AP Chemistry II"
+      ],
+      "ghs": [
+        "chem",
+        "bio",
+        "anatomy",
+        "stats",
+        "healthcare"
+      ],
+      "project": "Practice units and accuracy using a teacher-provided non-medical dataset; ask a pharmacist about the profession.",
+      "note": "Pharmacy specialists and pharmacists have different professional education and licensing requirements. Do not use school exercises to advise on medicines."
+    },
+    "hearing_vision": {
+      "skills": "human biology, sensory systems, physics, and patient communication",
+      "bhs": [
+        "Biology",
+        "Anatomy & Physiology",
+        "Physics I",
+        "Psychology",
+        "Chemistry"
+      ],
+      "ghs": [
+        "bio",
+        "anatomy",
+        "physics",
+        "human",
+        "chem"
+      ],
+      "project": "Explore sound or light in a supervised science activity and ask a professional how it connects to hearing or vision care.",
+      "note": ""
+    },
+    "diving": {
+      "skills": "physical readiness, pressure, buoyancy, measurement, and teamwork",
+      "bhs": [
+        "PE 9",
+        "PE 10",
+        "Lifetime Fitness and Wellness",
+        "Physics I",
+        "Geometry",
+        "Hands-On Engineering Workshop",
+        "Biology"
+      ],
+      "ghs": [
+        "physics",
+        "geometry",
+        "health1",
+        "health2",
+        "sports",
+        "engineering"
+      ],
+      "project": "Model buoyancy in a classroom experiment and explain the forces involved.",
+      "note": "School fitness or science courses do not qualify anyone for diving; specialist supervision and training are essential."
+    },
+    "utilities": {
+      "skills": "mechanical systems, electricity, fluid systems, and fault finding",
+      "bhs": [
+        "Introductory Power Technology",
+        "Physics I",
+        "Advanced Power Technology",
+        "Hands-On Engineering Workshop",
+        "Geometry"
+      ],
+      "ghs": [
+        "electronics",
+        "physics",
+        "engineering",
+        "metal",
+        "geometry"
+      ],
+      "project": "Draw a simple energy-flow diagram for heating or cooling and discuss safe inspection methods with a teacher.",
+      "note": ""
+    },
+    "mortuary": {
+      "skills": "biology, careful records, respectful communication, and human behavior",
+      "bhs": [
+        "Biology",
+        "Anatomy & Physiology",
+        "Psychology",
+        "Foundations of Business – Research",
+        "Public Speaking"
+      ],
+      "ghs": [
+        "bio",
+        "anatomy",
+        "human",
+        "business",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Ask about a respectful informational interview focused on professional responsibilities and education.",
+      "note": ""
+    },
+    "animal_handling": {
+      "skills": "animal behavior, biological observation, responsible care, and communication",
+      "bhs": [
+        "Biology",
+        "Psychology",
+        "Criminal Justice",
+        "Public Speaking",
+        "PE 9",
+        "PE 10",
+        "Lifetime Fitness and Wellness"
+      ],
+      "ghs": [
+        "bio",
+        "human",
+        "law",
+        "english9",
+        "english10",
+        "english11",
+        "english12",
+        "health1",
+        "health2"
+      ],
+      "project": "Ask about an approved animal-care observation opportunity; do not attempt specialist dog training independently.",
+      "note": ""
+    },
+    "food_safety": {
+      "skills": "biology, chemistry, sanitation, measurement, and accurate inspection records",
+      "bhs": [
+        "Biology",
+        "Chemistry",
+        "Culinary Arts",
+        "Statistics & Probability",
+        "Public Speaking"
+      ],
+      "ghs": [
+        "bio",
+        "chem",
+        "lab",
+        "stats",
+        "health1",
+        "health2"
+      ],
+      "project": "Compare public food-safety guidance with a fictional inspection checklist in a supervised class.",
+      "note": ""
+    },
+    "fire_support": {
+      "skills": "spatial reasoning, numerical accuracy, physics, and precise communication",
+      "bhs": [
+        "Geometry",
+        "Physics I",
+        "Algebra II",
+        "Public Speaking",
+        "Exploration of Computer Science"
+      ],
+      "ghs": [
+        "geometry",
+        "physics",
+        "algebra2",
+        "electronics",
+        "english9",
+        "english10",
+        "english11",
+        "english12"
+      ],
+      "project": "Practice coordinates and time-distance reasoning using a non-operational classroom simulation.",
+      "note": "These are academic foundations, not weapons instruction."
+    },
+    "construction_equipment": {
+      "skills": "mechanical systems, measurement, earthwork planning, and safe equipment use",
+      "bhs": [
+        "Introductory Power Technology",
+        "Geometry",
+        "Introductory Drafting & Design",
+        "Physics I",
+        "Hands-On Engineering Workshop"
+      ],
+      "ghs": [
+        "auto",
+        "geometry",
+        "draft",
+        "physics",
+        "metal"
+      ],
+      "project": "Use a model site plan to compare dimensions, materials and how equipment access affects the work.",
+      "note": "School mechanical and drafting work provides preparation; specialist equipment operation requires separate training."
+    }
+  },
+  "roles": {
+    "Watercraft Engineer": "mechanical",
+    "Technical Engineer": "engineering",
+    "Special Forces Engineer Sergeant": "construction",
+    "Interior Electrician": "electrical_power",
+    "Tactical Power Generation Specialist": "electrical_power",
+    "Engineer Officer": "engineering",
+    "Quarrying Specialist": "construction_equipment",
+    "Geospatial Engineer": "geospatial",
+    "Plumber": "plumbing",
+    "Horizontal Construction Engineer": "construction_equipment",
+    "Bridge Crewmember": "construction",
+    "Combat Engineer": "construction",
+    "Automated Test Set (ATS) Operator/Maintainer": "electronics",
+    "Small Arms/Towed Artillery Repairer": "mechanical",
+    "Self-Propelled Artillery Systems Mechanic": "mechanical",
+    "Prime Power Production Specialist": "electrical_power",
+    "Construction Equipment Repairer": "mechanical",
+    "Power Distribution Specialist": "electrical_power",
+    "Bradley Fighting Vehicle System Maintainer": "mechanical",
+    "Track Vehicle Repairer": "mechanical",
+    "Wheeled Vehicle Mechanic": "mechanical",
+    "Quartermaster and Chemical Equipment Repairer": "mechanical",
+    "Test Measurement and Diagnostic Equipment Maintenance Support Specialist": "electronics",
+    "Multiple Launch Rocket System (MLRS) Repairer": "electronics",
+    "M1 Abrams Tank System Maintainer": "mechanical",
+    "Land Combat Electronic Missile System Repairer": "electronics",
+    "Carpentry and Masonry Specialist": "construction",
+    "Diver": "diving",
+    "Patriot System Repairer": "electronics",
+    "Short Range Air Defense System Repairer": "electronics",
+    "Stryker Systems Maintainer": "mechanical",
+    "Allied Trade Specialist": "fabrication",
+    "Visual Information Specialist": "media",
+    "Band Officer": "music",
+    "Culinary Specialist": "culinary",
+    "Visual Information Equipment Operator-Maintainer": "electronics",
+    "Musician": "music",
+    "Special Band Musician": "music",
+    "Shower & Laundry Specialist": "logistics",
+    "Health Services Human Resources": "administration",
+    "Chaplain": "pastoral",
+    "Patient Administration Officer": "health_administration",
+    "Financial Management Technician": "finance",
+    "Human Resources Officer": "administration",
+    "Health Care Administrator": "health_administration",
+    "Religious Affairs Specialist": "pastoral",
+    "Human Resources Specialist": "administration",
+    "Financial Manager": "finance",
+    "Health Services Comptroller": "finance",
+    "Mortuary Affairs Specialist": "mortuary",
+    "Army Judge Advocate General’s (JAG) Corps Attorney": "law",
+    "Military Working Dog Handler": "animal_handling",
+    "Military Police": "policing",
+    "Health Services Plans, Operations, Intelligence Security and Training": "health_administration",
+    "Paralegal Specialist": "law",
+    "Military Police Officer": "policing",
+    "Chemical, Biological, Radiological, and Nuclear (CBRN) Specialist": "cbrn",
+    "Firefighter": "emergency",
+    "Corrections / Detention Specialist": "policing",
+    "Cargo Specialist": "logistics",
+    "Transportation Management Coordinator": "logistics",
+    "Watercraft Operator": "transport",
+    "Ammunition Stock Control and Accounting Specialist": "logistics",
+    "Automated Logistical Specialist": "logistics",
+    "Health Services Materiel": "logistics",
+    "Parachute Rigger": "rigging",
+    "Logistics Officer": "logistics",
+    "Ammunition Specialist": "logistics",
+    "Unit Supply Specialist": "logistics",
+    "Medical Logistics Specialist": "logistics",
+    "Petroleum Supply Specialist": "logistics",
+    "Railway Specialist": "transport",
+    "Utilities Equipment Repairer": "utilities",
+    "Motor Transport Operator": "transport",
+    "Special Forces Communications Sergeant": "signals",
+    "Radio Equipment Repairer": "electronics",
+    "Cyber Operations Specialist": "cyber",
+    "Satellite Communication Systems Specialist": "signals",
+    "Signals Collector/Analyst": "signals",
+    "Cyber Capability Developer Technician": "cyber",
+    "Electromagnetic Warfare Specialist": "signals",
+    "Geospatial Intelligence Imagery Analyst": "geospatial",
+    "Cyber Warfare Officer": "cyber",
+    "Information Technology Specialist": "cyber",
+    "Signal Operations Support Specialist": "signals",
+    "Computer / Detection Systems Repairer": "electronics",
+    "Radar Repairer": "electronics",
+    "Signal Officer": "signals",
+    "Military Intelligence Officer": "intelligence",
+    "Cyber Network Defender": "cyber",
+    "Public Affairs Mass Communication Specialist": "media",
+    "Cyber Electromagnetic Warfare Officer": "signals",
+    "Signals Intelligence Analyst": "intelligence",
+    "Network Communication Systems Specialist": "signals",
+    "Public Affairs Officer": "media",
+    "Counterintelligence Agent": "intelligence",
+    "Special Forces Intelligence Sergeant": "intelligence",
+    "Intelligence Analyst": "intelligence",
+    "Cyber Capability Development Officer": "cyber",
+    "Foreign Language Specialist": "language",
+    "Signals Intelligence Voice Interceptor": "language",
+    "Military Intelligence (MI) Systems Maintainer/Integrator": "electronics",
+    "Human Intelligence Collector": "language",
+    "Air Traffic Control (ATC) Operator": "atc",
+    "Aviation Operations Specialist": "aviation_operations",
+    "Aviation Officer": "flight",
+    "Rotary Wing Aviator Warrant Officer": "flight",
+    "MQ-1 Unmanned Aircraft System (UAS) Operator": "flight",
+    "Fixed Wing Aviator Warrant Officer": "flight",
+    "Patriot Fire Control Enhanced Operator / Maintainer": "air_defense",
+    "Air Defense Artillery (ADA) Officer": "air_defense",
+    "Air Defense Enhanced Early Warning System Operator": "air_defense",
+    "Patriot Launching Station Enhanced Operator / Maintainer": "air_defense",
+    "Avenger Crewmember": "air_defense",
+    "Air and Missile Defense (AMD) Crewmember": "air_defense",
+    "Air Defense Artillery (ADA) Recruit": "air_defense",
+    "Air Defense Battle Management System Operator": "air_defense",
+    "Aircraft Structural Repairer": "fabrication",
+    "MQ-1 Unmanned Aircraft System (UAS) Repairer": "aircraft_mechanical",
+    "Air Traffic Control Equipment Repairer": "electronics",
+    "Aircraft Pneudraulics Repairer": "aircraft_mechanical",
+    "Aircraft Electrician": "electronics",
+    "UH-60 Helicopter Repairer/Aircrew Member": "aircraft_mechanical",
+    "AH-64 Attack Helicopter Repairer": "aircraft_mechanical",
+    "Avionic and Survivability Equipment Repairer": "electronics",
+    "Aircraft Powertrain Repairer": "aircraft_mechanical",
+    "Avionic Mechanic": "electronics",
+    "Aircraft Powerplant Repairer": "aircraft_mechanical",
+    "AH-64 Armament / Electrical / Avionic Systems Repairer": "electronics",
+    "CH-47 Helicopter Repairer / Aircrew Member": "aircraft_mechanical",
+    "Tactical Unmanned Aircraft System (TUAS) Specialist": "flight",
+    "Army Public Health Nurse": "nursing",
+    "Veterinary Laboratory Animal Medicine Officer": "animal",
+    "Biochemist Physiologist": "life_science",
+    "Microbiologist": "life_science",
+    "Veterinary Food Inspection Specialist": "food_safety",
+    "Biomedical Equipment Specialist": "electronics",
+    "Public Health Dentist": "dental",
+    "Environmental Science & Engineering Officer": "environment",
+    "Petroleum Laboratory Specialist": "chemistry_lab",
+    "Clinical Pharmacologist": "pharmacy",
+    "Nuclear Medical Science Officer": "radiological",
+    "Veterinary Pathologist": "animal",
+    "Water Treatment Specialist": "environment",
+    "Entomologist": "life_science",
+    "Clinical Laboratory Scientist": "life_science",
+    "Infectious Disease Officer": "clinical",
+    "Medical Laboratory Specialist": "life_science",
+    "Research Psychologist": "behavioral",
+    "Pathologist": "life_science",
+    "Optometrist": "hearing_vision",
+    "Family Nurse Practitioner": "nursing",
+    "Veterinary Clinical Medicine": "animal",
+    "Internal Medicine Physician": "clinical",
+    "Certified Nurse Midwife": "nursing",
+    "Endocrinologist": "clinical",
+    "Dermatologist": "clinical",
+    "Family Medicine Physician": "clinical",
+    "Diagnostic Radiologist": "radiological",
+    "Practical Nursing Specialist": "nursing",
+    "Field Veterinary Service": "animal",
+    "Animal Care Specialist": "animal",
+    "Eye Specialist": "hearing_vision",
+    "Periodontist": "dental",
+    "Ob / Gyn Nurse": "nursing",
+    "Dental Specialist": "dental",
+    "Allergist, Clinical Immunologist": "clinical",
+    "Otolaryngologist": "clinical",
+    "Comprehensive Dentist": "dental",
+    "Podiatrist": "clinical",
+    "Orthopedic Specialist": "rehabilitation",
+    "Orthodontist": "dental",
+    "Prosthodontist": "dental",
+    "Radiology Specialist": "radiological",
+    "Urologist": "clinical",
+    "Obstetrician & Gynecologist": "clinical",
+    "Physician Assistant Officer": "clinical",
+    "General Dentist": "dental",
+    "Endodontist": "dental",
+    "Ophthalmologist": "hearing_vision",
+    "Pediatric Dentist": "dental",
+    "Respiratory Specialist": "clinical",
+    "Pediatric Physician": "clinical",
+    "Rheumatologist": "clinical",
+    "Orthopedic Surgeon": "clinical",
+    "Anesthesiologist": "clinical",
+    "Critical Care Nurse": "nursing",
+    "Plastic Surgeon": "clinical",
+    "Neurosurgeon": "clinical",
+    "General Surgeon": "clinical",
+    "Aerospace Medicine Officer (Residency in Aerospace Medicine (RAM))": "clinical",
+    "Peripheral Vascular Surgeon": "clinical",
+    "Special Forces Medical Sergeant": "clinical",
+    "Nephrologist": "clinical",
+    "Medical-Surgical Nurse": "nursing",
+    "Medical Oncologist / Hematologist": "clinical",
+    "Oral & Maxillofacial Surgeon": "dental",
+    "Nuclear Medicine Officer": "radiological",
+    "Neurologist": "clinical",
+    "Perioperative Nurse": "nursing",
+    "Operating Room Specialist": "clinical",
+    "Radiation Oncologist": "radiological",
+    "Child Neurologist": "clinical",
+    "Gastroenterologist": "clinical",
+    "Emergency Room Nurse": "nursing",
+    "Nurse Anesthetist": "nursing",
+    "Emergency Physician": "clinical",
+    "Aeromedical Evacuations Officer": "health_administration",
+    "Field Surgeon": "clinical",
+    "Oral Pathologist": "life_science",
+    "Cardiologist": "clinical",
+    "Combat Medic Specialist": "clinical",
+    "Thoracic Surgeon": "clinical",
+    "Occupational Therapist": "rehabilitation",
+    "Pharmacy Specialist": "pharmacy",
+    "Social Worker": "behavioral",
+    "Psychiatrist": "behavioral",
+    "Physical Therapy Specialist": "rehabilitation",
+    "Behavioral Health Specialist": "behavioral",
+    "Preventive Medicine Officer": "clinical",
+    "Physical Therapist": "rehabilitation",
+    "Psychiatric Nurse Practitioner": "behavioral",
+    "Psychiatric / Behavioral Health Nurse": "behavioral",
+    "Nutrition Care Specialist": "nutrition",
+    "Patient Administration Specialist": "health_administration",
+    "Pharmacist": "pharmacy",
+    "Dietitian": "nutrition",
+    "Audiologist": "hearing_vision",
+    "Optical Laboratory Specialist": "optical",
+    "Health Services Administration Officer": "health_administration",
+    "Occupational Medicine Officer": "clinical",
+    "Physiatrist": "rehabilitation",
+    "Preventive Medicine Specialist": "environment",
+    "Clinical Psychologist": "behavioral",
+    "Occupational Therapy Specialist": "rehabilitation",
+    "Health Services System Management Officer": "health_administration",
+    "Special Forces Weapons Sergeant": "field",
+    "Infantry Officer": "field",
+    "Infantryman Jobs": "field",
+    "Indirect Fire Infantryman": "fire_support",
+    "Civil Affairs Specialist": "community",
+    "Infantryman": "field",
+    "Special Forces Officer": "field",
+    "Special Forces Candidate": "field",
+    "Civil Affairs Officer": "community",
+    "Cavalry Scout": "field",
+    "Explosive Ordnance Disposal (EOD) Specialist": "emergency",
+    "Field Artillery Officer": "fire_support",
+    "Chemical, Biological, Radiological And Nuclear (CBRN) Officer": "cbrn",
+    "Multiple Launch Rocket System (MLRS/HIMARS) Crewmember": "fire_support",
+    "Joint Fire Support Specialist": "fire_support",
+    "Fire Control Specialist": "fire_support",
+    "Explosive Ordnance Disposal (EOD) Officer": "emergency",
+    "Weapons Locating Radar Operator": "fire_support",
+    "Field Artillery Recruit": "fire_support",
+    "Cannon Crewmember": "fire_support",
+    "Armor Crewmember": "field",
+    "Armor Crewmember Recruit": "field",
+    "Bradley Crewmember": "field",
+    "Armor Officer": "field",
+    "Psychological Operations Specialist": "community",
+    "Psychological Operations Officer": "community"
+  }
+}

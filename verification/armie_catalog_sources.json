@@ -1,0 +1,21 @@
+{
+  "review_date": "2026-09-21",
+  "source_files": [
+    {
+      "name": "BPS High School Program of Studies 2026.pdf",
+      "sha256": "0fb65caf22c433a98051b1643837003d3d009247a2ec28f7a6bb1cf86a94ba21"
+    },
+    {
+      "name": "26_27 Guilford High School Program of Studies.pdf",
+      "sha256": "c86959999bc237cac4e82bb153cf0a620f693299e6373f5adc7ff29fc98b334a"
+    }
+  ],
+  "scope": "BHS and GHS course recommendations within Armie only",
+  "catalog_notes": [
+    "BHS source is the supplied Program of Studies; its filename is not proof of the current school year. Confirm active offerings with the school.",
+    "GHS source is the supplied 2026\u201327 Program of Studies.",
+    "Original catalogs checked for missing music/language/nutrition offerings and important grade/prerequisite corrections. Existing normalized entries retained except explicit Armie overlays.",
+    "Printed catalog page numbers used.",
+    "Recommendations are educational judgments, not an Army-approved curriculum or verified student eligibility decision."
+  ]
+}

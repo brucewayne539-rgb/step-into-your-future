@@ -335,6 +335,16 @@ ARMY_CAREERS = {
     for job in jobs
 }
 
+from army_school_pathways import (catalogs as army_catalogs, validate_roles as validate_army_roles,
+    school_pathway as army_school_pathway, DATA as ARMY_SCHOOL_DATA, AUDIT_REVISION as ARMY_AUDIT_REVISION)
+ARMY_SCHOOL_CATALOGS = army_catalogs(BHS_CATALOG, GHS_COURSE_CATALOG)
+validate_army_roles(ARMY_CAREERS, ARMY_SCHOOL_CATALOGS)
+for _army_job, _army_info in ARMY_CAREERS.items():
+    _profile = ARMY_SCHOOL_DATA['profiles'][ARMY_SCHOOL_DATA['roles'][_army_job]]
+    _army_info['keys'] = [part.strip() for part in _profile['skills'].replace(', and ', ', ').split(', ')]
+    _army_info['steps'][0][1] = 'Build foundations in ' + _profile['skills'] + '. Confirm your school course placement and prerequisites.'
+
+
 try:
     MAX_GENERATIONS_PER_SESSION = max(0, min(10, int(os.environ.get("MAX_GENERATIONS_PER_SESSION", "2"))))
 except ValueError:
@@ -1530,7 +1540,7 @@ def chs_roadmap():
 @app.route("/healthz")
 def healthz():
     """Minimal health check; never tests or exposes credentials."""
-    return jsonify(ok=True, service="step-into-your-future", version="22")
+    return jsonify(ok=True, service="step-into-your-future", version="22", armie_course_revision=ARMY_AUDIT_REVISION)
 
 
 @app.errorhandler(413)
@@ -1738,8 +1748,6 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
         session["admin_preview_count"] = count + 1
         rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
         school_career = info.get("school_match", career)
-        if mode == "army" and school == "bhs" and career == "Air Traffic Control (ATC) Operator":
-            school_career = career
         if mode == "army":
             timeline, keys = info["timeline"], info["keys"]
         elif school == "ghs":
@@ -1765,7 +1773,7 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             timeline=timeline,
             keys=keys,
             generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-count-1),
-            **({"chs": chs_plan["chs"]} if school == "chs" else ({"ghs": ghs_for_grade(school_career, grade, "explore", "Doing work I enjoy")} if school == "ghs" else {"bhs": bhs_for_grade(school_career, grade, "explore")})),
+            **({school: army_school_pathway(career, grade, school, ARMY_SCHOOL_CATALOGS, BHS_PROGRAMS)} if mode == "army" and school in ARMY_SCHOOL_CATALOGS else ({"chs": chs_plan["chs"]} if school == "chs" else ({"ghs": ghs_for_grade(school_career, grade, "explore", "Doing work I enjoy")} if school == "ghs" else {"bhs": bhs_for_grade(school_career, grade, "explore")}))),
         )
     except Exception as error:
         category = type(error).__name__
