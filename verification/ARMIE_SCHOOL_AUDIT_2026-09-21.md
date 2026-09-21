@@ -18,7 +18,7 @@ Scope: 262 selectable Army careers, BHS and GHS, Grades 8–12 (2,620 combinatio
 
 Additional tests assert required and forbidden courses for independently specified high-risk examples, original-catalog prerequisites and grade restrictions, and rejection of unmapped future job additions. Existing preview and BHS tests pass. Focused run: **5,306 tests passed plus 4,230 existing subtests**.
 
-Wider repository regression: **6,586 tests passed plus 4,230 subtests; one SDK serialization test could not run because the local OpenAI package is absent**. Installing that existing dependency was blocked by the package network. This does not establish a deployed SDK failure. Runtime dependency requirements and image-generation code were not changed.
+Wider repository regression: **6,586 tests passed plus 4,230 subtests** on the first run; one SDK serialization test initially failed because the local OpenAI package was absent. Dependency installation subsequently completed, and that exact SDK test passed on recheck (**6,587 distinct tests passing in total**, plus 4,230 subtests). Runtime dependency requirements and image-generation code were not changed.
 
 A passing structural test is not proof of educational quality; the semantic cases, explicit role manifest and original-catalog review are separate evidence. Original normalized catalog entries are retained where not overridden. This is not an exhaustive new transcription of either catalog or school/Army approval.
 
