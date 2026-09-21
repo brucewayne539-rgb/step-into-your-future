@@ -982,6 +982,19 @@ def bhs_for_grade(career, grade, path="employee"):
     grade = str(grade or "9")
     current_grade = int(grade)
     mapping = BHS_CAREER_COURSES.get(career, {"direct": [], "support": []})
+    if career == "Air Traffic Control (ATC) Operator":
+        # ATC is an operations/communication role, not a fabrication pathway.
+        # BLS occupational duties: clear instructions, quantitative decisions,
+        # aircraft movement and computer/radar information. Use catalog entries
+        # and the existing grade/prerequisite presentation below.
+        mapping = {
+            "direct": ["Public Speaking", "Geometry", "Algebra II", "Algebra I", "21st Century Communication"],
+            "support": ["Exploration of Computer Science", "Physics I", "Psychology"],
+        }
+        base = {
+            "experience": "Ask about an approved conversation or job shadow with an air traffic controller, subject to access and age restrictions. A classroom simulation can practice clear instructions, listening and tracking several moving objects.",
+            "good": "These BHS courses build foundations for air traffic control, not an ATC qualification. Choose the math course that follows your completed work and placement; this is not a checklist to repeat. Army training and any later civilian qualification have separate requirements.",
+        }
     direct = list(mapping.get("direct", []))
     support = list(mapping.get("support", []))
     if path == "owner":
@@ -1066,6 +1079,21 @@ def bhs_for_grade(career, grade, path="employee"):
         "next": next_step,
         "grade_note": f"For a current {BHS_GRADE_LABELS.get(grade, grade + 'th grade')} student",
     }
+    if career == "Air Traffic Control (ATC) Operator":
+        reasons = {
+            "Public Speaking": "Practice clear, concise spoken instructions and confident communication; specialized ATC phraseology is learned in later training.",
+            "Geometry": "Build spatial reasoning for interpreting positions, directions and aircraft movement.",
+            "Algebra I": "Strengthen equations and quantitative problem solving used to reason about time, distance and speed; select according to placement.",
+            "Algebra II": "Extend quantitative reasoning and functions after earlier math preparation; select according to placement.",
+            "21st Century Communication": "Develop precise written, spoken and digital communication for sharing information accurately.",
+            "Exploration of Computer Science": "Build logical thinking and familiarity with data and computer systems; this is supporting preparation, not radar-controller training.",
+            "Physics I": "Use the study of motion and forces to strengthen understanding of moving aircraft; confirm the listed math preparation.",
+            "Psychology": "Explore thought and mental processes as supporting background for attention, judgment and teamwork.",
+        }
+        result["next"] += " For Air Traffic Control, review your math placement and a communication course, then ask about an approved controller interview or observation opportunity."
+        for group in ("course_details", "supporting_course_details", "future_course_details"):
+            for item in result[group]:
+                item["focus"] = reasons[item["name"]]
     return result
 
 
@@ -1710,6 +1738,8 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
         session["admin_preview_count"] = count + 1
         rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
         school_career = info.get("school_match", career)
+        if mode == "army" and school == "bhs" and career == "Air Traffic Control (ATC) Operator":
+            school_career = career
         if mode == "army":
             timeline, keys = info["timeline"], info["keys"]
         elif school == "ghs":

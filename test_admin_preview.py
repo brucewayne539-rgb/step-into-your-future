@@ -248,6 +248,36 @@ class AdministratorPreviewTests(unittest.TestCase):
         self.assertIn(b"Guilford High School", response.data)
         self.assertNotIn(b'type="file"', response.data)
 
+    @patch.object(application, "load_key", return_value="sk-test")
+    @patch.object(application, "OpenAI", FakeOpenAIClient)
+    def test_bhs_atc_response_prioritizes_math_and_communication(self, _key):
+        for grade in ("8", "9", "10", "11", "12"):
+            self.authorize()
+            with self.subTest(grade=grade):
+                response = self.client.post("/api/admin-preview/generate",
+                    headers={"X-CSRF-Token": "test-csrf"}, json={
+                        "mode": "army", "school": "bhs", "sample_id": "grade9",
+                        "grade": grade, "career": "Air Traffic Control (ATC) Operator",
+                        "age": "25", "path": "employee", "priority": "Aviation"})
+                self.assertEqual(response.status_code, 200)
+                result = response.get_json()["bhs"]
+                now = result["course_details"] + result["supporting_course_details"]
+                later = result["future_course_details"]
+                names = {x["name"] for x in now + later}
+                self.assertTrue({"Public Speaking", "Geometry", "Physics I"} <= names)
+                self.assertFalse(any("Workshop" in n or "Drafting" in n or "Robotics" in n for n in names))
+                for item in now:
+                    self.assertIn(int(grade), application.BHS_CATALOG[item["name"]]["grades"])
+                    self.assertTrue(item["focus"])
+                for item in later:
+                    self.assertTrue(any(g > int(grade) for g in application.BHS_CATALOG[item["name"]]["grades"]))
+                physics = next(x for x in now + later if x["name"] == "Physics I")
+                self.assertEqual(physics["prerequisite"], application.BHS_CATALOG["Physics I"]["prerequisite"])
+                self.assertNotIn("engineering project", result["experience"].lower())
+                self.assertIn("Air Traffic Control", result["next"])
+        engineer = application.bhs_for_grade("Engineer", "9")
+        self.assertIn("Hands-On Engineering Workshop", engineer["courses"])
+
     def test_every_armie_career_maps_to_both_school_catalogs(self):
         for career, info in application.ARMY_CAREERS.items():
             with self.subTest(career=career):
