@@ -1,0 +1,450 @@
+[
+  {
+    "id": "propulsion",
+    "name": "Aerospace Propulsion",
+    "category": "Maintenance and Repair",
+    "route": "Enlisted",
+    "tagline": "Understand what makes flight possible.",
+    "description": "Inspect, troubleshoot, repair and test aircraft engines and propulsion systems. This work combines mechanical reasoning, careful measurement and teamwork.",
+    "skills": [
+      "Mechanical reasoning",
+      "Precision",
+      "Problem solving"
+    ],
+    "url": "https://www.airforce.com/careers/aviation-and-flight/aerospace-propulsion",
+    "training": "Basic Military Training, followed by propulsion technical training and supervised development in the specialty.",
+    "civilian": "Aircraft maintenance, mechanical systems and technical inspection. Civilian aviation work may require additional FAA credentials.",
+    "project": "With a teacher, compare how a classroom motor converts energy into motion. Make a labeled diagram and a maintenance checklist.",
+    "question": "How is an engine specialty assigned, and which civilian maintenance credentials can this training support?",
+    "courses": [
+      {
+        "key": "Introductory Power Technology",
+        "why": "Explore engines, energy and mechanical systems before studying aircraft propulsion."
+      },
+      {
+        "key": "Hands-On Engineering Workshop",
+        "why": "Practice building, testing and improving a physical system."
+      },
+      {
+        "key": "Algebra I",
+        "why": "Use formulas and measurements to reason about mechanical performance."
+      },
+      {
+        "key": "Advanced Power Technology",
+        "why": "Extend mechanical troubleshooting after the introductory course."
+      },
+      {
+        "key": "Physics I",
+        "why": "Connect forces, motion and energy to how propulsion works."
+      },
+      {
+        "key": "Introductory Drafting & Design",
+        "why": "Learn to interpret and communicate the shape of components."
+      }
+    ]
+  },
+  {
+    "id": "atc",
+    "name": "Air Traffic Control",
+    "category": "Aviation and Flight",
+    "route": "Enlisted",
+    "tagline": "Bring clarity to a busy sky.",
+    "description": "Help aircraft move safely on the ground and in the air using visual information, radar and precise communication.",
+    "skills": [
+      "Communication",
+      "Spatial reasoning",
+      "Attention to detail"
+    ],
+    "url": "https://www.airforce.com/careers/aviation-and-flight/air-traffic-control",
+    "training": "Basic Military Training, air traffic control technical training and further qualification for assigned duties.",
+    "civilian": "Air traffic services and aviation operations. Civilian controller hiring and certification have separate requirements.",
+    "project": "Create a tabletop airport diagram and explain a fictional traffic sequence in clear, concise language. Use a classroom exercise, never a live aviation frequency.",
+    "question": "What does qualification at a first duty station involve, and how does military experience relate to civilian controller requirements?",
+    "courses": [
+      {
+        "key": "Geometry",
+        "why": "Build spatial reasoning for positions, directions and distances."
+      },
+      {
+        "key": "Algebra II",
+        "why": "Strengthen numerical reasoning and interpreting relationships."
+      },
+      {
+        "key": "Public Speaking",
+        "why": "Practice calm, clear verbal communication."
+      },
+      {
+        "key": "Physics I",
+        "why": "Understand motion and the physical setting of flight."
+      },
+      {
+        "key": "Statistics & Probability",
+        "why": "Practice interpreting data and uncertainty."
+      },
+      {
+        "key": "21st Century Communication",
+        "why": "Organize information so other people can act on it."
+      }
+    ]
+  },
+  {
+    "id": "pilot",
+    "name": "Pilot",
+    "category": "Aviation and Flight",
+    "route": "Officer",
+    "tagline": "Turn curiosity about flight into a plan.",
+    "description": "Fly assigned aircraft and work with crews to carry out missions. Pilot selection and aircraft assignment are competitive and depend on qualifications, performance and Air Force needs.",
+    "skills": [
+      "Judgment",
+      "Mathematics",
+      "Teamwork"
+    ],
+    "url": "https://www.airforce.com/careers/aviation-and-flight/pilot",
+    "training": "Earn a bachelor’s degree and an officer commission through an eligible route; compete for pilot selection, meet aviation standards, then complete pilot and aircraft-specific training.",
+    "civilian": "Commercial aviation, flight operations and aviation management. FAA certificates, flight experience and employer requirements apply.",
+    "project": "Build and test paper gliders with one design change at a time. Graph the results and explain what the data can—and cannot—tell you.",
+    "question": "Which commissioning routes fit my college plans, and what are the selection process, medical standards and service commitment for pilots?",
+    "courses": [
+      {
+        "key": "Geometry",
+        "why": "Develop the spatial reasoning used to understand flight paths."
+      },
+      {
+        "key": "Algebra II",
+        "why": "Build the mathematical foundation for later quantitative study."
+      },
+      {
+        "key": "Physics I",
+        "why": "Connect motion, forces and energy to flight."
+      },
+      {
+        "key": "Precalculus",
+        "why": "Prepare for college mathematics and technical coursework."
+      },
+      {
+        "key": "Public Speaking",
+        "why": "Practice concise briefings and communicating with a team."
+      },
+      {
+        "key": "Hands-On Engineering Workshop",
+        "why": "Test design ideas and learn from measured results."
+      }
+    ]
+  },
+  {
+    "id": "engineer",
+    "name": "Developmental Engineer",
+    "category": "Science and Technology",
+    "route": "Officer",
+    "tagline": "Design the systems behind the mission.",
+    "description": "Apply engineering to the development, evaluation and improvement of systems. Coordinate technical work and help assess new technologies.",
+    "skills": [
+      "Design thinking",
+      "Analysis",
+      "Collaboration"
+    ],
+    "url": "https://www.airforce.com/careers/logistics-and-administration/developmental-engineer",
+    "training": "Complete a qualifying engineering bachelor’s degree and an officer commissioning route. Specialty education and experience requirements must be confirmed with an officer recruiter.",
+    "civilian": "Engineering design, systems engineering and technical project work. Roles and professional licensure may require additional qualifications.",
+    "project": "Design a model wing or simple structure. Set a measurable goal, compare prototypes and document why you changed the design.",
+    "question": "Which engineering degrees qualify, and how do technical specialties and commissioning routes affect selection?",
+    "courses": [
+      {
+        "key": "Hands-On Engineering Workshop",
+        "why": "Practice an iterative design, build and test process."
+      },
+      {
+        "key": "Introductory Drafting & Design",
+        "why": "Communicate technical ideas through drawings."
+      },
+      {
+        "key": "Robotics Foundations",
+        "why": "Connect mechanical, electrical and computing ideas."
+      },
+      {
+        "key": "Physics I",
+        "why": "Build a foundation in physical systems."
+      },
+      {
+        "key": "Precalculus",
+        "why": "Prepare for the mathematics of an engineering degree."
+      },
+      {
+        "key": "Capstone STEM",
+        "why": "Bring research and design together in a supervised project."
+      }
+    ]
+  },
+  {
+    "id": "cyber",
+    "name": "Cyber Systems Operations",
+    "category": "Science and Technology",
+    "route": "Enlisted",
+    "tagline": "Keep essential systems working.",
+    "description": "Support servers and computer systems, maintain protective measures and respond to service interruptions.",
+    "skills": [
+      "Logical thinking",
+      "Troubleshooting",
+      "Documentation"
+    ],
+    "url": "https://www.airforce.com/careers/intelligence/cyber-systems-operations",
+    "training": "Basic Military Training followed by technical and specialty training. Ask a recruiter about current cyber career names, codes and available assignments.",
+    "civilian": "IT support, systems administration and cybersecurity operations. Certifications and employer requirements vary.",
+    "project": "Create a diagram of a fictional school computer network and a backup-and-recovery plan. Work only with systems you own or are authorized to use.",
+    "question": "Which current cyber specialty corresponds to this career page, and what training and certifications are available?",
+    "courses": [
+      {
+        "key": "Exploration of Computer Science",
+        "why": "Build foundations in computational thinking and computing systems."
+      },
+      {
+        "key": "AP Computer Science Principles",
+        "why": "Study algorithms, data and the wider impact of computing."
+      },
+      {
+        "key": "Web Design and Computer Applications",
+        "why": "Practice creating and testing a working digital product."
+      },
+      {
+        "key": "Algebra II",
+        "why": "Develop structured problem-solving skills."
+      },
+      {
+        "key": "21st Century Communication",
+        "why": "Explain technical problems clearly to other people."
+      },
+      {
+        "key": "Robotics Foundations",
+        "why": "Practice diagnosing how software and hardware work together."
+      }
+    ]
+  },
+  {
+    "id": "medical",
+    "name": "Aerospace Medical Service",
+    "category": "Healthcare",
+    "route": "Enlisted",
+    "tagline": "Put care at the center of your work.",
+    "description": "Support patient care, medical equipment and clinical teams. Duties can include treatment support and aeromedical evacuation responsibilities.",
+    "skills": [
+      "Empathy",
+      "Science",
+      "Careful observation"
+    ],
+    "url": "https://www.airforce.com/careers/healthcare/aerospace-medical-service",
+    "training": "Basic Military Training followed by medical technical training and clinical development. This enlisted specialty is distinct from becoming a commissioned nurse or physician.",
+    "civilian": "Patient-care support, allied health and further healthcare education. Civilian nursing or other licensed practice requires its own education and credentials.",
+    "project": "Create a plain-language explanation of one body system using reputable health references. Ask a health-science teacher to review it.",
+    "question": "What clinical training and credentials are included, and what additional education would I need for a civilian healthcare career?",
+    "courses": [
+      {
+        "key": "Biology",
+        "why": "Build a foundation in living systems."
+      },
+      {
+        "key": "Anatomy & Physiology",
+        "why": "Connect body structures with their functions."
+      },
+      {
+        "key": "Chemistry",
+        "why": "Understand chemical processes that underpin health science."
+      },
+      {
+        "key": "Medical Terminology / UConn ECE",
+        "why": "Learn the language used by clinical teams after Anatomy & Physiology."
+      },
+      {
+        "key": "Certified Nursing Assistant (CNA) Program",
+        "why": "Explore structured patient-care learning, subject to program requirements."
+      },
+      {
+        "key": "Psychology",
+        "why": "Develop understanding of behavior and human needs."
+      }
+    ]
+  },
+  {
+    "id": "intelligence",
+    "name": "All Source Intelligence Analyst",
+    "category": "Intelligence",
+    "route": "Enlisted",
+    "tagline": "Make sense of complex information.",
+    "description": "Evaluate information from different sources and communicate analysis that helps leaders make informed decisions.",
+    "skills": [
+      "Research",
+      "Critical thinking",
+      "Clear writing"
+    ],
+    "url": "https://www.airforce.com/careers/intelligence/all-source-intelligence-analyst",
+    "training": "Basic Military Training followed by intelligence technical training. Confirm testing, citizenship, clearance and specialty requirements with a recruiter.",
+    "civilian": "Research, data analysis and information-focused roles. Employers may require a degree, additional skills or a clearance.",
+    "project": "Compare three public reports about the same nonmilitary event. Separate evidence from assumptions and give a short briefing with source links.",
+    "question": "How much of the work involves writing, briefing and data analysis, and what qualifications are required for this specialty?",
+    "courses": [
+      {
+        "key": "AP Human Geography",
+        "why": "Explore relationships among places, populations and human activity."
+      },
+      {
+        "key": "Statistics & Probability",
+        "why": "Interpret patterns while recognizing uncertainty."
+      },
+      {
+        "key": "Current Issues / Current Issues Honors",
+        "why": "Compare evidence and perspectives on current events."
+      },
+      {
+        "key": "Public Speaking",
+        "why": "Turn research into a clear briefing."
+      },
+      {
+        "key": "Exploration of Computer Science",
+        "why": "Build literacy in the tools used to organize information."
+      },
+      {
+        "key": "Spanish I",
+        "why": "Explore another language and cultural context; choose the level that fits your prior learning."
+      }
+    ]
+  },
+  {
+    "id": "logistics",
+    "name": "Logistics Plans",
+    "category": "Logistics and Administration",
+    "route": "Enlisted",
+    "tagline": "Connect people, resources and timing.",
+    "description": "Develop and review plans that coordinate operations, logistics and support organizations.",
+    "skills": [
+      "Organization",
+      "Communication",
+      "Planning"
+    ],
+    "url": "https://www.airforce.com/careers/logistics-and-administration/logistics-plans",
+    "training": "Basic Military Training followed by logistics technical training and development in planning duties.",
+    "civilian": "Supply-chain planning, operations coordination and project support. Further education or certifications may be useful.",
+    "project": "Plan the supplies and schedule for a fictional school event. Build a spreadsheet with quantities, costs, responsibilities and a contingency.",
+    "question": "How do logistics planners work with other teams, and what analytical tools should I begin learning?",
+    "courses": [
+      {
+        "key": "Foundations of Business – Research",
+        "why": "Understand how organizations research and plan their work."
+      },
+      {
+        "key": "Accounting I",
+        "why": "Practice accurate records and tracking resources."
+      },
+      {
+        "key": "Statistics & Probability",
+        "why": "Use data to think about demand and variation."
+      },
+      {
+        "key": "Web Design and Computer Applications",
+        "why": "Build practical digital productivity skills."
+      },
+      {
+        "key": "Public Speaking",
+        "why": "Communicate a plan and answer questions."
+      },
+      {
+        "key": "Financial Literacy",
+        "why": "Practice budgeting and evaluating trade-offs."
+      }
+    ]
+  },
+  {
+    "id": "security",
+    "name": "Security Forces",
+    "category": "Law and Order",
+    "route": "Enlisted",
+    "tagline": "Protect people through sound judgment.",
+    "description": "Help safeguard installations, people and resources through security and law-enforcement duties, incident response and reporting.",
+    "skills": [
+      "Integrity",
+      "Communication",
+      "Teamwork"
+    ],
+    "url": "https://www.airforce.com/careers/law-and-order/security-forces",
+    "training": "Basic Military Training followed by Security Forces technical training. Assignments can include demanding environments and deployment.",
+    "civilian": "Public safety, security and emergency management. Civilian law-enforcement hiring, academies and licensing are separate.",
+    "project": "With a teacher, review a fictional event-safety plan. Identify accessibility needs, communication responsibilities and where to seek adult help.",
+    "question": "What does a typical first assignment involve, including schedules, deployment possibilities and further education?",
+    "courses": [
+      {
+        "key": "Criminal Justice",
+        "why": "Explore the justice system and the responsibilities of public-safety work."
+      },
+      {
+        "key": "Psychology",
+        "why": "Consider behavior, communication and human needs."
+      },
+      {
+        "key": "Public Speaking",
+        "why": "Practice clear, respectful communication under pressure."
+      },
+      {
+        "key": "Forensic Science",
+        "why": "Learn how scientific evidence is observed and evaluated."
+      },
+      {
+        "key": "PE 9",
+        "why": "Build teamwork and healthy participation in physical activity."
+      },
+      {
+        "key": "PE 10",
+        "why": "Continue teamwork and physical education."
+      },
+      {
+        "key": "Lifetime Fitness and Wellness",
+        "why": "Develop sustainable personal fitness habits."
+      }
+    ]
+  },
+  {
+    "id": "sere",
+    "name": "SERE Specialist",
+    "category": "Combat and Warfare",
+    "route": "Enlisted",
+    "tagline": "Teach preparation, resilience and teamwork.",
+    "description": "Train personnel to handle survival situations and support personnel-recovery preparation. SERE stands for Survival, Evasion, Resistance and Escape.",
+    "skills": [
+      "Teaching",
+      "Resilience",
+      "Environmental awareness"
+    ],
+    "url": "https://www.airforce.com/careers/special-warfare-and-combat-support/survival-evasion-resistance-and-escape-sere",
+    "training": "Basic Military Training, SERE orientation and specialist training. Selection includes demanding physical and other specialty standards.",
+    "civilian": "Outdoor education, safety instruction and emergency-preparedness work. Civilian roles may require separate certifications.",
+    "project": "Prepare a classroom lesson about weather awareness and safe trip planning. Have a qualified teacher review it; no solo survival exercises.",
+    "question": "What are the current selection standards, training demands and day-to-day teaching responsibilities?",
+    "courses": [
+      {
+        "key": "Environmental Science A: Understanding Ecology",
+        "why": "Build an understanding of environments and ecological systems."
+      },
+      {
+        "key": "Dealing with Natural Disasters",
+        "why": "Explore hazards and preparedness."
+      },
+      {
+        "key": "Public Speaking",
+        "why": "Practice teaching and giving clear instructions."
+      },
+      {
+        "key": "Psychology",
+        "why": "Consider how people learn and respond to stress."
+      },
+      {
+        "key": "PE 9",
+        "why": "Develop teamwork and healthy physical activity habits."
+      },
+      {
+        "key": "PE 10",
+        "why": "Continue structured physical education."
+      },
+      {
+        "key": "Lifetime Fitness and Wellness",
+        "why": "Explore sustainable fitness and wellness planning."
+      }
+    ]
+  }
+]

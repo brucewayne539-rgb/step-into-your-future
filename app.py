@@ -129,6 +129,8 @@ def burn_portrait_watermark(encoded_png, fictional_demo=False):
     return base64.b64encode(output.getvalue()).decode("ascii")
 
 app = Flask(__name__)
+from airforce_demo import airforce_demo
+app.register_blueprint(airforce_demo)
 
 
 def env_flag(name, default=False):
