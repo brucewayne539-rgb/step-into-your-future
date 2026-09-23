@@ -14,6 +14,14 @@ def demo_data():
     for key, updates in supplement.items():
         catalog.setdefault(key, {}).update(updates)
     roles = json.loads((BASE / 'data/airforce_careers.json').read_text())
+    # Equivalent occupations share a school foundation across branch demos.
+    # Branch-specific descriptions, training and eligibility remain on each role.
+    profiles = json.loads((BASE / 'data/army_school_profiles.json').read_text())['profiles']
+    for role in roles:
+        if role.get('school_profile'):
+            profile = profiles[role['school_profile']]
+            role['courses'] = [{'key': key, 'why': role['course_notes'][key]}
+                               for key in profile['bhs']]
     used = {course['key'] for role in roles for course in role['courses']}
     return {'roles': roles, 'courses': {key: dict(catalog[key], name=catalog[key].get('name', key)) for key in sorted(used)}, 'reviewed': 'September 23, 2026'}
 

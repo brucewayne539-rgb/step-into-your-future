@@ -60,32 +60,17 @@
     "civilian": "Air traffic services and aviation operations. Civilian controller hiring and certification have separate requirements.",
     "project": "Create a tabletop airport diagram and explain a fictional traffic sequence in clear, concise language. Use a classroom exercise, never a live aviation frequency.",
     "question": "What does qualification at a first duty station involve, and how does military experience relate to civilian controller requirements?",
-    "courses": [
-      {
-        "key": "Geometry",
-        "why": "Build spatial reasoning for positions, directions and distances."
-      },
-      {
-        "key": "Algebra II",
-        "why": "Strengthen numerical reasoning and interpreting relationships."
-      },
-      {
-        "key": "Public Speaking",
-        "why": "Practice calm, clear verbal communication."
-      },
-      {
-        "key": "Physics I",
-        "why": "Understand motion and the physical setting of flight."
-      },
-      {
-        "key": "Statistics & Probability",
-        "why": "Practice interpreting data and uncertainty."
-      },
-      {
-        "key": "21st Century Communication",
-        "why": "Organize information so other people can act on it."
-      }
-    ]
+    "school_profile": "atc",
+    "course_notes": {
+      "Geometry": "Build spatial reasoning for positions, directions and distances.",
+      "Algebra II": "Strengthen numerical reasoning and interpreting relationships.",
+      "Public Speaking": "Practice calm, clear verbal communication.",
+      "Physics I": "Understand motion and the physical setting of flight.",
+      "21st Century Communication": "Organize information so other people can act on it.",
+      "Exploration of Computer Science": "Practice logical thinking and interpreting information in computer-based systems.",
+      "Algebra I": "Build foundational numerical reasoning; choose the next math level based on completed courses and placement.",
+      "Statistics & Probability": "Practice interpreting data and uncertainty."
+    }
   },
   {
     "id": "pilot",
