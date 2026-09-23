@@ -8,8 +8,14 @@
   categories.forEach(category => $('category').add(new Option(category, category)));
   const demo = JSON.parse($('jet-preview-data').textContent);
   let fictional = false, demoMode = false, portraitBusy = false, portraitVersion = 0;
+  const draftKey = 'jetforce-demo-choices';
+  const selectedStudent = () => document.querySelector('input[name="jet-student"]:checked').value;
   function showStep(step) {
     $('future-age-choice').hidden = !demoMode;
+    $('demo-examples').hidden = !demoMode;
+    $('explore-lead').textContent = demoMode ? 'Choose your student, grade, career and future age. One button creates your portrait and roadmap.' : 'Choose your grade and career to explore courses and possible next steps.';
+    $('roadmap-title').textContent = demoMode ? 'Your Jet Force future' : 'Your Jet Force roadmap';
+    updateChoiceState();
     $('start-view').hidden = step !== 1;
     $('explore-view').hidden = step !== 2;
     $('roadmap').hidden = step !== 3;
@@ -25,7 +31,7 @@
   function preview() {
     invalidate();
     const item = role();
-    $('build').disabled = !item;
+    updateChoiceState();
     if (!item) {
       $('preview-content').innerHTML = '<div class="preview-icon" aria-hidden="true">↗</div><h3>Broaden your view.</h3><p class="description">This small demo has no career for that combination. Choose “All routes” or “All eight areas” to see more options.</p>';
       return;
@@ -66,9 +72,9 @@
     if (demoMode) {
       const id = document.querySelector('input[name="jet-student"]:checked').value;
       $('student-source').src = `/demo-student/${id}.png`;
-      $('student-label').textContent = demo.samples[id].label;
-      $('portrait-choice').textContent = `Age ${$('future-age').value} · ${item.name} · Generic career imagery`;
-      portraitControls();
+      $('student-label').textContent = 'Original fictional student · Grade ' + $('grade').value;
+      $('future-heading').textContent = `Future at age ${$('future-age').value}`;
+      $('portrait-choice').textContent = item.name;
     }
     const current = item.courses.filter(course => data.courses[course.key].grades.includes(grade));
     const future = item.courses.filter(course => !data.courses[course.key].grades.includes(grade) && data.courses[course.key].grades.some(g => g > grade));
@@ -100,44 +106,58 @@
     $('career-source').textContent = `${item.name} — official career details ↗`;
     showStep(3);
   }
-  $('start-course').addEventListener('click', () => { demoMode = false; invalidate(); showStep(2); });
-  $('student-start').addEventListener('click', () => {
-    clearFilters(); demoMode = true;
-    const id = document.querySelector('input[name="jet-student"]:checked').value;
-    $('grade').value = demo.samples[id].grade;
-    showStep(2);
-  });
-  $('back-start').addEventListener('click', () => showStep(1));
-  $('edit-course').addEventListener('click', () => { clearFilters(); showStep(2); });
-  $('clear-filters').addEventListener('click', () => { clearFilters(); $('career').focus(); });
-  $('demo-toggle').addEventListener('click', () => {
-    const open = $('demo-examples').hidden;
-    $('demo-examples').hidden = !open;
-    $('demo-toggle').setAttribute('aria-expanded', String(open));
-  });
-  $('category').addEventListener('change', filterCareers);
-  $('route').addEventListener('change', filterCareers);
-  $('career').addEventListener('change', preview);
-  $('grade').addEventListener('change', invalidate);
-  $('explorer-form').addEventListener('submit', buildRoadmap);
-  function portraitControls() {
-    $('portrait-login').hidden = demo.authorized;
-    $('generate-portrait').hidden = !demo.authorized;
-    $('generate-portrait').disabled = portraitBusy || !demo.ready || demo.remaining <= 0;
-    $('generate-portrait').textContent = portraitBusy ? 'Creating Fictional Portrait…' : 'Create Fictional Future Portrait';
-    $('portrait-status').textContent = portraitBusy ? 'Creating the future portrait may take a little while. Your roadmap is ready below.' : !demo.ready ? demo.status : `${demo.remaining} fictional portrait generation(s) remain in this browser session.`;
+  function saveDraft() {
+    try { sessionStorage.setItem(draftKey, JSON.stringify({sample:selectedStudent(),grade:$('grade').value,career:$('career').value,age:$('future-age').value,expires:Date.now()+3600000})); } catch (_) {}
   }
-  $('future-age').addEventListener('change', invalidate);
-  document.querySelectorAll('input[name="jet-student"]').forEach(input => input.addEventListener('change', invalidate));
-  $('generate-portrait').addEventListener('click', async () => {
+  function restoreDraft() {
+    try {
+      const draft = JSON.parse(sessionStorage.getItem(draftKey) || 'null');
+      sessionStorage.removeItem(draftKey);
+      if (!draft || draft.expires < Date.now()) return;
+      if (demo.samples[draft.sample]) document.querySelector(`input[name="jet-student"][value="${draft.sample}"]`).checked = true;
+      if (['8','9','10','11','12'].includes(draft.grade)) $('grade').value = draft.grade;
+      if (['22','25','28','30','35'].includes(draft.age)) $('future-age').value = draft.age;
+      clearFilters();
+      if (data.roles.some(item => item.id === draft.career)) $('career').value = draft.career;
+      preview();
+    } catch (_) {}
+  }
+  function updateChoiceState() {
+    const item = role();
+    $('selected-grade').textContent = `GRADE ${$('grade').value}`;
+    $('build').textContent = demoMode ? 'Create My Future →' : 'Show My Roadmap →';
+    $('build').disabled = !item || portraitBusy || (demoMode && (!demo.ready || demo.remaining <= 0));
+    $('selection-login').hidden = !demoMode || demo.authorized;
+    $('demo-readiness').hidden = !demoMode;
+    $('demo-readiness').textContent = !demo.ready ? demo.status : demo.remaining <= 0 ? 'This session has used its fictional portrait allowance. You can still explore without a portrait.' : `Ready to create your portrait and roadmap. ${demo.remaining} portrait generation(s) remain in this session.`;
+    $('selection-summary').textContent = item ? `${demoMode ? 'Fictional student · ' : ''}Grade ${$('grade').value} · ${item.name}${demoMode ? ' · Future age ' + $('future-age').value : ''}` : 'Choose a career to continue.';
+  }
+  function enterDemo() {
+    if (!demo.authorized) { saveDraft(); window.location.assign('/jetforce/demo'); return; }
+    demoMode = true; invalidate(); showStep(2);
+  }
+  function portraitControls() {
+    const hasResult = !$('portrait-result').hidden;
+    const hasError = !$('portrait-error').hidden;
+    $('edit-course').disabled = portraitBusy;
+    $('print').disabled = portraitBusy;
+    $('retry-portrait').hidden = portraitBusy || !hasError || !demo.authorized || !demo.ready || demo.remaining <= 0;
+    $('portrait-login').hidden = demo.authorized;
+    $('portrait-placeholder').hidden = hasResult;
+    $('portrait-placeholder').classList.toggle('failed', !portraitBusy);
+    $('portrait-status').textContent = portraitBusy ? 'Creating your future portrait… Your roadmap is ready below.' : 'The portrait is not ready yet. Your choices and roadmap are still here.';
+    updateChoiceState();
+  }
+  async function generateFuturePortrait() {
     if (portraitBusy || !demoMode || !demo.ready || demo.remaining <= 0 || !role()) return;
     const version = ++portraitVersion;
-    const payload = {mode:'jetforce',school:'bhs',sample_id:document.querySelector('input[name="jet-student"]:checked').value,career:role().id,age:$('future-age').value,grade:$('grade').value,path:'explore',priority:'Doing work I enjoy'};
+    const payload = {mode:'jetforce',school:'bhs',sample_id:selectedStudent(),career:role().id,age:$('future-age').value,grade:$('grade').value,path:'explore',priority:'Doing work I enjoy'};
     portraitBusy = true; $('portrait-error').hidden = true; $('portrait-result').hidden = true; portraitControls();
     try {
       const response = await fetch('/api/admin-preview/generate', {method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':demo.csrf},body:JSON.stringify(payload)});
       const result = await response.json();
-      if (!response.ok || !result.ok) throw new Error(result.error || 'The portrait could not be completed. Please try again later.');
+      if (response.status === 401 || (response.status === 400 && String(result.error || '').startsWith('This request expired'))) { demo.authorized = false; demo.ready = false; demo.status = 'Your demo session expired. Sign in to continue with these choices.'; saveDraft(); }
+      if (!response.ok || !result.ok) throw new Error(result.error || 'The portrait could not be completed. Your roadmap is available below.');
       demo.remaining = result.generations_left;
       if (version !== portraitVersion) return;
       $('future-portrait').src = result.image; $('download-portrait').href = result.image;
@@ -145,8 +165,28 @@
     } catch(error) {
       if (version === portraitVersion) { $('portrait-error').textContent = error.message; $('portrait-error').hidden = false; }
     } finally { portraitBusy = false; portraitControls(); }
+  }
+  $('start-course').addEventListener('click', () => { demoMode = false; invalidate(); showStep(2); });
+  $('demo-toggle').addEventListener('click', enterDemo);
+  $('back-start').addEventListener('click', () => showStep(1));
+  $('edit-course').addEventListener('click', () => { clearFilters(); showStep(2); });
+  $('clear-filters').addEventListener('click', () => { clearFilters(); $('career').focus(); });
+  $('category').addEventListener('change', filterCareers);
+  $('route').addEventListener('change', filterCareers);
+  $('career').addEventListener('change', preview);
+  $('grade').addEventListener('change', () => { invalidate(); updateChoiceState(); });
+  $('future-age').addEventListener('change', () => { invalidate(); updateChoiceState(); });
+  document.querySelectorAll('input[name="jet-student"]').forEach(input => input.addEventListener('change', () => { $('grade').value = demo.samples[selectedStudent()].grade; invalidate(); updateChoiceState(); }));
+  $('explorer-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    if ($('build').disabled) return;
+    invalidate(); buildRoadmap();
+    if (demoMode) await generateFuturePortrait();
   });
-  if (demo.open) { $('demo-examples').hidden = false; $('demo-toggle').setAttribute('aria-expanded','true'); }
+  $('retry-portrait').addEventListener('click', generateFuturePortrait);
+  $('portrait-login').addEventListener('click', saveDraft);
+  $('selection-login').addEventListener('click', saveDraft);
   $('print').addEventListener('click', () => { document.querySelector('.sources').open = true; window.print(); });
   filterCareers();
+  if (demo.open) { restoreDraft(); enterDemo(); }
 })();

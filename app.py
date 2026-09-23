@@ -1404,11 +1404,18 @@ def jetforce_preview_context():
     }}
 
 
-@app.route("/jetforce/demo")
+@app.route("/jetforce/demo", methods=["GET", "POST"])
 def jetforce_preview_login():
+    if request.method == "POST":
+        if rate_limited("bhs-login", 10, 15 * 60):
+            return render_template("jetforce_login.html", csrf_token=csrf_token(), error="Too many sign-in attempts. Wait 15 minutes and try again."), 429
+        code = (request.form.get("access_code") or "").strip()
+        if ACCESS_CODE and not secrets.compare_digest(code, ACCESS_CODE):
+            return render_template("jetforce_login.html", csrf_token=csrf_token(), error="That access code is not correct. Please try again."), 403
+        session["demo_access"] = True
+        session.permanent = True
     if ACCESS_CODE and not session.get("demo_access"):
-        session["pending_jetforce"] = True
-        return render_template("login.html", csrf_token=csrf_token())
+        return render_template("jetforce_login.html", csrf_token=csrf_token())
     return redirect(url_for("airforce_demo.explorer", demo="1"))
 
 
