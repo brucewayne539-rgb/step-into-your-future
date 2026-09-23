@@ -2,6 +2,7 @@ import os, io, base64, socket, json, secrets, time, hashlib, hmac
 from collections import defaultdict, deque
 from datetime import timedelta
 from pathlib import Path
+from military_portraits import portrait_guidance, REVISION as MILITARY_PORTRAIT_REVISION
 from chs_pathways import generate_chs_roadmap, RoadmapUnavailable
 from bhs_catalog import (
     CAREER_COURSES as BHS_CAREER_COURSES,
@@ -1351,6 +1352,8 @@ def ghs_status():
 @app.after_request
 def school_readiness_headers(response):
     """Reduce browser leakage and restrict this self-contained application."""
+    if request.path.startswith(("/jetforce", "/armie")):
+        response.headers["X-Military-Portrait-Revision"] = MILITARY_PORTRAIT_REVISION
     if (request.path.startswith("/api/") or request.path.startswith("/ghs")
             or request.path in {"/", "/login", "/logout", "/privacy"}
             or response.mimetype == "text/html"):
@@ -1762,6 +1765,9 @@ def admin_preview_generate():
         }[path]
     else:
         business_note = "Show the person as an established professional and small-business owner." if path == "owner" else ""
+    if mode in {"army", "jetforce"}:
+        business_note += "\n" + portrait_guidance(mode, career)
+    lighting = "natural workplace lighting" if mode in {"army", "jetforce"} else "natural flattering lighting"
     prompt = f"""
 Create a realistic, respectful FUTURE-CAREER VISUALIZATION based on the entirely fictional, AI-generated student shown in the supplied reference image.
 
@@ -1774,7 +1780,7 @@ Setting: {info['scene']}
 Demonstration priority: {priority}
 {business_note}
 
-Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, natural flattering lighting, age-appropriate adult appearance, and a confident but natural expression. Do not add text, captions, logos, readable badges or brand marks. The application will add its own fictional-demonstration watermark. Use realistic generic professional clothing and safety equipment where appropriate.
+Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, {lighting}, age-appropriate adult appearance, and a confident but natural expression. Do not add text, captions, logos, readable badges or brand marks. The application will add its own fictional-demonstration watermark. Use realistic generic professional clothing and safety equipment where appropriate.
 """.strip()
 
     bio = None
