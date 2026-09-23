@@ -172,5 +172,17 @@ $('generate').onclick=async()=>{
 };
 $('download').onclick=()=>{const a=document.createElement('a');a.href=$('portrait').src;a.download=(PILOT_MODE?'Step_Into_Your_Future_':'Fictional_Admin_Preview_')+$('career').value.replace(/[^A-Za-z0-9]+/g,'_')+'.png';a.click();};
 $('another').onclick=()=>{window.scrollTo({top:0,behavior:'smooth'});};
+
+// Include collapsed course sections in the saved/printed roadmap, then restore
+// the presenter's screen exactly as it was after the print dialog closes.
+let printCourseState=[];
+window.addEventListener('beforeprint',()=>{
+ printCourseState=Array.from(document.querySelectorAll('#courses details')).map(detail=>[detail,detail.open]);
+ printCourseState.forEach(([detail])=>detail.open=true);
+});
+window.addEventListener('afterprint',()=>{
+ printCourseState.forEach(([detail,wasOpen])=>detail.open=wasOpen);
+ printCourseState=[];
+});
 </script>
 </body></html>
