@@ -3,6 +3,7 @@ from collections import defaultdict, deque
 from datetime import timedelta
 from pathlib import Path
 from military_portraits import portrait_guidance, REVISION as MILITARY_PORTRAIT_REVISION
+from school_portraits import portrait_guidance as school_portrait_guidance, REVISION as SCHOOL_PORTRAIT_REVISION
 from chs_pathways import generate_chs_roadmap, RoadmapUnavailable
 from bhs_catalog import (
     CAREER_COURSES as BHS_CAREER_COURSES,
@@ -1354,6 +1355,8 @@ def school_readiness_headers(response):
     """Reduce browser leakage and restrict this self-contained application."""
     if request.path.startswith(("/jetforce", "/armie")):
         response.headers["X-Military-Portrait-Revision"] = MILITARY_PORTRAIT_REVISION
+    if response.mimetype == "text/html":
+        response.headers["X-School-Portrait-Revision"] = SCHOOL_PORTRAIT_REVISION
     if (request.path.startswith("/api/") or request.path.startswith("/ghs")
             or request.path in {"/", "/login", "/logout", "/privacy"}
             or response.mimetype == "text/html"):
@@ -1767,7 +1770,9 @@ def admin_preview_generate():
         business_note = "Show the person as an established professional and small-business owner." if path == "owner" else ""
     if mode in {"army", "jetforce"}:
         business_note += "\n" + portrait_guidance(mode, career)
-    lighting = "natural workplace lighting" if mode in {"army", "jetforce"} else "natural flattering lighting"
+    else:
+        business_note += "\n" + school_portrait_guidance(career)
+    lighting = "natural workplace lighting"
     prompt = f"""
 Create a realistic, respectful FUTURE-CAREER VISUALIZATION based on the entirely fictional, AI-generated student shown in the supplied reference image.
 
@@ -1934,6 +1939,7 @@ def generate():
             return jsonify(ok=False, error=str(error)), 503
     info=career_data[career]
     business_note = "The person should look like an established professional and small-business owner." if path=="owner" else ""
+    business_note += "\n" + school_portrait_guidance(career)
 
     try:
         future_age = int(age)
@@ -1978,7 +1984,7 @@ Setting: {info['scene']}
 Student priority: {priority}
 {business_note}
 
-Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, natural flattering lighting, age-appropriate adult appearance, confident but natural expression. Preserve recognizable identity without freezing the face at its current age. Do not add text, captions, logos, badges with readable department names, or brand marks. The application will add its own standardized disclaimer after generation. Do not sexualize or glamorize the subject. If work clothing or safety equipment is appropriate, use realistic generic professional attire.
+Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, natural workplace lighting, age-appropriate adult appearance, confident but natural expression. Preserve recognizable identity without freezing the face at its current age. Do not add text, captions, logos, badges with readable department names, or brand marks. The application will add its own standardized disclaimer after generation. Do not sexualize or glamorize the subject. If work clothing or safety equipment is appropriate, use realistic generic professional attire.
 """.strip()
 
     bio = None
