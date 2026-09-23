@@ -41,7 +41,8 @@
         "key": "Introductory Drafting & Design",
         "why": "Learn to interpret and communicate the shape of components."
       }
-    ]
+    ],
+    "portrait_direction": "In the maintenance setting, contain long hair in a securely fastened compact bun, clear of tools and equipment. No loose hair, dangling jewelry or loose clothing near machinery. Show eye protection appropriate to the depicted workshop task. Preserve the reference identity while adapting grooming to the workplace."
   },
   {
     "id": "atc",
@@ -70,7 +71,8 @@
       "Exploration of Computer Science": "Practice logical thinking and interpreting information in computer-based systems.",
       "Algebra I": "Build foundational numerical reasoning; choose the next math level based on completed courses and placement.",
       "Statistics & Probability": "Practice interpreting data and uncertainty."
-    }
+    },
+    "portrait_direction": "For the control-room setting, secure long hair in a neat low bun clear of the headset ear cushions, microphone and face. Do not copy loose hair over the shoulders from the student reference. Preserve hair color, texture and facial identity while changing the hairstyle. Show a correctly worn communications headset."
   },
   {
     "id": "pilot",
@@ -114,7 +116,8 @@
         "key": "Hands-On Engineering Workshop",
         "why": "Test design ideas and learn from measured results."
       }
-    ]
+    ],
+    "portrait_direction": "Cockpit grooming and equipment: if the reference person has long hair, gather ALL of it into a compact, securely pinned low bun positioned clear of the headset. Keep the face, shoulders, chest, headset ear cushions and controls clear of loose hair. No loose lengths, tendrils or dangling ponytail. Hair may be restyled while preserving hair color, texture and recognizable facial identity. Show a correctly seated aviation headset in a generic parked aircraft cockpit or simulator. Keep clothing fitted and jewelry away from equipment; do not add military insignia or claim uniform compliance."
   },
   {
     "id": "engineer",

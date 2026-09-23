@@ -1727,7 +1727,9 @@ def admin_preview_generate():
         if school != "bhs":
             return jsonify(ok=False, error="Jet Force currently supports the BHS demo."), 400
         roles = json.loads((APP_DIR / "data/airforce_careers.json").read_text())
-        career_data = {role["id"]: {"name": role["name"], "scene": role["description"]} for role in roles}
+        career_data = {role["id"]: {"name": role["name"], "scene": role["description"],
+                                   "portrait_direction": role.get("portrait_direction", "")}
+                       for role in roles}
     else:
         career_data = ARMY_CAREERS if mode == "army" else (GHS_CAREERS if school == "ghs" else CAREERS)
     if career not in career_data:
@@ -1751,6 +1753,7 @@ def admin_preview_generate():
     info = career_data[career]
     if mode == "jetforce":
         business_note = "Use a generic civilian-style career environment and practical professional clothing. No military uniforms, camouflage, branch insignia, flags, ranks, weapons, official aircraft markings or implied government endorsement. For aviation, show an unmarked aircraft or simulator; for healthcare, a generic clinical training setting."
+        business_note += " Preserve identity through facial features, not by copying an unsuitable hairstyle. Adapt grooming and protective equipment to the depicted task. " + info.get("portrait_direction", "")
     elif mode == "army":
         business_note = {
             "employee": "Show the person serving in an enlisted career role appropriate to the selected career family.",
