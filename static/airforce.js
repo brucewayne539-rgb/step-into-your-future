@@ -9,6 +9,7 @@
   const demo = JSON.parse($('jet-preview-data').textContent);
   let fictional = false, demoMode = false, portraitBusy = false, portraitVersion = 0;
   function showStep(step) {
+    $('future-age-choice').hidden = !demoMode;
     $('start-view').hidden = step !== 1;
     $('explore-view').hidden = step !== 2;
     $('roadmap').hidden = step !== 3;
