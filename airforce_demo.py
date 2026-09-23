@@ -2,7 +2,7 @@
 import json
 from copy import deepcopy
 from pathlib import Path
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for
 from bhs_catalog import COURSES
 
 airforce_demo = Blueprint('airforce_demo', __name__)
@@ -17,7 +17,12 @@ def demo_data():
     used = {course['key'] for role in roles for course in role['courses']}
     return {'roles': roles, 'courses': {key: dict(catalog[key], name=catalog[key].get('name', key)) for key in sorted(used)}, 'reviewed': 'September 23, 2026'}
 
-@airforce_demo.get('/airforce')
-@airforce_demo.get('/af')
+@airforce_demo.get('/jetforce')
 def explorer():
     return render_template('airforce.html', data=demo_data())
+
+
+@airforce_demo.get('/airforce')
+@airforce_demo.get('/af')
+def legacy_explorer():
+    return redirect(url_for('airforce_demo.explorer'), code=301)
