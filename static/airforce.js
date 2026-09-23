@@ -37,8 +37,17 @@
     if (items.some(item => item.id === prior)) $('career').value = prior;
     if (!items.length) $('career').add(new Option('No demo careers in this combination', ''));
     $('career').disabled = !items.length;
-    $('filter-status').textContent = `${items.length} of ${data.roles.length} demo careers shown. Change the filters to explore more.`;
+    const narrowed = $('category').value !== 'all' || $('route').value !== 'all';
+    $('filter-status').textContent = narrowed
+      ? `${items.length} of ${data.roles.length} demo careers shown with your filters. Choose “Show all ${data.roles.length} careers” to explore the full demo.`
+      : `All ${data.roles.length} demo careers available. Open the Career menu to choose another.`;
+    $('clear-filters').hidden = !narrowed;
     preview();
+  }
+  function clearFilters() {
+    $('category').value = 'all';
+    $('route').value = 'all';
+    filterCareers();
   }
   function courseCard(course) {
     const record = data.courses[course.key];
@@ -82,7 +91,8 @@
   }
   $('start-course').addEventListener('click', () => showStep(2));
   $('back-start').addEventListener('click', () => showStep(1));
-  $('edit-course').addEventListener('click', () => showStep(2));
+  $('edit-course').addEventListener('click', () => { clearFilters(); showStep(2); });
+  $('clear-filters').addEventListener('click', () => { clearFilters(); $('career').focus(); });
   $('demo-toggle').addEventListener('click', () => {
     const open = $('demo-examples').hidden;
     $('demo-examples').hidden = !open;
