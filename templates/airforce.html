@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="An independent Palonious demo connecting Air Force career exploration with Branford High School course options.">
-<title>Air Force Career Explorer • Palonious</title>
+<title>Jet Force • Air Force Career Explorer • Palonious</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='airforce.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='patent-pending.css') }}">
 <script id="career-data" type="application/json">{{ data|tojson }}</script>
@@ -15,7 +15,7 @@
 <main>
 <section class="hero" aria-labelledby="hero-title">
 <img class="hero-image" src="{{ url_for('static', filename='airforce-hero.webp') }}" alt="Illustration of aviation professionals reviewing a tablet beside an unmarked aircraft at sunrise." width="2172" height="724" fetchpriority="high">
-<div class="hero-shade"></div><div class="hero-content"><p class="eyebrow">A PALONIOUS STUDENT PATHWAY EXPERIENCE</p><h1 id="hero-title">Your future.<br>A wider <em>horizon.</em></h1><p class="hero-subtitle">Air Force Career Explorer</p><p class="hero-copy">From the courses you choose today to the possibilities you explore tomorrow.</p><a class="button primary" href="#explore">Chart my course <span aria-hidden="true">↗</span></a><p class="hero-demo">BRANFORD HIGH SCHOOL • INDEPENDENT DEMO</p></div>
+<div class="hero-shade"></div><div class="hero-content"><p class="eyebrow">A PALONIOUS STUDENT PATHWAY EXPERIENCE</p><h1 id="hero-title">Your future.<br>A wider <em>horizon.</em></h1><p class="hero-subtitle"><em>Jet</em> <strong>Force</strong><br><span style="font-size:15px;font-weight:500;letter-spacing:.6px">Air Force Career Explorer</span></p><p class="hero-copy">From the courses you choose today to the possibilities you explore tomorrow.</p><a class="button primary" href="#explore">Chart my course <span aria-hidden="true">↗</span></a><p class="hero-demo">BRANFORD HIGH SCHOOL • INDEPENDENT DEMO</p></div>
 <p class="image-caption">AI-generated generic aviation illustration</p>
 </section>
 <div class="independent"><span class="status-dot" aria-hidden="true"></span>Independent demonstration. Not affiliated with or endorsed by the U.S. Air Force.</div>
@@ -37,7 +37,7 @@
 <noscript><p class="notice">Enable JavaScript to build a roadmap. You can also explore the <a href="https://www.airforce.com/careers/career-finder">official Air Force Career Finder</a>.</p></noscript>
 </section>
 <section class="roadmap wrap" id="roadmap" aria-labelledby="roadmap-title" hidden tabindex="-1">
-<div class="section-head"><div><p class="eyebrow blue">02 / CONNECT SCHOOL TO POSSIBILITY</p><h2 id="roadmap-title">Your BHS roadmap</h2><p id="roadmap-context"></p></div><button type="button" id="print" class="button outline">Print / save PDF ↗</button></div>
+<div class="section-head"><div><p class="eyebrow blue">02 / CONNECT SCHOOL TO POSSIBILITY</p><h2 id="roadmap-title">Your Jet Force roadmap</h2><p id="roadmap-context"></p></div><button type="button" id="print" class="button outline">Print / save PDF ↗</button></div>
 <p class="notice" id="sample-note" hidden>Fictional student example. These selections do not describe a real student.</p>
 <div class="mission"><div><p class="eyebrow">CAREER IN VIEW</p><h3 id="result-name"></h3><p id="result-description"></p></div><div class="mission-route"><span id="result-route"></span><p id="route-summary"></p></div></div>
 <div class="section-head compact"><div><h3>Your school connections</h3><p>Suggestions for a conversation with your counselor.</p></div></div>
