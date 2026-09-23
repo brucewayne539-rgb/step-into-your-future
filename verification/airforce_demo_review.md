@@ -9,3 +9,9 @@ School course records reuse `bhs_catalog.py` with per-record corrections from `d
 Generic AI aviation artwork is labeled in the interface. No Air Force insignia or endorsement claim. Existing patent badge is displayed at 207.5px. The shared True to You wording is included.
 
 Validation: 50 career/grade combinations (10 careers × grades 8–12), officer filter, empty filter combination, all three fictional examples through desktop/mobile coverage, stale-result clearing, official source targets, desktop and 390px mobile layout, no horizontal overflow, print CSS and PDF output, no browser JavaScript errors. Flask responses checked for `/airforce`, `/af`, existing three school pages, privacy and new static assets. Screenshots visually reviewed. Tests used local Chromium and Flask; no production student information or paid services.
+
+## Familiar-layout revision, September 23
+
+User requested a layout closer to the existing school apps and no Army/Armie references in the Air Force interface. Replaced the long landing page with three steps (start, career selection, roadmap), a prominent fictional-example control, blue italic Jet / bold black Force wordmark, and the existing school-app opening structure. Removed the Armie link; there are no Army/Armie strings in the rendered Air Force page, its client code, styles, or career data. Shared catalog corrections remain an internal implementation dependency only. The demo is explicitly roadmap-only.
+
+Checked all three sample buttons, forward/back/edit navigation, grade-8 course filtering, officer route, browser errors, desktop and 390px mobile overflow, and print rendering. Visually reviewed the start and selection screens and mobile start screen.

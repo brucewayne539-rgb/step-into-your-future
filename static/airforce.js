@@ -7,6 +7,17 @@
   const icons = {propulsion:'↗', atc:'◎', pilot:'↗', engineer:'◇', cyber:'⌘', medical:'+', intelligence:'◉', logistics:'⇄', security:'◇', sere:'△'};
   categories.forEach(category => $('category').add(new Option(category, category)));
   let fictional = false;
+  function showStep(step) {
+    $('start-view').hidden = step !== 1;
+    $('explore-view').hidden = step !== 2;
+    $('roadmap').hidden = step !== 3;
+    $('progress-bar').style.width = `${step / 3 * 100}%`;
+    $('step-label').textContent = `${step} OF 3`;
+    $('selected-grade').textContent = `GRADE ${$('grade').value}`;
+    const target = step === 3 ? $('roadmap') : step === 2 ? $('explore-view') : $('mainContent');
+    target.focus({preventScroll:true});
+    window.scrollTo({top:0,behavior:'instant'});
+  }
   const role = () => data.roles.find(item => item.id === $('career').value);
   function invalidate() { $('roadmap').hidden = true; fictional = false; }
   function preview() {
@@ -67,10 +78,16 @@
     $('civilian').textContent = item.civilian;
     $('career-source').href = item.url;
     $('career-source').textContent = `${item.name} — official career details ↗`;
-    $('roadmap').hidden = false;
-    $('roadmap').focus({preventScroll:true});
-    $('roadmap').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block:'start'});
+    showStep(3);
   }
+  $('start-course').addEventListener('click', () => showStep(2));
+  $('back-start').addEventListener('click', () => showStep(1));
+  $('edit-course').addEventListener('click', () => showStep(2));
+  $('demo-toggle').addEventListener('click', () => {
+    const open = $('demo-examples').hidden;
+    $('demo-examples').hidden = !open;
+    $('demo-toggle').setAttribute('aria-expanded', String(open));
+  });
   $('category').addEventListener('change', filterCareers);
   $('route').addEventListener('change', filterCareers);
   $('career').addEventListener('change', preview);
