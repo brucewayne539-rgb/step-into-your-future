@@ -33,3 +33,31 @@ Scope: BHS, Armie, Jet Force.
 The local execution environment and browser runtime both returned environment_offline / Environment is not connected. Reconnection attempts failed. The public web reader also could not open the app URLs. GitHub source access worked, so source review continued, but no claim of a fresh live browser rehearsal or fresh Python-suite pass is made.
 
 Earlier successful portrait tests and deployment checks are useful history but are not substitutes for this pending full rehearsal.
+
+
+## Resumed review — September 23, 2026, evening
+
+The workspace and browser connection recovered. Baseline production commit:
+6c0d8bb5e7d3de4e92516387182bac8042ffa5dc.
+
+- Ran `python -m pytest -q test_admin_preview.py test_bhs_catalog.py tests`:
+  **5,311 passed; 4,527 subtests passed** (9.98 seconds). Paid image generation
+  is mocked in these tests; this is not a new provider reliability test.
+- Live BHS: selected Electrician in grade 11, generated the no-photo roadmap,
+  and confirmed the school course cards and practical next steps rendered.
+- Live Jet Force: selected grade 9 Air Traffic Control, rendered its roadmap,
+  returned through Change my choices, changed to grade 8 Pilot, and confirmed
+  the new career and grade-8 planning results rendered.
+- Live Armie: the protected entry route loads its teacher sign-in screen.
+  No credentials were entered, and authenticated live interaction is still pending.
+- Jet Force browser logs inspected contained browser-extension errors, not
+  application-origin errors in that retrieved log sample.
+- Corrected BHS step-2 introductory wording so the no-photo path does not ask
+  users for a future age that is intentionally not shown.
+
+Status remains PARTIAL. Automated coverage is now current and representative
+public desktop flows work. Remaining: authenticated live demos, mobile device
+rehearsal, actual print/PDF and image downloads, and presentation laptop/school
+network check. Existing user screenshots show successful secured-hair portrait
+output but do not replace a new full end-to-end rehearsal. No zero-error or
+complete-content-accuracy guarantee is made.
