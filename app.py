@@ -1387,6 +1387,31 @@ def demo_student_asset(sample_id):
     return send_from_directory(app.root_path, sample["file"], mimetype="image/png")
 
 
+@app.context_processor
+def jetforce_preview_context():
+    if request.endpoint != "airforce_demo.explorer":
+        return {}
+    ready, status = admin_preview_gate()
+    authorized = not ACCESS_CODE or bool(session.get("demo_access"))
+    return {"jet_preview": {
+        "samples": {key: {"label": value["label"], "grade": value["grade"]} for key, value in DEMO_STUDENTS.items()},
+        "ready": ready and authorized,
+        "status": status if authorized else "Enter your teacher/admin access code to create a fictional portrait.",
+        "authorized": authorized,
+        "csrf": csrf_token(),
+        "remaining": max(0, MAX_ADMIN_PREVIEW_GENERATIONS-int(session.get("admin_preview_count", 0))),
+        "open": request.args.get("demo") == "1",
+    }}
+
+
+@app.route("/jetforce/demo")
+def jetforce_preview_login():
+    if ACCESS_CODE and not session.get("demo_access"):
+        session["pending_jetforce"] = True
+        return render_template("login.html", csrf_token=csrf_token())
+    return redirect(url_for("airforce_demo.explorer", demo="1"))
+
+
 @app.route("/admin-preview")
 def admin_preview():
     school = (request.args.get("school") or "bhs").lower()
@@ -1567,6 +1592,8 @@ def login():
         session.permanent = True
         session["generation_count"] = 0
         session["admin_preview_count"] = 0
+        if session.pop("pending_jetforce", False):
+            return redirect(url_for("airforce_demo.explorer", demo="1"))
         if session.pop("pending_armie_pilot", False):
             return redirect(url_for("armie_pilot_demo"))
         if session.pop("pending_armie", False):
@@ -1582,6 +1609,8 @@ def login():
         session.permanent = True
         session["generation_count"] = 0
         session["admin_preview_count"] = 0
+        if session.pop("pending_jetforce", False):
+            return redirect(url_for("airforce_demo.explorer", demo="1"))
         if session.pop("pending_armie_pilot", False):
             return redirect(url_for("armie_pilot_demo"))
         if session.pop("pending_armie", False):
@@ -1687,7 +1716,13 @@ def admin_preview_generate():
     grade = data.get("grade") or (sample["grade"] if sample else "9")
     if school not in {"bhs", "ghs", "chs"} or not sample:
         return jsonify(ok=False, error="Choose one of the available fictional student previews."), 400
-    career_data = ARMY_CAREERS if mode == "army" else (GHS_CAREERS if school == "ghs" else CAREERS)
+    if mode == "jetforce":
+        if school != "bhs":
+            return jsonify(ok=False, error="Jet Force currently supports the BHS demo."), 400
+        roles = json.loads((APP_DIR / "data/airforce_careers.json").read_text())
+        career_data = {role["id"]: {"name": role["name"], "scene": role["description"]} for role in roles}
+    else:
+        career_data = ARMY_CAREERS if mode == "army" else (GHS_CAREERS if school == "ghs" else CAREERS)
     if career not in career_data:
         return jsonify(ok=False, error="Choose an available career."), 400
     if age not in {"22", "25", "28", "30", "35"}:
@@ -1707,7 +1742,9 @@ def admin_preview_generate():
         except RoadmapUnavailable as error:
             return jsonify(ok=False, error=str(error)), 503
     info = career_data[career]
-    if mode == "army":
+    if mode == "jetforce":
+        business_note = "Use a generic civilian-style career environment and practical professional clothing. No military uniforms, camouflage, branch insignia, flags, ranks, weapons, official aircraft markings or implied government endorsement. For aviation, show an unmarked aircraft or simulator; for healthcare, a generic clinical training setting."
+    elif mode == "army":
         business_note = {
             "employee": "Show the person serving in an enlisted career role appropriate to the selected career family.",
             "owner": "Show the person in a professional Army leadership pathway appropriate to the selected career family; do not invent rank or decorations.",
@@ -1722,7 +1759,7 @@ Preserve the fictional person's recognizable identity and apparent ethnicity whi
 
 IMPORTANT: This is an administrator demonstration using a synthetic person who does not exist. Do not simply copy the youthful face into adult clothing. The selected future age must be visually apparent while the result still looks like the same fictional person. The result is illustrative, not predictive.
 
-Career: {career}
+Career: {info.get("name", career)}
 Setting: {info['scene']}
 Demonstration priority: {priority}
 {business_note}
@@ -1748,6 +1785,10 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
             return jsonify(ok=False, error="The image service returned no image data."), 502
         b64 = burn_portrait_watermark(b64, fictional_demo=True)
         session["admin_preview_count"] = count + 1
+        if mode == "jetforce":
+            return jsonify(ok=True, fictional_demo=True, sample_label=sample["label"],
+                           image="data:image/png;base64," + b64, career=career, age=age,
+                           generations_left=max(0, MAX_ADMIN_PREVIEW_GENERATIONS-count-1))
         rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
         school_career = info.get("school_match", career)
         if mode == "army":
