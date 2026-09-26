@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Armie | Army Career Exploration</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:linear-gradient(135deg,#eef2e8,#f8faf6);
+  color:#1d2a1f;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:24px
+}
+.card{
+  width:min(560px,94vw);
+  background:#fff;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 20px 55px rgba(28,42,31,.16)
+}
+.head{
+  background:linear-gradient(135deg,#243b2a,#496b42);
+  color:#fff;
+  padding:30px
+}
+.eyebrow{
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  opacity:.9
+}
+.brand{
+  font-size:34px;
+  font-weight:900;
+  margin-top:10px
+}
+.tagline{
+  margin-top:6px;
+  font-size:17px;
+  font-weight:700;
+  color:#e6efcf
+}
+.body{padding:30px}
+h2{margin:0 0 10px;font-size:25px}
+p{line-height:1.5;color:#526055}
+.notice{
+  background:#eef4e8;
+  border-left:5px solid #6c8a52;
+  border-radius:12px;
+  padding:14px 16px;
+  margin:20px 0;
+  color:#263d29
+}
+label{
+  display:block;
+  font-weight:800;
+  margin:18px 0 8px
+}
+input{
+  width:100%;
+  padding:15px;
+  border:2px solid #cbd6c4;
+  border-radius:12px;
+  font-size:16px
+}
+button{
+  width:100%;
+  margin-top:14px;
+  padding:15px;
+  border:0;
+  border-radius:12px;
+  background:#365c3c;
+  color:#fff;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer
+}
+button:hover{background:#29482f}
+.error{
+  background:#fff1f1;
+  color:#9a2525;
+  padding:10px 12px;
+  border-radius:10px;
+  margin-bottom:14px
+}
+.links{
+  margin-top:18px;
+  font-size:13px
+}
+.links a{color:#365c3c}
+.disclaimer{
+  margin-top:18px;
+  font-size:11px;
+  color:#758078;
+  line-height:1.45
+}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="head">
+    <div class="eyebrow">PALONIOUS • CAREER EXPLORATION</div>
+    <div class="brand">ARMIE</div>
+    <div class="tagline">Picture Your Possible Future</div>
+  </div>
+
+  <div class="body">
+    <h2>Explore Army career possibilities.</h2>
+    <p>
+      Discover careers, picture yourself in a future role, and explore a pathway
+      that can begin while you're still in high school.
+    </p>
+
+    <div class="notice">
+      <strong>Demonstration:</strong> This experience uses fictional sample
+      students and is designed to demonstrate career exploration and pathway
+      planning.
+    </div>
+
+    {% if error %}
+      <div class="error" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="/login">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+      <label for="access_code">Demo access code</label>
+      <input id="access_code" name="access_code" type="password"
+             autocomplete="off" required>
+      <button type="submit">Enter Armie Demo</button>
+    </form>
+
+    <div class="links">
+      <a href="/privacy">Privacy &amp; School Use</a>
+    </div>
+
+    <div class="disclaimer">
+      Independent demonstration — not affiliated with or endorsed by the U.S. Army.
+      Illustrative career visualization only — not a prediction of appearance or career outcome.
+    </div>
+  </div>
+</main>
+</body>
+</html>
