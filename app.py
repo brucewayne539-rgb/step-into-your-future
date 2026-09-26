@@ -1482,7 +1482,7 @@ def armie_preview():
     """Army-themed career exploration using only fictional sample students."""
     if ACCESS_CODE and not session.get("demo_access"):
         session["pending_armie"] = True
-        return render_template("login.html", csrf_token=csrf_token())
+        return render_template("armie_login.html", csrf_token=csrf_token())
     ready, status = admin_preview_gate()
     return render_template(
         "admin_preview.html",
