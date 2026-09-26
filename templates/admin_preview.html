@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+ <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HLKJBCDWK1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HLKJBCDWK1');
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{% if army_mode|default(false) %}Meet Armie | Army Career Exploration{% elif pilot_mode|default(false) %}{{ school_name }} | Step Into Your Future{% else %}Administrator Preview | Step Into Your Future{% endif %}</title>
@@ -60,7 +69,7 @@ main{width:min(1120px,calc(100% - 28px));margin:28px auto 54px}.card{background:
 </div>
 <div class="action"><button class="primary" id="generate" {% if not preview_ready or (pilot_mode|default(false) and not army_mode|default(false)) %}disabled{% endif %}>{% if army_mode|default(false) %}Ask Armie to Create My Future →{% elif pilot_mode|default(false) %}Create My Future →{% else %}Create Fictional Future →{% endif %}</button><a class="button secondary" href="{{ '/' if army_mode|default(false) else ('/ghs' if school == 'ghs' else ('/chs' if school == 'chs' else '/')) }}">Return</a>{% if not army_mode|default(false) and not pilot_mode|default(false) %}<span class="cost">Each creation uses one paid image-generation request.</span>{% endif %}</div>
 <div id="error" class="error" role="alert"></div>
-<div id="loading" class="loading"><div class="spinner"></div><h2>{% if pilot_mode|default(false) %}Creating your possible future…{% else %}Creating the fictional future…{% endif %}</h2><p>The live transformation may take a little while.</p></div>
+<div id="loading" class="loading"><div class="spinner"></div><h2>{% if pilot_mode|default(false) %}Creating your possible future…{% else %}Picture your possible future……{% endif %}</h2><p>Your future is taking shape — just a moment.</p></div>
 </section>
 
 <section class="card" id="result">
