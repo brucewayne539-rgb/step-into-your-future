@@ -1,6 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HLKJBCDWK1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HLKJBCDWK1');
+</script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="An independent Palonious demo connecting Air Force career exploration with Branford High School course options.">
 <title>Jet Force • Air Force Career Explorer • Palonious</title>
@@ -38,7 +46,7 @@
 <div class="section-head"><div><p class="eyebrow blue">STEP 3 • YOUR RESULTS</p><h2 id="roadmap-title">Your Jet Force future</h2><p id="roadmap-context"></p></div><button type="button" id="edit-course" class="button ghost">← Change my choices</button><button type="button" id="print" class="button outline">Print / save PDF ↗</button></div>
 <p class="notice" id="sample-note" hidden>Fictional student example. These selections do not describe a real student.</p>
 <section id="fictional-portrait" class="jet-portrait-panel" hidden aria-labelledby="portrait-heading"><h3 id="portrait-heading">From today to a possible future</h3>
-<div class="jet-portrait-grid"><figure><h4>Starting student</h4><img id="student-source" alt="Original fictional student — not the age-progressed result"><figcaption id="student-label"></figcaption></figure><div><h4 id="future-heading">Future portrait</h4><p id="portrait-choice"></p><div id="portrait-placeholder" class="portrait-placeholder"><div class="jet-spinner" aria-hidden="true"></div><p id="portrait-status" role="status">Creating your future portrait…</p></div><p id="portrait-error" role="alert" hidden></p><a id="portrait-login" class="button secondary" href="/jetforce/demo" hidden>Sign in to continue →</a><button id="retry-portrait" class="button ghost" type="button" hidden>Try Portrait Again</button><div id="portrait-result" hidden><img id="future-portrait" alt="Generated future-career portrait of the selected fictional student"><p class="notice">FICTIONAL AI DEMONSTRATION • Not a real student • Not a prediction</p><a id="download-portrait" class="button ghost" download="Jet_Force_Fictional_Future.png">Save Portrait</a></div></div></div></section>
+<div class="jet-portrait-grid"><figure><h4>Starting student</h4><img id="student-source" alt="Original fictional student — not the age-progressed result"><figcaption id="student-label"></figcaption></figure><div><h4 id="future-heading">Future portrait</h4><p id="portrait-choice"></p><div id="portrait-placeholder" class="portrait-placeholder"><div class="jet-spinner" aria-hidden="true"></div><p id="portrait-status" role="status">Your Possible Future Is Taking Shape…</p></div><p id="portrait-error" role="alert" hidden></p><a id="portrait-login" class="button secondary" href="/jetforce/demo" hidden>Sign in to continue →</a><button id="retry-portrait" class="button ghost" type="button" hidden>Try Portrait Again</button><div id="portrait-result" hidden><img id="future-portrait" alt="Generated future-career portrait of the selected fictional student"><p class="notice">FICTIONAL AI DEMONSTRATION • Not a real student • Not a prediction</p><a id="download-portrait" class="button ghost" download="Jet_Force_Fictional_Future.png">Save Portrait</a></div></div></div></section>
 <div class="mission"><div><p class="eyebrow">CAREER IN VIEW</p><h3 id="result-name"></h3><p id="result-description"></p></div><div class="mission-route"><span id="result-route"></span><p id="route-summary"></p></div></div>
 <div class="section-head compact"><div><h3>Your school connections</h3><p>Discuss these options with your counselor. Grade ranges show who may take a course, subject to prerequisites and availability. Choose your next course based on completed work; do not repeat courses already completed.</p></div></div>
 <p class="course-note">Grade ranges come from the BHS catalog data. Prerequisites, placement, course availability and completed coursework still need checking. These are skill-building suggestions—not Air Force requirements or a complete graduation plan.</p>
