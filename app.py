@@ -1372,8 +1372,8 @@ def school_readiness_headers(response):
     response.headers["Origin-Agent-Cluster"] = "?1"
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
-        "object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; "
-        "img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; media-src 'none'"
+        "object-src 'none'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; "
+        "img-src 'self' data: blob:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com; font-src 'self'; media-src 'none'"
     )
     if request.is_secure or os.environ.get("RENDER") or os.environ.get("HTTPS_ONLY") == "1":
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
