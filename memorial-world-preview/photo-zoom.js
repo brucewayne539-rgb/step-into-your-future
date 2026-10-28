@@ -24,6 +24,7 @@
   document.body.append(dialog);
   dialog.addEventListener('click', event => { if(event.target === dialog) dialog.close(); });
   function tileIndex(col, row) {
+    if(window.picturepurdleTileIndex) return window.picturepurdleTileIndex(col,row);
     const id = row * editions[stageIndex].cols + col + 1;
     const person = people.find(p => p.id === id);
     return person ? person.tile : ((id - 1) * 13 + row * 7) % sourceImages.length;
