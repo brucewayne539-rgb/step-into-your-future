@@ -36,14 +36,21 @@
   function paintPortrait(target,nextTarget,blend) {
     const s=editions[stageIndex], mini=document.createElement('canvas');mini.width=s.cols;mini.height=s.rows;
     const m=mini.getContext('2d',{willReadFrequently:true}),ratio=canvas.width/canvas.height;
-    let sw=target.width,sh=target.height;if(sw/sh>ratio)sw=sh*ratio;else sh=sw/ratio;
-    m.drawImage(target,(target.width-sw)/2,(target.height-sh)/2,sw,sh,0,0,s.cols,s.rows);
-    if(blend>0) {
-      let nw=nextTarget.width,nh=nextTarget.height;if(nw/nh>ratio)nw=nh*ratio;else nh=nw/ratio;
-      m.globalAlpha=blend;
-      m.drawImage(nextTarget,(nextTarget.width-nw)/2,(nextTarget.height-nh)/2,nw,nh,0,0,s.cols,s.rows);
-      m.globalAlpha=1;
+    function alignedTarget(image) {
+      const index=targets.indexOf(image);
+      const anchors=[[[390,540],[620,516]],[[393,459],[646,457]],[[85,89],[152,102]],[[96,105],[164,113]]][index];
+      const layer=document.createElement('canvas');layer.width=s.cols;layer.height=s.rows;
+      const c=layer.getContext('2d');c.fillStyle='#d8cebd';c.fillRect(0,0,s.cols,s.rows);
+      const [[lx,ly],[rx,ry]]=anchors,dx=rx-lx,dy=ry-ly,n=dx*dx+dy*dy;
+      const span=canvas.width*.24,a=span*dx/n,b=-span*dy/n;
+      const ex=canvas.width*.38-a*lx+b*ly,ey=canvas.height*.34-b*lx-a*ly;
+      const sx=s.cols/canvas.width,sy=s.rows/canvas.height;
+      c.setTransform(sx*a,sy*b,-sx*b,sy*a,sx*ex,sy*ey);
+      c.drawImage(image,0,0);
+      return layer;
     }
+    m.drawImage(alignedTarget(target),0,0);
+    if(blend>0) {m.globalAlpha=blend;m.drawImage(alignedTarget(nextTarget),0,0);m.globalAlpha=1;}
     const pixels=m.getImageData(0,0,s.cols,s.rows).data;
     const sampler=document.createElement('canvas');sampler.width=8;sampler.height=8;
     const sc=sampler.getContext('2d',{willReadFrequently:true});
