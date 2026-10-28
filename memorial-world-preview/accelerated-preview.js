@@ -20,9 +20,9 @@
   document.querySelector('.edition-head .badge').textContent='Preview · Changes every 30 seconds';
   document.querySelector('.hero .eyebrow').textContent='Many little photos. One changing picture.';
   document.querySelector('.hero > p').textContent='Your photo, someone you love, or your treasured pet—one tiny piece of a giant photo mosaic. Free for everyone to explore.';
-  document.querySelector('.art-note').textContent='Accelerated demonstration: a small fictional photo collection repeats and is rearranged, alongside Bruce and Henry’s two real founding photos, to illustrate four small, accumulating steps toward a slightly evolved natural portrait. The loop then gently returns. No new purchases or live AI generation are occurring. The future daily format begins only when the owner chooses to switch.';
+  document.querySelector('.art-note').textContent="A preview of what’s to come: sample photos and real founding photos form one big picture. Watch it change a little every 30 seconds, or pause and explore. Later, we plan to reveal one new picture each day. This preview doesn’t accept payments or public photo submissions.";
   const faq=document.querySelector('.faq details p');
-  faq.textContent='This accelerated preview reveals one small increment every 30 seconds between two closely matched, natural AI portraits. After four reveals the modest difference is complete. No head stretching or feature warping is used. Pause or inspect the individual photos at your own pace. It does not simulate real payments, new contributors or a live archive. The intended daily service would hold each edition for 24 hours. Switching to that service requires an explicit owner decision and the production publishing system.';
+  faq.textContent="You’re viewing a preview. For now, the picture changes a little every 30 seconds so you can see the idea in action. Later, we plan to reveal one new picture each day and leave it on display for 24 hours. You’ll be able to explore its little photos and revisit earlier pictures. Payments and public photo submissions aren’t available in this preview.";
   document.querySelector('#playHistory').textContent='▶ Compare sample editions';
   function indexAt(col,row) {
     const s=editions[stageIndex], i=row*s.cols+col, person=people.find(p=>p.id===i+1);
