@@ -16,7 +16,7 @@
       });
       const banner=document.createElement('div');banner.className='photo-help';
       banner.innerHTML='<strong>Our founding photo collection</strong> · Two real founding photos, kept in every sample portrait. ';
-      founders.forEach(p=>{const button=document.createElement('button');button.className='button outline';button.style.margin='6px';button.textContent='Find '+p.name;button.classList.add('founder-button');button.disabled=true;button.onclick=()=>{locate(people.find(x=>x.id===p.id));document.querySelector('#viewport').scrollIntoView({block:'center'});};banner.append(button);});
+      founders.forEach(p=>{const button=document.createElement('button');button.className='button outline';button.style.margin='6px';button.textContent='Find '+p.name;button.classList.add('founder-button');button.disabled=true;button.onclick=()=>locate(people.find(x=>x.id===p.id));banner.append(button);});
       document.querySelector('.edition-head').before(banner);
       document.querySelector('#photoBank .sub').textContent='Your two real founding photos, alongside three fictional examples. Use Find to see each photo’s place.';
       document.querySelector('#photoBank .hint').textContent='These two founding photos were contributed directly by the owner. No purchase or customer account is required for these founding photos.';

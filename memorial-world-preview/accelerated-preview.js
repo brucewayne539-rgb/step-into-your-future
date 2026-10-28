@@ -76,6 +76,14 @@
     }
     transform();detail(selected||people[0]);
   }
+  // Finding a photo ends any portrait fade before zooming into the tiles.
+  const locateBeforePreview=locate;
+  locate=function(person,doZoom=true) {
+    playing=false;
+    if(activeBlend)activeBlend.finish();
+    locateBeforePreview(person,doZoom);
+    refreshLabels();
+  };
   const baseRender=render;
   render=async function(){if(!started || lastStage!==stageIndex){await baseRender();lastStage=stageIndex;}if(!targets.length)targets=[targetImages[0],targetImages[1],sourceImages[2],sourceImages[7]];busy=true;try{if(!naturalTarget)naturalTarget=await naturalPromise;paintPortrait(targets[0],targets[0],0);started=true;}finally{busy=false;}refreshLabels();};
   async function advance(direction=1) {
@@ -93,7 +101,7 @@
     transitioning=true;
     try {
       const total=PREVIEW_VARIANTS;
-      frame=(frame+direction+total)%total;remaining=REVEAL_SECONDS;scale=1;tx=ty=0;
+      frame=(frame+direction+total)%total;remaining=REVEAL_SECONDS;
       await render();
       if(!reducedMotion) {
         // Fade only the snapshot; the expensive mosaic is rendered once underneath.
