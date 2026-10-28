@@ -2,7 +2,8 @@
 (() => {
   const PREVIEW_ENABLED = true;
   const REVEAL_SECONDS = 30;
-  const STEPS_TO_CHANGE = 4;
+  const CHANGE_PERCENT_PER_REVEAL = 0.5;
+  const STEPS_TO_CHANGE = Math.round(100 / CHANGE_PERCENT_PER_REVEAL);
   const PREVIEW_VARIANTS = STEPS_TO_CHANGE * 2;
   let naturalTarget=null;
   const naturalPromise=img("natural-portrait-v1.jpg");
