@@ -96,5 +96,11 @@
     if(moves[e.key]) {e.preventDefault();tx+=moves[e.key][0];ty+=moves[e.key][1];transform();}
   });
   viewport.setAttribute('aria-label','Photo mosaic. Press Enter to zoom into sample photos, use arrow keys to pan, and Enter again to open the center tile.');
+  const locateAndHighlight = locate;
+  locate = function(person, doZoom=true) {
+    locateAndHighlight(person, doZoom);
+    viewport.scrollIntoView({block:'center',behavior:'instant'});
+    viewport.focus({preventScroll:true});
+  };
   window.addEventListener('resize',()=>{transform();});
 })();
