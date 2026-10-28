@@ -68,6 +68,10 @@
     const edition = editions[stageIndex];
     if(col<0 || col>=edition.cols || row<0 || row*edition.cols+col>=edition.count) return;
     document.querySelector('#originalTilePhoto').src=DATA.tiles[tileIndex(col,row)];
+    const founding=people.find(p=>p.founding && p.id===row*edition.cols+col+1);
+    document.querySelector('#photoDialogTitle').textContent=founding?founding.name+' · Founding photo':'A photo inside the picture';
+    document.querySelector('#photoDialog .hint').textContent=founding?'A real founding photo, contributed by Bruce and kept in every preview portrait.':'Fictional sample, repeated in this demonstration. This is not a purchased contribution.';
+    document.querySelector('#originalTilePhoto').alt=founding?founding.name+' · Original founding photo':'Original fictional sample photo';
     document.querySelector('#tileAddress').textContent='Sample edition #'+edition.number+' · Row '+(row+1)+' · Column '+(col+1)+' · Simulated spot '+(row*edition.cols+col+1).toLocaleString();
     dialog.showModal();
   }

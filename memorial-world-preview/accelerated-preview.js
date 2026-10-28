@@ -15,7 +15,7 @@
   document.querySelector('.edition-head .badge').textContent='Preview · Changes every 15 seconds';
   document.querySelector('.hero .eyebrow').textContent='Many little photos. One changing picture.';
   document.querySelector('.hero > p').textContent='Your photo, someone you love, or your treasured pet—one tiny piece of a giant photo mosaic. Free for everyone to explore.';
-  document.querySelector('.art-note').textContent='Accelerated demonstration: a small fictional photo collection repeats and is rearranged to illustrate different sample portraits. No new purchases or live AI generation are occurring. The future daily format begins only when the owner chooses to switch.';
+  document.querySelector('.art-note').textContent='Accelerated demonstration: a small fictional photo collection repeats and is rearranged, alongside Bruce and Henry’s two real founding photos, to illustrate different sample portraits. No new purchases or live AI generation are occurring. The future daily format begins only when the owner chooses to switch.';
   const faq=document.querySelector('.faq details p');
   faq.textContent='This accelerated preview cycles through sample portraits every 15 seconds. Pause or inspect the individual photos at your own pace. It does not simulate real payments, new contributors or a live archive. The intended daily service would hold each edition for 24 hours. Switching to that service requires an explicit owner decision and the production publishing system.';
   document.querySelector('#playHistory').textContent='▶ Compare sample editions';
@@ -40,7 +40,7 @@
     const pixels=m.getImageData(0,0,s.cols,s.rows).data;
     const sampler=document.createElement('canvas');sampler.width=8;sampler.height=8;
     const sc=sampler.getContext('2d',{willReadFrequently:true});
-    const palette=sourceImages.map(image=>{sc.clearRect(0,0,8,8);sc.drawImage(image,0,0,8,8);const p=sc.getImageData(0,0,8,8).data;let r=0,g=0,b=0;for(let i=0;i<p.length;i+=4){r+=p[i];g+=p[i+1];b+=p[i+2];}return[r/64,g/64,b/64];});
+    const palette=sourceImages.slice(0,16).map(image=>{sc.clearRect(0,0,8,8);sc.drawImage(image,0,0,8,8);const p=sc.getImageData(0,0,8,8).data;let r=0,g=0,b=0;for(let i=0;i<p.length;i+=4){r+=p[i];g+=p[i+1];b+=p[i+2];}return[r/64,g/64,b/64];});
     map=new Uint8Array(s.count);
     const w=canvas.width/s.cols,h=canvas.height/s.rows;
     for(let i=0;i<s.count;i++) {
