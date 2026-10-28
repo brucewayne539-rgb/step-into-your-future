@@ -15,7 +15,7 @@
   toolbar.innerHTML='<button class="button outline" id="previousPreview">← Previous picture</button><button class="button" id="pausePreview">Pause preview</button><button class="button outline" id="nextPreview">Next picture →</button>';
   document.querySelector('.reveal').after(toolbar);
   document.querySelector('.reveal .eyebrow').textContent='Accelerated preview · Sample portraits';
-  document.querySelector('.reveal h2').textContent='Next transformation in…';
+  document.querySelector('.reveal h2').textContent='Next small change in…';
   document.querySelector('.reveal p').textContent='A subtle change every 30 seconds · Preview of the future daily reveal';
   document.querySelector('.edition-head .badge').textContent='Preview · Changes every 30 seconds';
   document.querySelector('.hero .eyebrow').textContent='Many little photos. One changing picture.';
@@ -33,7 +33,7 @@
     document.querySelector('#stageTitle').textContent='Picturepurdle · Accelerated sample '+(frame+1)+' of '+PREVIEW_VARIANTS;
     document.querySelector('#countdown').textContent='00:'+String(remaining).padStart(2,'0');
     const inspecting=scale>1 || document.querySelector('#photoDialog').open;
-    document.querySelector('.edition-head .badge').textContent=paused?'Preview paused':inspecting?'Inspecting photos · Timer held':'Preview · Next picture in '+remaining+'s';
+    document.querySelector('.edition-head .badge').textContent=paused?'Preview paused':inspecting?'Inspecting photos · Timer held':'Preview · Next small change in '+remaining+'s';
     document.querySelector('#revealDate').textContent=!started?'Preparing sample portraits…':paused?'Preview paused · Use Next picture to explore':inspecting?'Timer held while you inspect photos · ↺ returns to the portrait':'Sample portraits only · Future editions will be daily';
     document.querySelector('#stageDescription').textContent='Illustrative sample editions, not a real dated archive. The accelerated portrait preview is separate from these two sample photo counts.';
   }

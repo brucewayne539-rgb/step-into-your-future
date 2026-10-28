@@ -15,7 +15,7 @@
   document.querySelector('.edition-head').before(explain);
   const help = document.createElement('p');
   help.className = 'photo-help';
-  help.textContent = 'Zoom in to see individual photos. Drag to explore. Tap a tile to open its original sample photo.';
+  help.textContent = 'Scroll over the picture or pinch with two fingers to zoom. Drag to explore; tap a small photo to open it. The + and − buttons work too.';
   document.querySelector('.frame').after(help);
   const dialog = document.createElement('dialog');
   dialog.id = 'photoDialog';
@@ -51,7 +51,7 @@
     }
   }
   const originalTransform = transform;
-  transform = function() { originalTransform(); redrawPhotos(); };
+  transform = function() { originalTransform(); document.querySelector('#zoomLabel').textContent = Number(scale.toFixed(1))+'×'; redrawPhotos(); };
   detail = function(person) {
     if(!sourceImages.length) return;
     const c = document.querySelector('#detail').getContext('2d'), p = position(person.id), edition = editions[stageIndex];
@@ -78,24 +78,81 @@
   document.querySelector('#explorePhotos').onclick=()=>{
     zoom(32);
     viewport.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
-    help.textContent='These are the original sample photos. Drag to explore, tap any tile to open it, or use ↺ to return to the giant portrait.';
+    help.textContent='Original sample photos: scroll or pinch to zoom, drag to explore, and tap a tile to open it. Use ↺ to return to the giant portrait.';
   };
-  let press=null;
-  viewport.addEventListener('pointerdown',e=>{press={x:e.clientX,y:e.clientY};});
-  viewport.addEventListener('pointerup',e=>{
-    if(!press || Math.hypot(e.clientX-press.x,e.clientY-press.y)>8) {press=null;return;}
-    press=null;
-    if(scale<8) {zoom(32);return;}
-    const box=viewport.getBoundingClientRect(), edition=editions[stageIndex];
-    openTile(Math.floor((e.clientX-box.left-tx)/(viewport.clientWidth*scale/edition.cols)),Math.floor((e.clientY-box.top-ty)/(viewport.clientHeight*scale/edition.rows)));
-  });
-  viewport.addEventListener('pointercancel',()=>press=null);
+  // Keep wheel and touch gestures in the mosaic's coordinate system.
+  const pointers = new Map();
+  let gesture = null, tap = null;
+  const localPoint = (x,y) => {const b=viewport.getBoundingClientRect();return {x:x-b.left,y:y-b.top};};
+  function zoomAt(next,x,y) {
+    next=Math.min(128,Math.max(1,next));
+    tx=x-(x-tx)*next/scale;
+    ty=y-(y-ty)*next/scale;
+    scale=next;transform();
+  }
+  function pinchState() {
+    const [a,b]=Array.from(pointers.values());
+    return {x:(a.x+b.x)/2,y:(a.y+b.y)/2,d:Math.max(1,Math.hypot(a.x-b.x,a.y-b.y))};
+  }
+  function beginGesture() {
+    if(pointers.size>=2) {
+      const p=pinchState();
+      gesture={kind:'pinch',...p,scale,tx,ty};tap=null;
+    } else if(pointers.size===1) {
+      const p=pointers.values().next().value;
+      gesture={kind:'pan',...p,tx,ty};
+    } else gesture=null;
+  }
+  viewport.addEventListener('wheel',e=>{
+    e.preventDefault();
+    const p=localPoint(e.clientX,e.clientY);
+    const unit=e.deltaMode===1?16:e.deltaMode===2?viewport.clientHeight:1;
+    const delta=Math.max(-240,Math.min(240,e.deltaY*unit));
+    zoomAt(scale*Math.exp(-delta*.003),p.x,p.y);
+  },{passive:false});
+  // Replace the original single-pointer drag handlers, so pinch cannot fight pan.
+  viewport.onpointerdown=e=>{
+    if(e.pointerType==='mouse' && e.button!==0)return;
+    const p=localPoint(e.clientX,e.clientY);pointers.set(e.pointerId,p);
+    viewport.setPointerCapture(e.pointerId);
+    tap=pointers.size===1?{id:e.pointerId,...p}:null;
+    beginGesture();
+  };
+  viewport.onpointermove=e=>{
+    if(!pointers.has(e.pointerId))return;
+    const p=localPoint(e.clientX,e.clientY);pointers.set(e.pointerId,p);
+    if(tap && Math.hypot(p.x-tap.x,p.y-tap.y)>8)tap=null;
+    if(!gesture)return;
+    if(gesture.kind==='pinch' && pointers.size>=2) {
+      const now=pinchState();
+      const next=Math.min(128,Math.max(1,gesture.scale*now.d/gesture.d));
+      tx=now.x-(gesture.x-gesture.tx)*next/gesture.scale;
+      ty=now.y-(gesture.y-gesture.ty)*next/gesture.scale;
+      scale=next;transform();
+    } else if(gesture.kind==='pan') {
+      tx=gesture.tx+p.x-gesture.x;ty=gesture.ty+p.y-gesture.y;transform();
+    }
+  };
+  viewport.onpointerup=e=>{
+    if(!pointers.has(e.pointerId))return;
+    const p=localPoint(e.clientX,e.clientY);
+    const isTap=tap && tap.id===e.pointerId && Math.hypot(p.x-tap.x,p.y-tap.y)<=8;
+    pointers.delete(e.pointerId);tap=null;beginGesture();
+    if(viewport.hasPointerCapture(e.pointerId))viewport.releasePointerCapture(e.pointerId);
+    if(!isTap)return;
+    if(scale<8){zoomAt(32,p.x,p.y);return;}
+    const edition=editions[stageIndex];
+    openTile(Math.floor((p.x-tx)/(viewport.clientWidth*scale/edition.cols)),Math.floor((p.y-ty)/(viewport.clientHeight*scale/edition.rows)));
+  };
+  viewport.onpointercancel=e=>{pointers.delete(e.pointerId);tap=null;beginGesture();};
+  viewport.addEventListener('lostpointercapture',e=>{if(pointers.delete(e.pointerId)){tap=null;beginGesture();}});
+  viewport.addEventListener('dragstart',e=>e.preventDefault());
   viewport.addEventListener('keydown',e=>{
     if(e.key==='Enter' || e.key===' ') {e.preventDefault();if(scale<8) zoom(32);else {const s=editions[stageIndex];openTile(Math.floor((viewport.clientWidth/2-tx)/(viewport.clientWidth*scale/s.cols)),Math.floor((viewport.clientHeight/2-ty)/(viewport.clientHeight*scale/s.rows)));}}
     const moves={ArrowLeft:[100,0],ArrowRight:[-100,0],ArrowUp:[0,100],ArrowDown:[0,-100]};
     if(moves[e.key]) {e.preventDefault();tx+=moves[e.key][0];ty+=moves[e.key][1];transform();}
   });
-  viewport.setAttribute('aria-label','Photo mosaic. Press Enter to zoom into sample photos, use arrow keys to pan, and Enter again to open the center tile.');
+  viewport.setAttribute('aria-label','Photo mosaic. Scroll or pinch to zoom; drag to pan. Press Enter to zoom into sample photos, use arrow keys to pan, and Enter again to open the center tile.');
   const locateAndHighlight = locate;
   locate = function(person, doZoom=true) {
     locateAndHighlight(person, doZoom);
