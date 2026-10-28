@@ -3,7 +3,7 @@
   const PREVIEW_ENABLED = true;
   const PREVIEW_VARIANTS = 6;
   if(!PREVIEW_ENABLED) return;
-  let frame = 0, remaining = 15, paused = false, started = false, targets = [], map = null;
+  let frame = 0, remaining = 15, paused = false, started = false, targets = [], map = null, lastStage = -1;
   const viewport = document.querySelector('#viewport');
   const toolbar = document.createElement('div');
   toolbar.className='timeline-actions';
@@ -84,7 +84,7 @@
     transform();detail(selected||people[0]);
   }
   const baseRender=render;
-  render=async function(){await baseRender();if(!targets.length)targets=[targetImages[0],targetImages[1],sourceImages[2],sourceImages[7]];paintPortrait(targets[0],targets[0],0);started=true;refreshLabels();};
+  render=async function(){if(!started || lastStage!==stageIndex){await baseRender();lastStage=stageIndex;}if(!targets.length)targets=[targetImages[0],targetImages[1],sourceImages[2],sourceImages[7]];paintPortrait(targets[0],targets[0],0);started=true;refreshLabels();};
   async function advance(direction=1) {
     if(busy || !started) return;
     playing=false;
