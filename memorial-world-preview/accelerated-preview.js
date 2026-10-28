@@ -2,6 +2,8 @@
 (() => {
   const PREVIEW_ENABLED = true;
   const REVEAL_SECONDS = 30;
+  const BLEND_DURATION_MS = 5000;
+  let transitioning = false, activeBlend = null;
   const CHANGE_PERCENT_PER_REVEAL = 0.5;
   const STEPS_TO_CHANGE = Math.round(100 / CHANGE_PERCENT_PER_REVEAL);
   const PREVIEW_VARIANTS = STEPS_TO_CHANGE * 2;
@@ -77,15 +79,36 @@
   const baseRender=render;
   render=async function(){if(!started || lastStage!==stageIndex){await baseRender();lastStage=stageIndex;}if(!targets.length)targets=[targetImages[0],targetImages[1],sourceImages[2],sourceImages[7]];busy=true;try{if(!naturalTarget)naturalTarget=await naturalPromise;paintPortrait(targets[0],targets[0],0);started=true;}finally{busy=false;}refreshLabels();};
   async function advance(direction=1) {
-    if(busy || !started) return;
+    if(busy || !started || transitioning) return;
     playing=false;
-    const old=document.createElement('canvas');old.width=canvas.width;old.height=canvas.height;old.getContext('2d').drawImage(canvas,0,0);
-    const total=PREVIEW_VARIANTS;frame=(frame+direction+total)%total;remaining=REVEAL_SECONDS;scale=1;tx=ty=0;
-    await render();
-    if(!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      old.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3';viewport.append(old);
-      old.animate([{opacity:1},{opacity:0}],{duration:450,easing:'ease-in-out'}).finished.then(()=>old.remove());
+    const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const old=document.createElement('canvas');
+    old.width=canvas.width;old.height=canvas.height;
+    old.getContext('2d').drawImage(canvas,0,0);
+    // Cover the current portrait BEFORE repainting so the new step never flashes.
+    old.setAttribute('aria-hidden','true');
+    old.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;transform-origin:0 0';
+    old.style.transform=canvas.style.transform;
+    viewport.append(old);
+    transitioning=true;
+    try {
+      const total=PREVIEW_VARIANTS;
+      frame=(frame+direction+total)%total;remaining=REVEAL_SECONDS;scale=1;tx=ty=0;
+      await render();
+      if(!reducedMotion) {
+        // Fade only the snapshot; the expensive mosaic is rendered once underneath.
+        activeBlend=old.animate([{opacity:1},{opacity:0}],{
+          duration:BLEND_DURATION_MS,easing:'cubic-bezier(0.4, 0, 0.2, 1)',fill:'forwards'
+        });
+        await activeBlend.finished;
+      }
+    } finally {
+      old.remove();activeBlend=null;transitioning=false;
     }
+  }
+  // Show the current tiles immediately when someone starts exploring the picture.
+  for(const event of ['pointerdown','wheel','keydown']) {
+    viewport.addEventListener(event,()=>{if(activeBlend)activeBlend.finish();},{passive:true});
   }
   document.querySelector('#previousPreview').onclick=()=>advance(-1);
   document.querySelector('#nextPreview').onclick=()=>advance(1);
