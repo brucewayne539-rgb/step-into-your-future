@@ -4,8 +4,8 @@
   const REVEAL_SECONDS = 30;
   const BLEND_DURATION_MS = 5000;
   let transitioning = false, activeBlend = null;
-  const CHANGE_PERCENT_PER_REVEAL = 0.5;
-  const STEPS_TO_CHANGE = Math.round(100 / CHANGE_PERCENT_PER_REVEAL);
+  const CHANGE_PERCENT_PER_REVEAL = 1.5;
+  const STEPS_TO_CHANGE = Math.ceil(100 / CHANGE_PERCENT_PER_REVEAL);
   const PREVIEW_VARIANTS = STEPS_TO_CHANGE * 2;
   let naturalTarget=null;
   const naturalPromise=img("natural-portrait-v1.jpg");
@@ -51,7 +51,8 @@
     }
     // Closely registered natural portraits; never geometrically distort either image.
     drawPortrait(targets[0],1);
-    const progress=frame<=STEPS_TO_CHANGE?frame/STEPS_TO_CHANGE:(PREVIEW_VARIANTS-frame)/STEPS_TO_CHANGE;
+    const step=frame<=STEPS_TO_CHANGE?frame:PREVIEW_VARIANTS-frame;
+    const progress=Math.min(1,step*CHANGE_PERCENT_PER_REVEAL/100);
     if(progress>0)drawPortrait(naturalTarget,progress);
     const pixels=m.getImageData(0,0,s.cols,s.rows).data;
     const sampler=document.createElement('canvas');sampler.width=8;sampler.height=8;
