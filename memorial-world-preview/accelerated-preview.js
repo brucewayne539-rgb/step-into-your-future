@@ -20,9 +20,9 @@
   document.querySelector('.edition-head .badge').textContent='Preview · Changes every 30 seconds';
   document.querySelector('.hero .eyebrow').textContent='Many little photos. One changing picture.';
   document.querySelector('.hero > p').textContent='Your photo, someone you love, or your treasured pet—one tiny piece of a giant photo mosaic. Free for everyone to explore.';
-  document.querySelector('.art-note').textContent="A preview of what’s to come: sample photos and real founding photos form one big picture. Watch it change a little every 30 seconds, or pause and explore. Later, we plan to reveal one new picture each day. This preview doesn’t accept payments or public photo submissions.";
+  document.querySelector('.art-note').textContent="The big picture changes. Your photos keep their place. This preview changes a little every 30 seconds. Later, we plan to reveal one new big picture each day. Your contributed photos will remain part of the evolving mosaic—pay once, with no yearly renewal—for as long as Picturepurdle operates. This preview doesn’t accept payments or public photo submissions.";
   const faq=document.querySelector('.faq details p');
-  faq.textContent="You’re viewing a preview. For now, the picture changes a little every 30 seconds so you can see the idea in action. Later, we plan to reveal one new picture each day and leave it on display for 24 hours. You’ll be able to explore its little photos and revisit earlier pictures. Payments and public photo submissions aren’t available in this preview.";
+  faq.textContent="You’re viewing a preview. For now, the picture changes a little every 30 seconds so you can see the idea in action. Later, we plan to reveal one new big picture each day and leave it on display for 24 hours. The big picture will change, but your contributed photos will stay part of the mosaic as it evolves—pay once, with no yearly renewal—for as long as Picturepurdle operates. Payments and public photo submissions aren’t available in this preview.";
   document.querySelector('#playHistory').textContent='▶ Compare sample editions';
   function indexAt(col,row) {
     const s=editions[stageIndex], i=row*s.cols+col, person=people.find(p=>p.id===i+1);
