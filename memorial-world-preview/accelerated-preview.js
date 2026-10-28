@@ -1,7 +1,7 @@
 /* Explicit owner-controlled mode: remains accelerated until this setting is changed. */
 (() => {
   const PREVIEW_ENABLED = true;
-  const STEPS_PER_PORTRAIT = 5;
+  const PREVIEW_VARIANTS = 6;
   if(!PREVIEW_ENABLED) return;
   let frame = 0, remaining = 15, paused = false, started = false, targets = [], map = null;
   const viewport = document.querySelector('#viewport');
@@ -16,9 +16,9 @@
   document.querySelector('.edition-head .badge').textContent='Preview · Changes every 15 seconds';
   document.querySelector('.hero .eyebrow').textContent='Many little photos. One changing picture.';
   document.querySelector('.hero > p').textContent='Your photo, someone you love, or your treasured pet—one tiny piece of a giant photo mosaic. Free for everyone to explore.';
-  document.querySelector('.art-note').textContent='Accelerated demonstration: a small fictional photo collection repeats and is rearranged, alongside Bruce and Henry’s two real founding photos, to illustrate different sample portraits. No new purchases or live AI generation are occurring. The future daily format begins only when the owner chooses to switch.';
+  document.querySelector('.art-note').textContent='Accelerated demonstration: a small fictional photo collection repeats and is rearranged, alongside Bruce and Henry’s two real founding photos, to illustrate small changes within a sample portrait. No new purchases or live AI generation are occurring. The future daily format begins only when the owner chooses to switch.';
   const faq=document.querySelector('.faq details p');
-  faq.textContent='This accelerated preview takes a small step toward the next sample portrait every 15 seconds, rather than replacing the entire face at once. Pause or inspect the individual photos at your own pace. It does not simulate real payments, new contributors or a live archive. The intended daily service would hold each edition for 24 hours. Switching to that service requires an explicit owner decision and the production publishing system.';
+  faq.textContent='This accelerated preview makes small changes within one sample face every 15 seconds, without blending different people together. Pause or inspect the individual photos at your own pace. It does not simulate real payments, new contributors or a live archive. The intended daily service would hold each edition for 24 hours. Switching to that service requires an explicit owner decision and the production publishing system.';
   document.querySelector('#playHistory').textContent='▶ Compare sample editions';
   function indexAt(col,row) {
     const s=editions[stageIndex], i=row*s.cols+col, person=people.find(p=>p.id===i+1);
@@ -26,7 +26,7 @@
   }
   window.picturepurdleTileIndex=indexAt;
   function refreshLabels() {
-    document.querySelector('#stageTitle').textContent='Picturepurdle · Accelerated sample '+(frame+1)+' of '+((targets.length||4)*STEPS_PER_PORTRAIT);
+    document.querySelector('#stageTitle').textContent='Picturepurdle · Accelerated sample '+(frame+1)+' of '+PREVIEW_VARIANTS;
     document.querySelector('#countdown').textContent='00:'+String(remaining).padStart(2,'0');
     const inspecting=scale>1 || document.querySelector('#photoDialog').open;
     document.querySelector('.edition-head .badge').textContent=paused?'Preview paused':inspecting?'Inspecting photos · Timer held':'Preview · Next picture in '+remaining+'s';
@@ -49,8 +49,17 @@
       c.drawImage(image,0,0);
       return layer;
     }
-    m.drawImage(alignedTarget(target),0,0);
-    if(blend>0) {m.globalAlpha=blend;m.drawImage(alignedTarget(nextTarget),0,0);m.globalAlpha=1;}
+    // Small geometric changes within one face; never blend two faces together.
+    const original=alignedTarget(targets[0]);
+    m.fillStyle='#d8cebd';m.fillRect(0,0,s.cols,s.rows);
+    const phase=frame*Math.PI/3;
+    for(let row=0;row<s.rows;row++) {
+      const y=row/s.rows, influence=Math.sin(Math.PI*y);
+      const shift=Math.sin(phase)*Math.sin(y*Math.PI*2)*s.cols*.014;
+      const stretch=1+Math.sin(phase+y*2)*influence*.022;
+      const width=s.cols*stretch;
+      m.drawImage(original,0,row,s.cols,1,(s.cols-width)/2+shift,row,width,1);
+    }
     const pixels=m.getImageData(0,0,s.cols,s.rows).data;
     const sampler=document.createElement('canvas');sampler.width=8;sampler.height=8;
     const sc=sampler.getContext('2d',{willReadFrequently:true});
@@ -75,16 +84,16 @@
     transform();detail(selected||people[0]);
   }
   const baseRender=render;
-  render=async function(){await baseRender();if(!targets.length)targets=[targetImages[0],targetImages[1],sourceImages[2],sourceImages[7]];const portrait=Math.floor(frame/STEPS_PER_PORTRAIT),blend=(frame%STEPS_PER_PORTRAIT)/STEPS_PER_PORTRAIT;paintPortrait(targets[portrait],targets[(portrait+1)%targets.length],blend);started=true;refreshLabels();};
+  render=async function(){await baseRender();if(!targets.length)targets=[targetImages[0],targetImages[1],sourceImages[2],sourceImages[7]];paintPortrait(targets[0],targets[0],0);started=true;refreshLabels();};
   async function advance(direction=1) {
     if(busy || !started) return;
     playing=false;
     const old=document.createElement('canvas');old.width=canvas.width;old.height=canvas.height;old.getContext('2d').drawImage(canvas,0,0);
-    const total=targets.length*STEPS_PER_PORTRAIT;frame=(frame+direction+total)%total;remaining=15;scale=1;tx=ty=0;
+    const total=PREVIEW_VARIANTS;frame=(frame+direction+total)%total;remaining=15;scale=1;tx=ty=0;
     await render();
     if(!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       old.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3';viewport.append(old);
-      old.animate([{opacity:1},{opacity:0}],{duration:2000,easing:'ease-in-out'}).finished.then(()=>old.remove());
+      old.animate([{opacity:1},{opacity:0}],{duration:250,easing:'ease-in-out'}).finished.then(()=>old.remove());
     }
   }
   document.querySelector('#previousPreview').onclick=()=>advance(-1);
