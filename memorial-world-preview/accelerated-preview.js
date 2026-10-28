@@ -1,11 +1,13 @@
 /* Explicit owner-controlled mode: remains accelerated until this setting is changed. */
 (() => {
   const PREVIEW_ENABLED = true;
-  const PREVIEW_VARIANTS = 10;
+  const REVEAL_SECONDS = 30;
+  const STEPS_TO_CHANGE = 4;
+  const PREVIEW_VARIANTS = STEPS_TO_CHANGE * 2;
   let naturalTarget=null;
   const naturalPromise=img("natural-portrait-v1.jpg");
   if(!PREVIEW_ENABLED) return;
-  let frame = 0, remaining = 15, paused = false, started = false, targets = [], map = null, lastStage = -1;
+  let frame = 0, remaining = REVEAL_SECONDS, paused = false, started = false, targets = [], map = null, lastStage = -1;
   const viewport = document.querySelector('#viewport');
   const toolbar = document.createElement('div');
   toolbar.className='timeline-actions';
@@ -14,13 +16,13 @@
   document.querySelector('.reveal').after(toolbar);
   document.querySelector('.reveal .eyebrow').textContent='Accelerated preview · Sample portraits';
   document.querySelector('.reveal h2').textContent='Next transformation in…';
-  document.querySelector('.reveal p').textContent='A subtle change every 15 seconds · Preview of the future daily reveal';
-  document.querySelector('.edition-head .badge').textContent='Preview · Changes every 15 seconds';
+  document.querySelector('.reveal p').textContent='A subtle change every 30 seconds · Preview of the future daily reveal';
+  document.querySelector('.edition-head .badge').textContent='Preview · Changes every 30 seconds';
   document.querySelector('.hero .eyebrow').textContent='Many little photos. One changing picture.';
   document.querySelector('.hero > p').textContent='Your photo, someone you love, or your treasured pet—one tiny piece of a giant photo mosaic. Free for everyone to explore.';
-  document.querySelector('.art-note').textContent='Accelerated demonstration: a small fictional photo collection repeats and is rearranged, alongside Bruce and Henry’s two real founding photos, to illustrate five small, accumulating steps toward a slightly evolved natural portrait. The loop then gently returns. No new purchases or live AI generation are occurring. The future daily format begins only when the owner chooses to switch.';
+  document.querySelector('.art-note').textContent='Accelerated demonstration: a small fictional photo collection repeats and is rearranged, alongside Bruce and Henry’s two real founding photos, to illustrate four small, accumulating steps toward a slightly evolved natural portrait. The loop then gently returns. No new purchases or live AI generation are occurring. The future daily format begins only when the owner chooses to switch.';
   const faq=document.querySelector('.faq details p');
-  faq.textContent='This accelerated preview reveals one small increment every 15 seconds between two closely matched, natural AI portraits. After five reveals the modest difference is complete. No head stretching or feature warping is used. Pause or inspect the individual photos at your own pace. It does not simulate real payments, new contributors or a live archive. The intended daily service would hold each edition for 24 hours. Switching to that service requires an explicit owner decision and the production publishing system.';
+  faq.textContent='This accelerated preview reveals one small increment every 30 seconds between two closely matched, natural AI portraits. After four reveals the modest difference is complete. No head stretching or feature warping is used. Pause or inspect the individual photos at your own pace. It does not simulate real payments, new contributors or a live archive. The intended daily service would hold each edition for 24 hours. Switching to that service requires an explicit owner decision and the production publishing system.';
   document.querySelector('#playHistory').textContent='▶ Compare sample editions';
   function indexAt(col,row) {
     const s=editions[stageIndex], i=row*s.cols+col, person=people.find(p=>p.id===i+1);
@@ -46,7 +48,7 @@
     }
     // Closely registered natural portraits; never geometrically distort either image.
     drawPortrait(targets[0],1);
-    const progress=frame<=5?frame/5:(10-frame)/5;
+    const progress=frame<=STEPS_TO_CHANGE?frame/STEPS_TO_CHANGE:(PREVIEW_VARIANTS-frame)/STEPS_TO_CHANGE;
     if(progress>0)drawPortrait(naturalTarget,progress);
     const pixels=m.getImageData(0,0,s.cols,s.rows).data;
     const sampler=document.createElement('canvas');sampler.width=8;sampler.height=8;
@@ -77,7 +79,7 @@
     if(busy || !started) return;
     playing=false;
     const old=document.createElement('canvas');old.width=canvas.width;old.height=canvas.height;old.getContext('2d').drawImage(canvas,0,0);
-    const total=PREVIEW_VARIANTS;frame=(frame+direction+total)%total;remaining=15;scale=1;tx=ty=0;
+    const total=PREVIEW_VARIANTS;frame=(frame+direction+total)%total;remaining=REVEAL_SECONDS;scale=1;tx=ty=0;
     await render();
     if(!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       old.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3';viewport.append(old);
