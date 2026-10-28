@@ -1,7 +1,9 @@
 /* Explicit owner-controlled mode: remains accelerated until this setting is changed. */
 (() => {
   const PREVIEW_ENABLED = true;
-  const PREVIEW_VARIANTS = 6;
+  const PREVIEW_VARIANTS = 10;
+  let naturalTarget=null;
+  const naturalPromise=img("natural-portrait-v1.jpg");
   if(!PREVIEW_ENABLED) return;
   let frame = 0, remaining = 15, paused = false, started = false, targets = [], map = null, lastStage = -1;
   const viewport = document.querySelector('#viewport');
@@ -16,9 +18,9 @@
   document.querySelector('.edition-head .badge').textContent='Preview · Changes every 15 seconds';
   document.querySelector('.hero .eyebrow').textContent='Many little photos. One changing picture.';
   document.querySelector('.hero > p').textContent='Your photo, someone you love, or your treasured pet—one tiny piece of a giant photo mosaic. Free for everyone to explore.';
-  document.querySelector('.art-note').textContent='Accelerated demonstration: a small fictional photo collection repeats and is rearranged, alongside Bruce and Henry’s two real founding photos, to illustrate small changes within a sample portrait. No new purchases or live AI generation are occurring. The future daily format begins only when the owner chooses to switch.';
+  document.querySelector('.art-note').textContent='Accelerated demonstration: a small fictional photo collection repeats and is rearranged, alongside Bruce and Henry’s two real founding photos, to illustrate five small, accumulating steps toward a slightly evolved natural portrait. The loop then gently returns. No new purchases or live AI generation are occurring. The future daily format begins only when the owner chooses to switch.';
   const faq=document.querySelector('.faq details p');
-  faq.textContent='This accelerated preview makes small changes within one sample face every 15 seconds, without blending different people together. Pause or inspect the individual photos at your own pace. It does not simulate real payments, new contributors or a live archive. The intended daily service would hold each edition for 24 hours. Switching to that service requires an explicit owner decision and the production publishing system.';
+  faq.textContent='This accelerated preview reveals one small increment every 15 seconds between two closely matched, natural AI portraits. After five reveals the modest difference is complete. No head stretching or feature warping is used. Pause or inspect the individual photos at your own pace. It does not simulate real payments, new contributors or a live archive. The intended daily service would hold each edition for 24 hours. Switching to that service requires an explicit owner decision and the production publishing system.';
   document.querySelector('#playHistory').textContent='▶ Compare sample editions';
   function indexAt(col,row) {
     const s=editions[stageIndex], i=row*s.cols+col, person=people.find(p=>p.id===i+1);
@@ -36,30 +38,16 @@
   function paintPortrait(target,nextTarget,blend) {
     const s=editions[stageIndex], mini=document.createElement('canvas');mini.width=s.cols;mini.height=s.rows;
     const m=mini.getContext('2d',{willReadFrequently:true}),ratio=canvas.width/canvas.height;
-    function alignedTarget(image) {
-      const index=targets.indexOf(image);
-      const anchors=[[[390,540],[620,516]],[[393,459],[646,457]],[[85,89],[152,102]],[[96,105],[164,113]]][index];
-      const layer=document.createElement('canvas');layer.width=s.cols;layer.height=s.rows;
-      const c=layer.getContext('2d');c.fillStyle='#d8cebd';c.fillRect(0,0,s.cols,s.rows);
-      const [[lx,ly],[rx,ry]]=anchors,dx=rx-lx,dy=ry-ly,n=dx*dx+dy*dy;
-      const span=canvas.width*.24,a=span*dx/n,b=-span*dy/n;
-      const ex=canvas.width*.38-a*lx+b*ly,ey=canvas.height*.34-b*lx-a*ly;
-      const sx=s.cols/canvas.width,sy=s.rows/canvas.height;
-      c.setTransform(sx*a,sy*b,-sx*b,sy*a,sx*ex,sy*ey);
-      c.drawImage(image,0,0);
-      return layer;
+    function drawPortrait(image,alpha) {
+      let sw=image.width,sh=image.height;if(sw/sh>ratio)sw=sh*ratio;else sh=sw/ratio;
+      m.globalAlpha=alpha;
+      m.drawImage(image,(image.width-sw)/2,(image.height-sh)/2,sw,sh,0,0,s.cols,s.rows);
+      m.globalAlpha=1;
     }
-    // Small geometric changes within one face; never blend two faces together.
-    const original=alignedTarget(targets[0]);
-    m.fillStyle='#d8cebd';m.fillRect(0,0,s.cols,s.rows);
-    const phase=frame*Math.PI/3;
-    for(let row=0;row<s.rows;row++) {
-      const y=row/s.rows, influence=Math.sin(Math.PI*y);
-      const shift=Math.sin(phase)*Math.sin(y*Math.PI*2)*s.cols*.014;
-      const stretch=1+Math.sin(phase+y*2)*influence*.022;
-      const width=s.cols*stretch;
-      m.drawImage(original,0,row,s.cols,1,(s.cols-width)/2+shift,row,width,1);
-    }
+    // Closely registered natural portraits; never geometrically distort either image.
+    drawPortrait(targets[0],1);
+    const progress=frame<=5?frame/5:(10-frame)/5;
+    if(progress>0)drawPortrait(naturalTarget,progress);
     const pixels=m.getImageData(0,0,s.cols,s.rows).data;
     const sampler=document.createElement('canvas');sampler.width=8;sampler.height=8;
     const sc=sampler.getContext('2d',{willReadFrequently:true});
@@ -84,7 +72,7 @@
     transform();detail(selected||people[0]);
   }
   const baseRender=render;
-  render=async function(){if(!started || lastStage!==stageIndex){await baseRender();lastStage=stageIndex;}if(!targets.length)targets=[targetImages[0],targetImages[1],sourceImages[2],sourceImages[7]];paintPortrait(targets[0],targets[0],0);started=true;refreshLabels();};
+  render=async function(){if(!started || lastStage!==stageIndex){await baseRender();lastStage=stageIndex;}if(!targets.length)targets=[targetImages[0],targetImages[1],sourceImages[2],sourceImages[7]];busy=true;try{if(!naturalTarget)naturalTarget=await naturalPromise;paintPortrait(targets[0],targets[0],0);started=true;}finally{busy=false;}refreshLabels();};
   async function advance(direction=1) {
     if(busy || !started) return;
     playing=false;
@@ -93,7 +81,7 @@
     await render();
     if(!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       old.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3';viewport.append(old);
-      old.animate([{opacity:1},{opacity:0}],{duration:250,easing:'ease-in-out'}).finished.then(()=>old.remove());
+      old.animate([{opacity:1},{opacity:0}],{duration:450,easing:'ease-in-out'}).finished.then(()=>old.remove());
     }
   }
   document.querySelector('#previousPreview').onclick=()=>advance(-1);
