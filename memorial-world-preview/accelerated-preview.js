@@ -4,11 +4,29 @@
   const REVEAL_SECONDS = 45;
   const BLEND_DURATION_MS = 4000;
   let transitioning = false, activeBlend = null, activeIncoming = null;
-  const CHANGE_PERCENT_PER_REVEAL = 9;
-  const STEPS_TO_CHANGE = Math.ceil(100 / CHANGE_PERCENT_PER_REVEAL);
-  const PREVIEW_VARIANTS = STEPS_TO_CHANGE * 2;
-  let naturalTarget=null;
-  let paintedFrame=-1, paintedStage=-1, samplePreparation=null;
+  const PORTRAIT_COUNT = 8;
+  const PORTRAIT_ORDER = [0,3,4,6,7,5,2,1];
+  const PREVIEW_VARIANTS = (PORTRAIT_COUNT-1)*2;
+  let portraitFrames=[], portraitPreparation=null, countdownDeadline=null;
+  const portraitAtlasPromise=img('portrait-sequence-v3.jpg');
+  async function preparePortraits() {
+    if(!portraitPreparation)portraitPreparation=(async()=>{
+      const atlas=await portraitAtlasPromise, urls=[];
+      const crop=document.createElement('canvas');crop.width=Math.floor(atlas.width/4);crop.height=Math.floor(atlas.height/2);
+      const c=crop.getContext('2d');
+      for(let row=0;row<2;row++)for(let col=0;col<4;col++){
+        c.clearRect(0,0,crop.width,crop.height);
+        c.drawImage(atlas,col*atlas.width/4,row*atlas.height/2,atlas.width/4,atlas.height/2,0,0,crop.width,crop.height);
+        urls.push(crop.toDataURL('image/jpeg',.95));
+      }
+      portraitFrames=await Promise.all(urls.map(img));
+    })();
+    await portraitPreparation;
+  }
+  function resetCountdown() {remaining=REVEAL_SECONDS;countdownDeadline=performance.now()+REVEAL_SECONDS*1000;}
+
+  let paintedFrame=-1, paintedStage=-1, samplePreparation=null, rotationCursor=0, refreshSequence=0;
+  const TILES_PER_REVEAL=2500;
   const originalSamples=Array.from({length:16},(_,i)=>i), freshSamples=[];
   const atlasPromise=img('sample-portraits-atlas-v2.jpg');
   async function prepareSamplePhotos() {
@@ -28,7 +46,6 @@
   }
   function tileBucket(i) {let h=Math.imul(i+1,0x45d9f3b);h^=h>>>16;return(h>>>0)%10;}
 
-  const naturalPromise=img("natural-portrait-v2.jpg");
   if(!PREVIEW_ENABLED) return;
   let frame = 0, remaining = REVEAL_SECONDS, paused = false, started = false, targets = [], map = null, lastStage = -1;
   const viewport = document.querySelector('#viewport');
@@ -39,7 +56,7 @@
   document.querySelector('.reveal').after(toolbar);
   document.querySelector('.reveal .eyebrow').textContent='Accelerated preview · Sample portraits';
   document.querySelector('.reveal h2').textContent='Next small change in…';
-  document.querySelector('.reveal p').textContent='Every 45 seconds: a gentle fade, an evolving face, and refreshed sample photos';
+  document.querySelector('.reveal p').textContent='Every 45 seconds: a new portrait step, 2,500 refreshed sample tiles, and a four-second fade';
   document.querySelector('.edition-head .badge').textContent='Preview · Changes every 45 seconds';
   document.querySelector('.hero .eyebrow').textContent='Many little photos. One changing picture.';
   document.querySelector('.hero > p').textContent='Your photo, someone you love, or your treasured pet—one tiny piece of a giant photo mosaic. Free for everyone to explore.';
@@ -54,7 +71,8 @@
   window.picturepurdleTileIndex=indexAt;
   function refreshLabels() {
     document.querySelector('#stageTitle').textContent='Picturepurdle · Accelerated sample '+(frame+1)+' of '+PREVIEW_VARIANTS;
-    document.querySelector('#countdown').textContent='00:'+String(remaining).padStart(2,'0');
+    document.querySelector('#countdown').textContent=transitioning?'Fading':'00:'+String(remaining).padStart(2,'0');
+    document.querySelector('.reveal h2').textContent=transitioning?'A new picture is appearing…':'Next small change in…';
     const inspecting=scale>1 || document.querySelector('#photoDialog').open;
     document.querySelector('.edition-head .badge').textContent=paused?'Preview paused':inspecting?'Inspecting photos · Timer held':transitioning?'Changing now · Gentle 4-second fade':'Preview · Next small change in '+remaining+'s';
     document.querySelector('#revealDate').textContent=!started?'Preparing sample portraits…':paused?'Preview paused · Use Next picture to explore':inspecting?'Timer held while you inspect photos · ↺ returns to the portrait':transitioning?'Watch the portrait gently fade into its next version':'Sample portraits only · Future editions will be daily';
@@ -69,11 +87,11 @@
       m.drawImage(image,(image.width-sw)/2,(image.height-sh)/2,sw,sh,0,0,s.cols,s.rows);
       m.globalAlpha=1;
     }
-    // Closely registered natural portraits; never geometrically distort either image.
-    drawPortrait(targets[0],1);
-    const step=frame<=STEPS_TO_CHANGE?frame:PREVIEW_VARIANTS-frame;
-    const progress=Math.min(1,step*CHANGE_PERCENT_PER_REVEAL/100);
-    if(progress>0)drawPortrait(naturalTarget,progress);
+    // Each reveal uses a complete, natural portrait, rather than a tiny blend
+    // between two versions of the same face. Return through the sequence gently.
+    const portraitIndex=frame<PORTRAIT_COUNT?frame:PREVIEW_VARIANTS-frame;
+    drawPortrait(portraitFrames[PORTRAIT_ORDER[portraitIndex]],1);
+    viewport.dataset.portraitIndex=String(PORTRAIT_ORDER[portraitIndex]);
     const pixels=m.getImageData(0,0,s.cols,s.rows).data;
     const sampler=document.createElement('canvas');sampler.width=8;sampler.height=8;
     const sc=sampler.getContext('2d',{willReadFrequently:true});
@@ -83,17 +101,27 @@
     const previous=sameStage?map:null;
     const newFrame=paintedFrame!==frame;
     map=previous?previous.slice():new Uint8Array(s.count);
-    const bucket=(frame+9)%10;
+    const replacements=new Set();
+    if(!sameStage)rotationCursor=0;
+    if(previous && newFrame){
+      // 7919 is coprime to both sample edition sizes; visit every tile before reuse.
+      while(replacements.size<Math.min(TILES_PER_REVEAL,s.count-people.length)){
+        const slot=(rotationCursor++*7919)%s.count;
+        if(!people.some(p=>p.id===slot+1))replacements.add(slot);
+      }
+      refreshSequence++;
+    }
+    const replacementPool=Math.floor(Math.max(0,refreshSequence-1)/100)%2===0?freshSamples:originalSamples;
     let refreshed=0;
     const w=canvas.width/s.cols,h=canvas.height/s.rows;
     for(let i=0;i<s.count;i++) {
       const person=people.find(p=>p.id===i+1);
-      const replace=previous && newFrame && !person && tileBucket(i)===bucket;
+      const replace=replacements.has(i);
       let index=previous?previous[i]:0;
       if(!previous || replace) {
         let best=Infinity;
         for(const entry of palette) {
-          if(replace?!freshSamples.includes(entry.index):!originalSamples.includes(entry.index))continue;
+          if(replace?!replacementPool.includes(entry.index):!originalSamples.includes(entry.index))continue;
           if(replace && entry.index===previous[i])continue;
           const p=entry.rgb,dr=p[0]-pixels[i*4],dg=p[1]-pixels[i*4+1],db=p[2]-pixels[i*4+2];
           const score=dr*dr*.3+dg*dg*.59+db*db*.11+((i*17+entry.index*29+frame*11)%47)*16;
@@ -127,7 +155,13 @@
     refreshLabels();
   };
   const baseRender=render;
-  render=async function(){if(!started || lastStage!==stageIndex){await baseRender();lastStage=stageIndex;}if(!targets.length)targets=[targetImages[0],targetImages[1],sourceImages[2],sourceImages[7]];busy=true;try{if(!naturalTarget)naturalTarget=await naturalPromise;await prepareSamplePhotos();paintPortrait(targets[0],targets[0],0);started=true;}finally{busy=false;}refreshLabels();};
+  render=async function(){
+    if(!started || lastStage!==stageIndex){await baseRender();lastStage=stageIndex;}
+    busy=true;
+    try{await Promise.all([prepareSamplePhotos(),preparePortraits()]);paintPortrait();started=true;}
+    finally{busy=false;}
+    refreshLabels();
+  };
   async function advance(direction=1) {
     if(busy || !started || transitioning) return;
     playing=false;
@@ -143,7 +177,7 @@
     transitioning=true;
     try {
       const total=PREVIEW_VARIANTS;
-      frame=(frame+direction+total)%total;remaining=REVEAL_SECONDS;
+      frame=(frame+direction+total)%total;countdownDeadline=null;remaining=REVEAL_SECONDS;
       await render();
       if(!reducedMotion) {
         // Fade out the old view and bring in the new one with a gentle lightening
@@ -157,7 +191,7 @@
       old.remove();
       if(activeIncoming)activeIncoming.cancel();
       if(activeBlend)activeBlend.cancel();
-      activeIncoming=null;activeBlend=null;transitioning=false;refreshLabels();
+      activeIncoming=null;activeBlend=null;transitioning=false;resetCountdown();refreshLabels();
     }
   }
   // Show the current tiles immediately when someone starts exploring the picture.
@@ -171,7 +205,12 @@
   document.querySelectorAll('[data-stage]').forEach(b=>b.addEventListener('click',()=>{paused=true;document.querySelector('#pausePreview').textContent='Resume preview';}));
   setInterval(()=>{
     if(!started){if(sourceImages.length && !busy)render();refreshLabels();return;}
-    if(!paused && !busy && scale===1 && !document.querySelector('#photoDialog').open && !document.hidden) {remaining--;if(remaining<=0)advance();}
+    const running=!paused && !busy && !transitioning && scale===1 && !document.querySelector('#photoDialog').open && !document.hidden;
+    if(running) {
+      if(countdownDeadline===null)countdownDeadline=performance.now()+remaining*1000;
+      remaining=Math.max(0,Math.ceil((countdownDeadline-performance.now())/1000));
+      if(remaining<=0)advance();
+    } else countdownDeadline=null;
     refreshLabels();
   },1000);
   refreshLabels();
