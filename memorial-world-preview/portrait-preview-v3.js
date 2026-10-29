@@ -55,7 +55,7 @@
   toolbar.innerHTML='<button class="button outline" id="previousPreview">← Previous picture</button><button class="button" id="pausePreview">Pause preview</button><button class="button outline" id="nextPreview">Next picture →</button>';
   document.querySelector('.reveal').after(toolbar);
   document.querySelector('.reveal .eyebrow').textContent='Accelerated preview · Sample portraits';
-  document.querySelector('.reveal h2').textContent='Next small change in…';
+  document.querySelector('.reveal h2').textContent='New picture appearing in…';
   document.querySelector('.reveal p').textContent='Every 45 seconds: a new portrait step, 2,500 refreshed sample tiles, and a six-second blend';
   document.querySelector('.edition-head .badge').textContent='Preview · Changes every 45 seconds';
   document.querySelector('.hero .eyebrow').textContent='Many little photos. One changing picture.';
@@ -69,14 +69,18 @@
     return person ? person.tile : map ? map[i] : (i*13+row*7)%sourceImages.length;
   }
   window.picturepurdleTileIndex=indexAt;
+  function setLabel(selector,text) {
+    const element=document.querySelector(selector);
+    if(element.textContent!==text)element.textContent=text;
+  }
   function refreshLabels() {
-    document.querySelector('#stageTitle').textContent='Picturepurdle · Accelerated sample '+(frame+1)+' of '+PREVIEW_VARIANTS;
-    document.querySelector('#countdown').textContent=transitioning?'Fading':'00:'+String(remaining).padStart(2,'0');
-    document.querySelector('.reveal h2').textContent=transitioning?'A new picture is appearing…':'Next small change in…';
+    setLabel('#stageTitle','Picturepurdle · Accelerated sample '+(frame+1)+' of '+PREVIEW_VARIANTS);
+    setLabel('#countdown',transitioning?'Now':'00:'+String(remaining).padStart(2,'0'));
+    setLabel('.reveal h2','New picture appearing in…');
     const inspecting=scale>1 || document.querySelector('#photoDialog').open;
-    document.querySelector('.edition-head .badge').textContent=paused?'Preview paused':inspecting?'Inspecting photos · Timer held':transitioning?'Changing now · Gentle 6-second blend':'Preview · Next small change in '+remaining+'s';
-    document.querySelector('#revealDate').textContent=!started?'Preparing sample portraits…':paused?'Preview paused · Use Next picture to explore':inspecting?'Timer held while you inspect photos · ↺ returns to the portrait':transitioning?'Watch the portrait gently fade into its next version':'Sample portraits only · Future editions will be daily';
-    document.querySelector('#stageDescription').textContent='Illustrative sample editions, not a real dated archive. The accelerated portrait preview is separate from these two sample photo counts.';
+    setLabel('.edition-head .badge',paused?'Preview paused':inspecting?'Inspecting photos · Timer held':'Preview · Updates every 45 seconds');
+    setLabel('#revealDate',!started?'Preparing sample portraits…':paused?'Preview paused · Use Next picture to explore':inspecting?'Timer held while you inspect photos · ↺ returns to the portrait':transitioning?'Blending into the new picture…':'Sample portraits only · Future editions will be daily');
+    setLabel('#stageDescription','Illustrative sample editions, not a real dated archive. The accelerated portrait preview is separate from these two sample photo counts.');
   }
   function paintPortrait(target,nextTarget,blend) {
     const s=editions[stageIndex], mini=document.createElement('canvas');mini.width=s.cols;mini.height=s.rows;
@@ -171,7 +175,7 @@
     old.getContext('2d').drawImage(canvas,0,0);
     // Cover the current portrait BEFORE repainting so the new step never flashes.
     old.setAttribute('aria-hidden','true');
-    old.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;transform-origin:0 0';
+    old.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;transform-origin:0 0;will-change:opacity;display:block';
     old.style.transform=canvas.style.transform;
     viewport.append(old);
     transitioning=true;
