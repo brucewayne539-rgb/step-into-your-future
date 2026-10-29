@@ -2,10 +2,10 @@
 (() => {
   const PREVIEW_ENABLED = true;
   const REVEAL_SECONDS = 45;
-  const BLEND_DURATION_MS = 4000;
+  const BLEND_DURATION_MS = 6000;
   let transitioning = false, activeBlend = null, activeIncoming = null;
   const PORTRAIT_COUNT = 8;
-  const PORTRAIT_ORDER = [0,3,4,6,7,5,2,1];
+  const PORTRAIT_ORDER = [0,1,6,7,4,2,5,3];
   const PREVIEW_VARIANTS = (PORTRAIT_COUNT-1)*2;
   let portraitFrames=[], portraitPreparation=null, countdownDeadline=null;
   const portraitAtlasPromise=img('portrait-sequence-v3.jpg');
@@ -56,7 +56,7 @@
   document.querySelector('.reveal').after(toolbar);
   document.querySelector('.reveal .eyebrow').textContent='Accelerated preview · Sample portraits';
   document.querySelector('.reveal h2').textContent='Next small change in…';
-  document.querySelector('.reveal p').textContent='Every 45 seconds: a new portrait step, 2,500 refreshed sample tiles, and a four-second fade';
+  document.querySelector('.reveal p').textContent='Every 45 seconds: a new portrait step, 2,500 refreshed sample tiles, and a six-second blend';
   document.querySelector('.edition-head .badge').textContent='Preview · Changes every 45 seconds';
   document.querySelector('.hero .eyebrow').textContent='Many little photos. One changing picture.';
   document.querySelector('.hero > p').textContent='Your photo, someone you love, or your treasured pet—one tiny piece of a giant photo mosaic. Free for everyone to explore.';
@@ -74,7 +74,7 @@
     document.querySelector('#countdown').textContent=transitioning?'Fading':'00:'+String(remaining).padStart(2,'0');
     document.querySelector('.reveal h2').textContent=transitioning?'A new picture is appearing…':'Next small change in…';
     const inspecting=scale>1 || document.querySelector('#photoDialog').open;
-    document.querySelector('.edition-head .badge').textContent=paused?'Preview paused':inspecting?'Inspecting photos · Timer held':transitioning?'Changing now · Gentle 4-second fade':'Preview · Next small change in '+remaining+'s';
+    document.querySelector('.edition-head .badge').textContent=paused?'Preview paused':inspecting?'Inspecting photos · Timer held':transitioning?'Changing now · Gentle 6-second blend':'Preview · Next small change in '+remaining+'s';
     document.querySelector('#revealDate').textContent=!started?'Preparing sample portraits…':paused?'Preview paused · Use Next picture to explore':inspecting?'Timer held while you inspect photos · ↺ returns to the portrait':transitioning?'Watch the portrait gently fade into its next version':'Sample portraits only · Future editions will be daily';
     document.querySelector('#stageDescription').textContent='Illustrative sample editions, not a real dated archive. The accelerated portrait preview is separate from these two sample photo counts.';
   }
@@ -180,12 +180,11 @@
       frame=(frame+direction+total)%total;countdownDeadline=null;remaining=REVEAL_SECONDS;
       await render();
       if(!reducedMotion) {
-        // Fade out the old view and bring in the new one with a gentle lightening
-        // at the midpoint. The expensive mosaic is still rendered only once.
+        // Keep the new portrait fully opaque underneath the old one.
+        // Dissolving only the top layer blends both pictures without a washed-out dip.
         const timing={duration:BLEND_DURATION_MS,easing:'ease-in-out',fill:'forwards'};
-        activeBlend=old.animate([{opacity:1,offset:0},{opacity:0.1,offset:0.5},{opacity:0,offset:1}],timing);
-        activeIncoming=canvas.animate([{opacity:0,offset:0},{opacity:0.45,offset:0.5},{opacity:1,offset:1}],timing);
-        await Promise.all([activeBlend.finished,activeIncoming.finished]);
+        activeBlend=old.animate([{opacity:1,offset:0},{opacity:0.5,offset:0.5},{opacity:0,offset:1}],timing);
+        await activeBlend.finished;
       }
     } finally {
       old.remove();
