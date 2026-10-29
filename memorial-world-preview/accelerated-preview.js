@@ -4,7 +4,7 @@
   const REVEAL_SECONDS = 30;
   const BLEND_DURATION_MS = 5000;
   let transitioning = false, activeBlend = null;
-  const CHANGE_PERCENT_PER_REVEAL = 1.5;
+  const CHANGE_PERCENT_PER_REVEAL = 5;
   const STEPS_TO_CHANGE = Math.ceil(100 / CHANGE_PERCENT_PER_REVEAL);
   const PREVIEW_VARIANTS = STEPS_TO_CHANGE * 2;
   let naturalTarget=null;
