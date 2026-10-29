@@ -67,7 +67,10 @@
   function openTile(col,row) {
     const edition = editions[stageIndex];
     if(col<0 || col>=edition.cols || row<0 || row*edition.cols+col>=edition.count) return;
-    document.querySelector('#originalTilePhoto').src=DATA.tiles[tileIndex(col,row)];
+    const index=tileIndex(col,row), photo=sourceImages[index];
+    if(!photo) return;
+    document.querySelector('#originalTilePhoto').src=photo.currentSrc || photo.src || DATA.tiles[index];
+    dialog.dataset.sourceIndex=String(index);
     const founding=people.find(p=>p.founding && p.id===row*edition.cols+col+1);
     document.querySelector('#photoDialogTitle').textContent=founding?founding.name+' · Founding photo':'A photo inside the picture';
     document.querySelector('#photoDialog .hint').textContent=founding?'A real founding photo, contributed by Bruce and kept in every preview portrait.':'Fictional sample, repeated in this demonstration. This is not a purchased contribution.';
@@ -113,6 +116,10 @@
   // Replace the original single-pointer drag handlers, so pinch cannot fight pan.
   viewport.onpointerdown=e=>{
     if(e.pointerType==='mouse' && e.button!==0)return;
+    // Default mouse focus can scroll this tall viewport between down and up.
+    // Keep its position steady so a tap still lands on the photo under the pointer.
+    e.preventDefault();
+    viewport.focus({preventScroll:true});
     const p=localPoint(e.clientX,e.clientY);pointers.set(e.pointerId,p);
     viewport.setPointerCapture(e.pointerId);
     tap=pointers.size===1?{id:e.pointerId,...p}:null;
