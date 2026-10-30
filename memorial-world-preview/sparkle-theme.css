@@ -1,0 +1,30 @@
+
+/* Approved sparkle treatment: white, teal, blue and violet. */
+body{background:radial-gradient(ellipse at 0 28%,#c9f4f957 0,transparent 34%),radial-gradient(ellipse at 100% 15%,#e4d9fa70 0,transparent 35%),linear-gradient(180deg,#fff 0%,#fcfeff 78%,#fff 100%);position:relative}
+.wrap{position:relative;z-index:1}
+.preview{background:linear-gradient(100deg,#edfaff,#f4f0ff,#edfaff);color:#43677d;border-bottom:1px solid #d6e8f2}
+header{position:relative;border-bottom-color:#c4dfe9}
+header:after{content:"";position:absolute;height:1px;bottom:-1px;left:12%;right:12%;background:linear-gradient(90deg,transparent,#51b5d1,#b4a1df,#51b5d1,transparent);box-shadow:0 0 9px #74c6e14f}
+.brand-icon{filter:drop-shadow(0 3px 8px #2288b126)}
+.wordmark{filter:drop-shadow(0 1px 0 white)}
+.button:not(.outline):not(:disabled){background:linear-gradient(115deg,#0799b2,#087eae 65%,#6d75bb);box-shadow:0 4px 13px #1388ae26,inset 0 1px 0 #ffffff80;border:1px solid #168bb8}
+.hero{position:relative}
+.hero .eyebrow{color:#477b9c;letter-spacing:.23em}
+.hero h1{text-shadow:0 2px 0 white,0 8px 23px #5b9db918}
+.hero h1 em{text-shadow:none;background:linear-gradient(95deg,#008da8 15%,#087eae 65%,#8c78b8);background-clip:text;-webkit-background-clip:text;color:transparent}
+.layout-introduction h2{color:#21495e}
+.frame{position:relative;border:13px solid transparent;outline:1px solid #91b9d0;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,#43a6c8 0%,#c4edf3 18%,#c0afe5 43%,#f6fbff 58%,#4cacc9 82%,#b9daf1 100%) border-box;box-shadow:0 22px 60px #17618620,0 0 0 6px #e8f5fa,0 0 0 7px #d5e8f1,0 0 45px #b7cdeb4d,inset 0 0 0 2px white}
+.frame:before{content:"";position:absolute;z-index:5;pointer-events:none;left:5%;top:-11px;width:52%;height:2px;background:linear-gradient(90deg,transparent,#fff,transparent);box-shadow:0 0 7px 2px #fff9;animation:frame-light 9s ease-in-out infinite alternate}
+.sparkle-sky{position:absolute;z-index:0;pointer-events:none;inset:0 0 auto;height:1180px;overflow:hidden}
+.sparkle{position:absolute;display:block;left:var(--x);top:var(--y);width:var(--s);height:var(--s);background:var(--c,#77b5d1);clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);opacity:.65;animation:quiet-sparkle var(--t,5s) ease-in-out infinite alternate;filter:drop-shadow(0 0 6px #7dbcd6)}
+.sparkle-sky:before,.sparkle-sky:after{content:"";position:absolute;width:330px;height:480px;top:190px;opacity:.65;background:radial-gradient(circle at 24% 16%,#b8ddea 1px,transparent 2px),radial-gradient(circle at 73% 36%,#c7b8e9 1px,transparent 2px),radial-gradient(circle at 34% 69%,#84bfd6 1.5px,transparent 2.5px),radial-gradient(circle at 82% 86%,#b1cde8 1px,transparent 2px);background-size:110px 140px}
+.sparkle-sky:before{left:0}.sparkle-sky:after{right:0;transform:scaleX(-1)}
+.sparkle-gem{position:absolute;z-index:6;pointer-events:none;width:20px;height:20px;background:#f9ffff;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);filter:drop-shadow(0 0 5px #5abbd8);opacity:.85;animation:quiet-sparkle 6s ease-in-out infinite alternate}
+.sparkle-gem.one{left:-3px;top:38px}.sparkle-gem.two{right:-3px;top:170px;animation-delay:-3s}.sparkle-gem.three{right:42px;top:-3px;width:14px;height:14px}
+@keyframes quiet-sparkle{from{opacity:.35;transform:scale(.8)}to{opacity:.9;transform:scale(1.1)}}
+@keyframes frame-light{from{left:2%;opacity:.45}to{left:45%;opacity:.9}}
+@media(max-width:760px){.frame{border-width:8px;box-shadow:0 15px 35px #17618620,0 0 0 3px #e8f5fa,0 0 0 4px #d5e8f1}.sparkle-sky:before,.sparkle-sky:after{opacity:.35;width:40px}.sparkle-gem{width:13px;height:13px}.sparkle-gem.one{left:-3px;top:35px}.sparkle-gem.two{right:-3px;top:145px}.sparkle{opacity:.4}.frame:before{top:-6px}}
+@media(prefers-reduced-motion:reduce){.sparkle,.sparkle-gem,.frame:before{animation:none}}
+
+.hero h1{text-shadow:none;filter:drop-shadow(2px 3px 1px rgba(18,61,84,.15))}.hero h1 em{text-shadow:none}
+.sparkle-gem.one,.sparkle-gem.two{display:none}.sparkle-gem.three{width:10px;height:10px;opacity:.5;animation:none}
