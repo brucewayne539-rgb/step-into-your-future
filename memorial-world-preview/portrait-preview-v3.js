@@ -8,7 +8,7 @@
   const viewport=document.querySelector('#viewport');
   let frame=0,remaining=REVEAL_SECONDS,paused=false,started=false,map=null,lastStage=-1;
   let transitioning=false,activeBlend=null,portraitFrames=[],portraitPreparation=null;
-  let countdownDeadline=null,cycleChanges=0;
+  let countdownDeadline=null,cycleChanges=0,lapsePlaying=false,lapseToken=0,seekTimer=null;
   const css=document.createElement('style');
   css.textContent='.frame{max-width:820px;margin-inline:auto}.viewport{height:auto!important;aspect-ratio:5/6}.pilot-story{max-width:780px;margin:12px auto 20px;text-align:center}.pilot-story strong{color:#087eae}.pilot-status{font-size:13px;color:#426b80;margin-top:8px}.pilot-progress{display:block;width:min(420px,90%);height:8px;margin:10px auto;accent-color:#087eae}.portrait-morph{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;transform-origin:0 0;display:block}';
   document.head.append(css);
@@ -58,7 +58,17 @@
   document.querySelector('.hero > p').textContent='Your photo, someone you love, or your treasured pet—one little piece of a portrait we create together. Free for everyone to explore.';
   document.querySelector('.art-note').textContent='Test-pilot simulation: fictional portraits morph to show how a shared artwork could evolve. Repeating sample photos and two real founding photos form the mosaic. The demonstration adds illustrative clarity as it progresses; these changes are not caused by new customer contributions. Pinch or zoom to explore the individual photos. Paid photo placement is planned to last while Picturepurdle operates. No live payments or public submissions yet.';
   document.querySelector('.faq details p').textContent='This test pilot shows 720 portrait transformations in a six-hour repeating sequence of active viewing. Every 30-second step holds a portrait for 22 seconds, then reshapes its features smoothly over eight seconds. Pinching, finding a photo, pausing, or leaving the tab holds the demonstration. It resumes when you return to the whole portrait. Faces, additional detail and refreshed sample tiles illustrate the idea; they are not live customer activity. At launch, approved contributions would drive the real artwork and saved editions.';
-  document.querySelector('#playHistory').textContent='▶ Compare sample editions';
+  document.querySelector('#playHistory').textContent='▶ Play time-lapse';
+  const historySlider=document.querySelector('#historySlider');
+  historySlider.min=0;historySlider.max=CYCLE_STEPS-1;historySlider.step=1;
+  document.querySelector('#timeline h2').textContent='Watch our world take shape.';
+  document.querySelector('#timeline .sub').textContent='Drag through the illustrated journey from 20,000 to 500,000 photos, or play it as a faster time-lapse. These are simulated milestones, not real contributions.';
+  document.querySelector('[data-stage="0"]').textContent='Beginning · 20,000';
+  document.querySelector('[data-stage="1"]').textContent='Final sample · 500,000';
+  document.querySelectorAll('.timeline-labels span')[0].textContent='20,000 · Illustrated beginning';
+  document.querySelectorAll('.timeline-labels span')[1].textContent='500,000 · Illustrated final stage';
+  document.querySelector('label[for="historySlider"]').firstChild.textContent='Illustrated stage: ';
+
   function indexAt(col,row){
     const s=editions[stageIndex],i=row*s.cols+col,person=people.find(p=>p.id===i+1);
     return person?person.tile:map?map[i]:(i*13+row*7)%sourceImages.length;
@@ -71,14 +81,23 @@
     setLabel('#stageTitle','Picturepurdle · Test-pilot chapter '+(frame+1)+' of '+CYCLE_STEPS);
     setLabel('#countdown',transitioning?'Morphing':'00:'+String(remaining).padStart(2,'0'));
     setLabel('.reveal h2',transitioning?'Our portrait is becoming someone new…':'Our next transformation begins in…');
-    setLabel('.edition-head .badge',paused?'Preview paused':inspecting?'Exploring photos · Animation held':'Test pilot · 30-second steps');
-    setLabel('#revealDate',!started?'Preparing our sample portraits…':paused?'Preview paused · Resume when you are ready':inspecting?'Take your time · ↺ returns to the whole portrait':transitioning?'One face, smoothly becoming another':'Six-hour repeating demonstration · Sample activity only');
+    setLabel('.edition-head .badge',lapsePlaying?'Illustrated time-lapse':paused?'Preview paused':inspecting?'Exploring photos · Animation held':'Test pilot · 30-second steps');
+    setLabel('#revealDate',lapsePlaying?'Playing a faster illustrated journey · Sample activity only':!started?'Preparing our sample portraits…':paused?'Preview paused · Resume when you are ready':inspecting?'Take your time · ↺ returns to the whole portrait':transitioning?'One face, smoothly becoming another':'Six-hour repeating demonstration · Sample activity only');
     setLabel('#pilotStatus',inspecting?'Animation held while you explore. Your photos stay part of the picture.':paused?'Demonstration paused.': 'Chapter '+(frame+1)+' / '+CYCLE_STEPS+' · '+(frame===0?'The beginning of our sample journey':'Sample detail grows as the journey continues')+' · Pinch to see the little photos');
-    setLabel('#stageDescription','Two illustrative saved editions, separate from the repeating six-hour portrait demonstration. Real contributions and a dated archive begin at launch.');
+    setLabel('#stageDescription','Test-pilot time-lapse: sample portraits and repeating photo tiles illustrate possible growth. Live contribution counts and an archive of the actual artwork will begin at launch.');
     for(const id of ['#previousPreview','#nextPreview'])document.querySelector(id).disabled=busy||transitioning||inspecting;
     const illustratedPhotos=Math.round(20000+480000*frame/(CYCLE_STEPS-1));
-    setLabel('#pilotGrowth','Imagine the journey: '+illustratedPhotos.toLocaleString()+' → 500,000 individual photos');
+    setLabel('#pilotGrowth','Illustrated journey: '+illustratedPhotos.toLocaleString()+' of 500,000 individual photos');
     document.querySelector('#pilotProgress').value=illustratedPhotos;
+    setLabel('#historyLabel','Chapter '+(frame+1)+' · '+illustratedPhotos.toLocaleString()+' simulated photos');
+    if(seekTimer===null)historySlider.value=frame;
+    historySlider.setAttribute('aria-valuetext','Chapter '+(frame+1)+', '+illustratedPhotos.toLocaleString()+' simulated photos');
+    historySlider.disabled=!started;
+    document.querySelector('[data-stage="0"]').setAttribute('aria-pressed',String(frame===0));
+    document.querySelector('[data-stage="1"]').setAttribute('aria-pressed',String(frame===CYCLE_STEPS-1));
+    setLabel('#playHistory',lapsePlaying?'■ Stop time-lapse':'▶ Play time-lapse');
+    document.querySelector('#playHistory').disabled=!started||isInspecting();
+    viewport.dataset.timeLapsePlaying=String(lapsePlaying);
     viewport.dataset.pilotIllustratedPhotos=String(illustratedPhotos);
     viewport.dataset.pilotCycleSteps=String(CYCLE_STEPS);
     viewport.dataset.pilotCycleSeconds=String(CYCLE_STEPS*(REVEAL_SECONDS+MORPH_MS/1000));
@@ -198,7 +217,7 @@
   }
   function finishBlend(){if(activeBlend)activeBlend.finish();}
   const locateBeforePreview=locate;
-  locate=function(person,doZoom=true){playing=false;finishBlend();locateBeforePreview(person,doZoom);refreshLabels();};
+  locate=function(person,doZoom=true){playing=false;stopTimeLapse();finishBlend();locateBeforePreview(person,doZoom);refreshLabels();};
   const transformBeforeMorph=transform;
   transform=function(){if(scale>1)finishBlend();transformBeforeMorph();};
   const baseRender=render;
@@ -209,7 +228,7 @@
     finally{busy=false;}
     refreshLabels();
   };
-  function animateMorph(surface){
+  function animateMorph(surface,duration=MORPH_MS){
     return new Promise(resolve=>{
       let elapsed=0,last=performance.now(),request=0,finished=false;
       const manualWhilePaused=paused;
@@ -219,14 +238,14 @@
         if(finished)return;
         if((!paused||manualWhilePaused)&&!document.hidden)elapsed+=Math.min(now-last,1000);
         last=now;
-        const raw=Math.min(1,elapsed/MORPH_MS),t=raw*raw*(3-2*raw);
+        const raw=Math.min(1,elapsed/duration),t=raw*raw*(3-2*raw);
         surface.draw(t);
         if(raw>=1)finish();else request=requestAnimationFrame(step);
       };
       request=requestAnimationFrame(step);
     });
   }
-  async function advance(direction=1){
+  async function advance(direction=1,options={}){
     if(busy||!started||transitioning||isInspecting())return;
     playing=false;transitioning=true;
     const before=portraitAt(frame),old=document.createElement('canvas');old.width=canvas.width;old.height=canvas.height;old.getContext('2d').drawImage(canvas,0,0);
@@ -234,22 +253,55 @@
     old.className='portrait-morph';old.style.transform=canvas.style.transform;old.setAttribute('aria-hidden','true');viewport.append(old);
     let surface;
     try{
-      frame=(frame+direction+CYCLE_STEPS)%CYCLE_STEPS;cycleChanges=frame;
+      frame=options.target===undefined?(frame+direction+CYCLE_STEPS)%CYCLE_STEPS:options.target;cycleChanges=frame;
       countdownDeadline=null;remaining=REVEAL_SECONDS;
       await render();
       if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
         surface=createMorphSurface(old,canvas,before,portraitAt(frame));surface.draw(0);viewport.append(surface.element);old.remove();
-        viewport.dataset.morphing='true';await animateMorph(surface);
+        viewport.dataset.morphing='true';await animateMorph(surface,options.duration||MORPH_MS);
       }
     }catch(error){console.error('Portrait transformation could not animate',error);}
     finally{old.remove();surface?.element.remove();surface?.dispose();activeBlend=null;transitioning=false;viewport.dataset.morphing='false';resetCountdown();refreshLabels();}
   }
-  for(const event of ['pointerdown','wheel','keydown'])viewport.addEventListener(event,finishBlend,{passive:true});
-  document.querySelector('#previousPreview').onclick=()=>advance(-1);
-  document.querySelector('#nextPreview').onclick=()=>advance(1);
-  document.querySelector('#pausePreview').onclick=e=>{paused=!paused;e.target.textContent=paused?'Resume preview':'Pause preview';refreshLabels();};
-  document.querySelector('#playHistory').addEventListener('click',()=>{finishBlend();paused=true;document.querySelector('#pausePreview').textContent='Resume preview';});
-  document.querySelectorAll('[data-stage]').forEach(b=>b.addEventListener('click',()=>{finishBlend();paused=true;document.querySelector('#pausePreview').textContent='Resume preview';}));
+  function stopTimeLapse(){lapsePlaying=false;lapseToken++;playing=false;}
+  async function jumpToChapter(value){
+    finishBlend();
+    while(busy||transitioning)await new Promise(resolve=>setTimeout(resolve,20));
+    frame=Math.max(0,Math.min(CYCLE_STEPS-1,Math.round(value)));cycleChanges=frame;
+    await render();resetCountdown();refreshLabels();
+  }
+  function seekChapter(value){
+    stopTimeLapse();paused=true;
+    document.querySelector('#pausePreview').textContent='Resume preview';
+    clearTimeout(seekTimer);seekTimer=setTimeout(()=>{seekTimer=null;jumpToChapter(value);},100);
+  }
+  for(const event of ['pointerdown','wheel','keydown'])viewport.addEventListener(event,()=>{stopTimeLapse();finishBlend();},{passive:true});
+  document.querySelector('#previousPreview').onclick=()=>{stopTimeLapse();advance(-1);};
+  document.querySelector('#nextPreview').onclick=()=>{stopTimeLapse();advance(1);};
+  document.querySelector('#pausePreview').onclick=e=>{
+    if(lapsePlaying){stopTimeLapse();finishBlend();paused=true;}else paused=!paused;
+    e.target.textContent=paused?'Resume preview':'Pause preview';refreshLabels();
+  };
+  document.querySelector('#playHistory').onclick=async()=>{
+    if(lapsePlaying){stopTimeLapse();finishBlend();refreshLabels();return;}
+    if(!started||isInspecting())return;
+    clearTimeout(seekTimer);playing=false;paused=true;lapsePlaying=true;const token=++lapseToken;
+    document.querySelector('#pausePreview').textContent='Resume preview';
+    await jumpToChapter(0);
+    // Compress six hours to roughly 75 seconds while sampling different face shapes.
+    // Adjacent sampled chapters are 11 or 12 steps apart; all mesh pairs are valid.
+    for(let i=1;i<=64&&lapsePlaying&&token===lapseToken;i++){
+      let target=Math.round(i*(CYCLE_STEPS-1)/64);
+      if(portraitAt(target)===portraitAt(frame)&&target<CYCLE_STEPS-1)target++;
+      await advance(1,{target,duration:1000});
+      if(lapsePlaying&&token===lapseToken)await new Promise(resolve=>setTimeout(resolve,150));
+    }
+    if(token===lapseToken){lapsePlaying=false;refreshLabels();}
+  };
+  for(const event of ['pointerdown','keydown'])historySlider.addEventListener(event,()=>{stopTimeLapse();finishBlend();paused=true;document.querySelector('#pausePreview').textContent='Resume preview';});
+  historySlider.oninput=e=>seekChapter(Number(e.target.value));
+  document.querySelector('[data-stage="0"]').onclick=()=>seekChapter(0);
+  document.querySelector('[data-stage="1"]').onclick=()=>seekChapter(CYCLE_STEPS-1);
   // Freeze the countdown precisely when the visitor starts inspecting or leaves.
   const freezeCountdown=()=>{if(countdownDeadline!==null){remaining=Math.max(0,Math.ceil((countdownDeadline-performance.now())/1000));countdownDeadline=null;}};
   document.addEventListener('visibilitychange',()=>{if(document.hidden)freezeCountdown();});
