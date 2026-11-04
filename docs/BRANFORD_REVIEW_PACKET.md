@@ -58,6 +58,10 @@ This is career discussion support. It does not read transcripts, verify complete
 
 **Current catalog label: 2026-27 BHS Program of Studies.** School staff must validate the source, current accuracy and suitability before student use.
 
+### Additional career pathways
+
+The app initially includes 42 career pathways. Additional pathways may be added in response to student interests, teacher or counselor requests, and identified educational needs, subject to content verification and available development capacity.
+
 This packet requests review. It is not a signed permission statement, executed privacy agreement, legal certification or district approval.
 
 <!-- pagebreak -->
