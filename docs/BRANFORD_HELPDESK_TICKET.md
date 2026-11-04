@@ -18,7 +18,7 @@
 
 **Technology:** Browser-based; no extension/app installation, Google Workspace API permissions or roster integration requested. HTTPS hosting through Render; first-party security cookie and temporary pseudonymous abuse counters. Host/network metadata and optional OpenAI retention/settings require review. Chromebook compatibility and accessibility should be confirmed by the district.
 
-**Cost and ownership:** Branford Public Schools is offered indefinite educational use at no charge, with no subscription, annual fee, automatic billing or paid renewal. Bruce retains his original software, code, branding and intellectual property. Student-data rights remain separate. Hosting/support arrangements remain to be confirmed; no purchase is requested.
+**Cost and ownership:** Permission to use the software is offered indefinitely without a software licensing fee. Branford Public Schools would be responsible for all costs associated with its deployment and use, including hosting, optional AI processing and ongoing operations, maintenance, support and updates. Bruce retains his original software, code, branding and intellectual property and is not obligated to fund, advance or absorb district-use costs or provide unlimited unpaid services. District-managed hosting and any paid provider accounts are required before school-directed use; Bruce will not advance costs for later reimbursement; existing billing is not changed by this proposal.
 
 **Catalog maintenance:** Currently labeled BHS 2026-27. Coordinate annual review against the latest official Program of Studies with school staff, incorporate verified changes, then update the displayed catalog year. Students confirm current choices with a counselor.
 

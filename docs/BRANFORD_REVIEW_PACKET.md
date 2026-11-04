@@ -18,7 +18,7 @@
 
 **Technology:** Browser-based; no extension/app installation, Google Workspace API permissions or roster integration requested. HTTPS hosting through Render; first-party security cookie and temporary pseudonymous abuse counters. Host/network metadata and optional OpenAI retention/settings require review. Chromebook compatibility and accessibility should be confirmed by the district.
 
-**Cost and ownership:** Branford Public Schools is offered indefinite educational use at no charge, with no subscription, annual fee, automatic billing or paid renewal. Bruce retains his original software, code, branding and intellectual property. Student-data rights remain separate. Hosting/support arrangements remain to be confirmed; no purchase is requested.
+**Cost and ownership:** Permission to use the software is offered indefinitely without a software licensing fee. Branford Public Schools would be responsible for all costs associated with its deployment and use, including hosting, optional AI processing and ongoing operations, maintenance, support and updates. Bruce retains his original software, code, branding and intellectual property and is not obligated to fund, advance or absorb district-use costs or provide unlimited unpaid services. District-managed hosting and any paid provider accounts are required before school-directed use; Bruce will not advance costs for later reimbursement; existing billing is not changed by this proposal.
 
 **Catalog maintenance:** Currently labeled BHS 2026-27. Coordinate annual review against the latest official Program of Studies with school staff, incorporate verified changes, then update the displayed catalog year. Students confirm current choices with a counselor.
 
@@ -44,11 +44,19 @@ Prepared for district consideration | November 4, 2026 | Release 23-bhs-no-photo
 
 ### Permission and retained ownership
 
-Bruce Wayne Brailsford offers Branford Public Schools nonexclusive permission to use this edition for district educational purposes indefinitely at no charge. There is no annual fee, subscription, automatic billing, paid renewal or scheduled expiration of permission. This offer is limited to Branford Public Schools; it does not give other districts permission on these terms.
+Bruce Wayne Brailsford offers Branford Public Schools nonexclusive permission to use this edition for district educational purposes indefinitely without a software licensing fee. There is no software subscription, license renewal charge or scheduled expiration of permission. This offer is limited to Branford Public Schools; it does not give other districts permission on these terms. The software permission is free; all costs associated with district deployment and use are the district's responsibility, subject to its written acceptance.
 
 Bruce retains ownership of his original application, code, branding and intellectual property. Use does not sell or assign those rights, give the district exclusivity, or authorize resale/sublicensing. Student information and third-party materials retain their respective rights. The district may use and print/save generated educational materials for its educational purposes. No exclusive copyright in AI-generated material is promised.
 
-Indefinite permission to use does not guarantee perpetual third-party hosting, uninterrupted service, ongoing AI-processing capacity or indefinite maintenance. Hosting/support arrangements and any material changes should be confirmed with the district. No future charge is authorized by this permission statement.
+<!-- pagebreak -->
+
+# District costs and educational scope
+
+Branford Public Schools would be responsible for any and all costs associated with its deployment, operation and use of the application. This includes hosting, optional AI/API processing, district-specific domains, infrastructure, setup, integration, required technical reviews, administration, maintenance, support, updates, enhancements and any other necessary services or third-party charges. The district may meet these needs through its own staff, infrastructure or district-approved providers.
+
+Bruce is not obligated to pay, advance, reimburse or absorb any district-use expenses, or to provide indefinite unpaid hosting, support, maintenance or development. Any services he voluntarily agrees to provide must be separately coordinated; the free software permission does not create an unlimited service commitment.
+
+Before school-directed use, the parties must document district acceptance, the hosting arrangement and responsibility for payment, through district-managed infrastructure or district-owned provider accounts paid directly by the district. Bruce will not supply or finance personal hosting, API accounts or domain renewals for district operation. Reimbursement after Bruce pays is not the proposed arrangement. No district expenditure or transfer of existing bills is authorized by this draft. Until an accepted arrangement takes effect, existing demonstration accounts retain their current billing responsibility. Cost allocation does not transfer software ownership or alter either party's legal obligations.
 
 ### Scope and educational purpose
 
@@ -244,7 +252,7 @@ Fictional preview decision: Approve / Decline / Conditional. Conditions: _______
 
 Decision date/signatory: ____________________. Review date: ____________________.
 
-Free indefinite permission accepted: Yes / No. Software ownership remains with the creator; student-data ownership/control remains separate. No annual fee or paid renewal is proposed for Branford.
+Free indefinite software permission accepted: Yes / No. District responsibility for all district-use costs accepted: Yes / No. Payment/hosting arrangement: ____________________. Software ownership remains with the creator; student-data ownership/control remains separate. No software license fee is proposed.
 
 ### Official reference links reviewed
 
