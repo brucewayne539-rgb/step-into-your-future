@@ -30,6 +30,7 @@ class FakeOpenAIClient:
 class AdministratorPreviewTests(unittest.TestCase):
     def setUp(self):
         application.app.config.update(TESTING=True, SESSION_COOKIE_SECURE=False)
+        application.RATE_BUCKETS.clear()
         self.client = application.app.test_client()
 
     def authorize(self):

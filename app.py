@@ -215,7 +215,7 @@ DEMO_STUDENTS = {
         # student and default course-planning grade are now Grade 10.
         "grade": "10",
         "label": "Fictional Sample Student — Grade 10",
-        "file": "demo-student-grade-11.png",
+        "file": "demo-student-grade-10.png",
     },
 }
 
