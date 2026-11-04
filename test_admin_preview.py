@@ -232,6 +232,23 @@ class AdministratorPreviewTests(unittest.TestCase):
         self.assertTrue(data["ghs"]["programs"])
         self.assertIn("counselor", data["ghs"]["next"].lower())
 
+    @patch.object(application, "load_key", return_value="sk-test")
+    @patch.object(application, "OpenAI", FakeOpenAIClient)
+    def test_male_fictional_sample_uses_grade_10_label_and_roadmap(self, _key):
+        self.authorize()
+        page = self.client.get("/admin-preview?school=bhs").get_data(as_text=True)
+        self.assertIn("Fictional Sample Student — Grade 10", page)
+        self.assertNotIn("Fictional Sample Student — Grade 11", page)
+        response = self.client.post("/api/admin-preview/generate",
+            headers={"X-CSRF-Token": "test-csrf"}, json={
+                "school": "bhs", "sample_id": "grade11", "career": "Architect",
+                "age": "25", "path": "explore", "priority": "Creativity"})
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertEqual(data["grade"], "10")
+        self.assertEqual(data["sample_label"], "Fictional Sample Student — Grade 10")
+        self.assertEqual(data["bhs"], application.bhs_for_grade("Architect", "10", "explore"))
+
     def test_all_ghs_preview_pathways_have_school_specific_results(self):
         for career in application.GHS_CAREERS:
             for grade in application.BHS_GRADE_LABELS:

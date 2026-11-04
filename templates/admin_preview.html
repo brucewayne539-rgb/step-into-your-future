@@ -89,7 +89,7 @@ let pilotPhotoReady=ARMY_MODE;
 const syncPilotStudent=()=>{
  if(!PILOT_MODE)return;
  const grade=$('grade').value;
- const sampleId=(grade==='11'||grade==='12')?'grade11':'grade9';
+ const sampleId=(grade==='10'||grade==='11'||grade==='12')?'grade11':'grade9';
  const radio=document.querySelector('input[name="sample"][value="'+sampleId+'"]');
  if(radio)radio.checked=true;
  $('simulatedPhoto').src='/demo-student/'+sampleId+'.png';

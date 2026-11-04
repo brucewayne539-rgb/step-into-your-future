@@ -211,8 +211,10 @@ DEMO_STUDENTS = {
         "file": "demo-student-grade-9.png",
     },
     "grade11": {
-        "grade": "11",
-        "label": "Fictional Sample Student — Grade 11",
+        # Keep the legacy sample identifier/asset URL stable; the displayed
+        # student and default course-planning grade are now Grade 10.
+        "grade": "10",
+        "label": "Fictional Sample Student — Grade 10",
         "file": "demo-student-grade-11.png",
     },
 }
