@@ -1,38 +1,22 @@
-# Security Notes — V21
+# Security Notes - BHS Review Release 23
 
-This is a teacher-review build, not a security certification.
+November 4, 2026. Implemented safeguards are not a security/legal certification.
 
-## Implemented controls
+## Implemented
 
-- The no-photo roadmap is the default and makes no OpenAI image request.
-- Hosted portraits fail closed unless `PORTRAITS_ENABLED`, `OPENAI_ZDR_CONFIRMED`, and `SCHOOL_PORTRAIT_APPROVED` are explicitly enabled, a privacy contact is published, an access code exists, and a stable session secret is configured.
-- API/form writes require a same-session anti-forgery token.
-- Hosted cookies use `Secure`, `HttpOnly`, and `SameSite=Lax`; sessions expire after 60 minutes.
-- Login, roadmap, portrait, and per-session generation limits reduce casual abuse and cost exposure. In-memory limits are supplemental and are not a distributed production rate limiter.
-- Uploads are limited to JPEG, PNG, or WebP; 12 MB request size and 24-megapixel decoded size; images are re-encoded as PNG to remove EXIF metadata.
-- Uploaded and generated photos are not intentionally written to an application file or database.
-- OpenAI requests use no automatic retry, reducing duplicate submissions after timeouts.
-- Logs contain an exception category only; code does not log prompts, selections, photo bytes, access codes, API keys, or raw IP addresses.
-- HTML/API responses use no-store caching and headers that restrict framing, referrers, browser capabilities, object embedding, and cross-origin access.
-- AI/illustrative language is burned into returned portrait pixels before release.
-- Administrator Preview accepts only two bundled fictional sample identifiers, has no upload control, applies a separate generation limit, and burns a fictional-person notice into every returned preview image.
+- Real-person image routes are retired in source and rejected before upload parsing/decoding. Old environment flags cannot enable them.
+- Roadmap endpoints accept only JSON fixed-menu career/grade/path/priority values; no external AI call for roadmaps. Global request limit is 16 KiB.
+- Optional preview reads only a bundled fictional image, applies constrained choices, and watermarks the result. Hosted access requires configured teacher/admin code and stable session secret; generation limits apply.
+- Google Analytics/Tag Manager removed. Browser CSP connections/scripts/fonts stay first-party; framing, object embedding, referrers, camera/microphone/geolocation are restricted.
+- Same-session anti-forgery protection; Secure hosted cookies, HttpOnly, SameSite=Lax; 60-minute persistent admin sessions. Session contains no career choices/photos.
+- HTML/API use no-store. Output text is escaped in BHS rendering. No student/selection/photo/result database.
+- In-memory rate limits retain IP-derived keyed hashes/timestamps without selections; idle entries are cleared on the next limiter check after 15 minutes or process restart.
+- Minimal content-free diagnostic categories; no intentional logging of student choices, images, raw IPs or credentials. No automatic AI retry.
 
-## Known limits requiring external work
+## District verification and remaining limitations
 
-- Obtain an independent penetration test and code/dependency review before production.
-- Use a district-managed identity system or authenticated reverse proxy for student production access; the demo access code is not SSO or role-based access control.
-- Replace the per-process in-memory limiter with a district-approved gateway or shared limiter for multi-instance production.
-- The current CSP permits inline scripts/styles because the prototype UI is self-contained. Refactor and test nonce/hash-based CSP before high-assurance production.
-- Confirm Render and OpenAI contracts, subprocessors, retention, breach terms, deletion, audit rights, data location, and support contacts in writing.
-- Establish vulnerability intake, patch cadence, dependency scanning, backup/restore, incident exercises, and a named security owner.
-- Python/browser memory cannot be promised to undergo forensic secure wiping.
+Confirm deployed release, HTTPS/proxy settings, administrative access/MFA, provider DPAs/security/subprocessors, retention/deletion/closeout, privacy contact and incident channels. For approved fictional previews, confirm OpenAI data-sharing/training opts remain off. No ZDR claim is made. Actual provider terms may require additional work before acceptance.
 
-## Secret handling
+Use security/dependency/accessibility review appropriate to district risk. Inline script/style CSP remains; per-process rate limits are supplemental, not a distributed firewall. Current roadmap pages are public, not district SSO; the district may require an access gateway. Review host metadata even without an app database. Do not promise zero retention or forensic memory wiping.
 
-Never commit these values to GitHub:
-
-- `OPENAI_API_KEY`
-- `DEMO_ACCESS_CODE`
-- `SECRET_KEY`
-
-Rotate a secret immediately if it appears in source, screenshots, logs, email, or chat. Keep teacher and production environments separate.
+Never commit API keys, access codes, session secrets or student records. Rotate exposed secrets. Do not use public GitHub issues for personal information. Record patch/monitoring/support owners before student use. See INCIDENT_RESPONSE.md and docs/BRANFORD_REVIEW_PACKET.md.

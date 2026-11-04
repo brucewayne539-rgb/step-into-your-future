@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
+
+
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#171719">
@@ -67,77 +70,70 @@ header{background:linear-gradient(118deg,#0b0b0c,#27272a 58%,#a30e29);border-bot
 @media(max-width:680px){.headrow{align-items:flex-start}.tag{display:none}.hero{min-height:500px;border-radius:22px}.heroicon{object-position:62% 50%}.heroiconwrap:after{background:linear-gradient(180deg,rgba(253,250,251,.96) 0%,rgba(253,250,251,.86) 58%,rgba(45,5,13,.10) 100%)}.hero-copy{width:100%;height:auto;padding:28px 22px 22px;justify-content:flex-start}.hero h1{font-size:45px}.hero p{font-size:16px}.hero .journey{grid-template-columns:1fr;margin-top:14px}.trueYou{grid-template-columns:1fr;padding:18px}.trueYouMark{width:43px;height:43px;font-size:21px}.sectionhead{display:block}.stepbadge{display:inline-block;margin-top:8px}.pathwaybanner{display:block}.pathwaybanner>span{display:block;margin-top:7px}.versionBadge{font-size:9px!important;padding:7px 10px!important;bottom:5px!important}}
 @media print{.versionBadge{display:none!important}}
 </style>
+<link rel="stylesheet" href="/static/patent-pending.css">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">Skip to main content</a>
-<header><div class="headrow"><div class="schoolmark"><img class="miniicon" src="/app-icon.png" alt=""><div><div class="school">BRANFORD HIGH SCHOOL • TEACHER PREVIEW</div><div class="brand">STEP INTO YOUR FUTURE <span>— TODAY!</span></div></div></div><div class="tag">EXPLORE • IMAGINE • PLAN • BECOME</div></div></header>
+<header><div class="headrow"><div class="schoolmark"><img class="miniicon" src="/app-icon.png" alt=""><div><div class="school">BRANFORD HIGH SCHOOL • CAREER &amp; COURSE EXPLORER</div><div class="brand">STEP INTO YOUR FUTURE <span>— TODAY!</span></div></div></div><div class="tag">EXPLORE • IMAGINE • PLAN • BECOME</div></div></header>
 <main id="mainContent" tabindex="-1">
-<div class="progresswrap noprint"><span>YOUR JOURNEY</span><div class="progress"><div id="bar"></div></div><span id="stepText">1 OF 4</span></div>
+<div class="progresswrap noprint"><span>YOUR JOURNEY</span><div class="progress"><div id="bar"></div></div><span id="stepText">1 OF 3</span></div>
 
 <section id="s1" class="panel step active">
 <div class="hero"><div class="hero-copy"><div class="kicker"><span class="dot"></span> CHART YOUR COURSE</div><h1>See a Future. <span class="futureline">Find Your Pathway.</span></h1><p>Imagine what could be next. Explore the path. Connect your future to real opportunities at Branford High School.</p><div class="journey"><div class="journeycard"><strong>01 • IMAGINE</strong><span>Picture yourself in a future career.</span></div><div class="journeycard"><strong>02 • EXPLORE</strong><span>Discover courses, skills, and pathways.</span></div><div class="journeycard"><strong>03 • ACT</strong><span>Turn your vision into a practical plan.</span></div></div></div><div class="heroiconwrap"><div class="orbit"></div><img class="heroicon" src="/bhs-hero.svg" alt="Branford Hornet pathway into the future"></div></div>
 <aside class="trueYou" aria-label="True to You guiding principle"><div class="trueYouMark" aria-hidden="true">✦</div><div><h3>TRUE TO YOU</h3><blockquote>“This above all: to thine own self be true.”</blockquote><cite>—William Shakespeare, <em>Hamlet</em>, Act 1, Scene 3</cite><p>Explore pathways that reflect your interests, strengths, values, and goals.</p><div class="paloniousLine">A Palonious Student Pathway Experience</div></div></aside>
-{% if not key_ready and not hosted %}
-<div class="setup" id="setupBox">
-<strong>One-time setup</strong><br>
-This laptop needs your OpenAI API key to create the live AI portraits. The key is stored in your local Windows profile (not in the app/OneDrive folder) and is never placed in the webpage.
-<label for="keyInput">OpenAI API key</label><input id="keyInput" type="password" autocomplete="off" placeholder="Paste API key here">
-<button class="secondary" id="saveKey">Save Key on This Laptop</button>
-<div class="small" style="margin-top:8px">API usage is billed separately by OpenAI. For local testing only; hosted teacher demos use a server-side key.</div>
-</div>
-{% endif %}
-{% if hosted %}<div class="info noprint"><strong>Portrait readiness:</strong> {{ portrait_status }}{% if portrait_enabled %} This browser session can create up to {{ generations_left }} more AI portrait(s).{% endif %}</div>{% endif %}{% if admin_preview_enabled %}<div class="noprint" style="display:flex;justify-content:center;margin:16px 0 24px"><a href="/admin-preview?school=bhs" style="display:inline-flex;align-items:center;gap:9px;padding:14px 20px;border-radius:12px;background:linear-gradient(135deg,#171719,#a30e29);color:#fff;text-decoration:none;font-weight:950;box-shadow:0 10px 23px rgba(35,24,26,.23)">✦ Administrator Preview — Live Fictional Students</a></div>{% endif %}<div class="sectionhead"><div><div class="eyebrow">STEP 1 • START HERE</div><h2>How would you like to explore?</h2><p class="lead">Choose a career and explore a practical roadmap built around real opportunities at Branford High School. A future portrait is optional and appears only when this deployment has completed its photo approvals.</p></div><div class="stepbadge">TODAY → TOMORROW</div></div>
+<div class="info noprint"><strong>School review edition:</strong> No student photos, accounts, advertising or Google Analytics. School-directed student use awaits district approval. <a href="/bhs/privacy">Privacy notice</a> · <a href="/bhs/school-review">School review information</a></div>
+<div class="noprint" style="margin:18px 0"><a href="/admin-preview?school=bhs" class="secondary" style="display:inline-block;padding:12px 18px;border-radius:12px;color:white;text-decoration:none">Administrator Preview - Fictional Students Only</a></div>
+<div class="sectionhead"><div><div class="eyebrow">STEP 1 • START HERE</div><h2>What grade are you exploring?</h2><p class="lead">Choose a career and explore a practical roadmap built around real opportunities at Branford High School. Select the grade you want to explore, then choose a career. These suggestions support a conversation with your counselor.</p></div><div class="stepbadge">TODAY → TOMORROW</div></div>
 <div class="grid">
 <div>
-<div class="experience-choice"><label for="experienceMode">Choose your experience</label><select id="experienceMode" aria-describedby="modeNote"><option value="roadmap" selected>Explore careers and courses — no photo</option><option value="portrait"{% if not portrait_enabled %} disabled{% endif %}>Use a current photo to create a future portrait{% if not portrait_enabled %} — unavailable pending approval{% endif %}</option></select><p id="modeNote" role="status"></p></div><div class="privacy"><strong>Photo privacy:</strong> if enabled, pressing Create My Future sends a cleaned copy of the photo and the selected career details to OpenAI. The app does not create a photo database, but that fact alone is not a zero-retention guarantee for providers or the browser. <a href="/privacy">Read the complete notice.</a></div><div id="photoConsentWrap"><label class="photo-consent"><input id="photoConsent" type="checkbox"/> <span>I confirm that the person pictured is age 13 or older and that I am authorized to submit this photo for this AI-generated visualization.</span></label><label class="photo-consent"><input id="privacyAck" type="checkbox"/> <span>I have read the photo notice and understand that school/provider approval—not this checkbox—determines whether portrait use is authorized.</span></label><p style="margin:8px 2px 0;color:#5d6066;font-size:.84rem;line-height:1.45"><strong>Under age 13?</strong> Portrait mode is not available in this build. Continue with the complete no-photo career-and-course roadmap.</p></div>
-<label for="photoInput">Student / demo photo
-<input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="photoHelp"></label>
-<label style="margin-top:16px">Current Grade<select id="grade"><option value="8">Grade 8 — Preparing for High School</option><option value="9">Grade 9 — Freshman</option><option value="10">Grade 10 — Sophomore</option><option value="11" selected>Grade 11 — Junior</option><option value="12">Grade 12 — Senior</option></select></label>
+<div class="privacy"><strong>Your privacy:</strong> Select only your grade, career, path and priority. Do not submit names, student records or other personal information. This roadmap sends no selections to an AI service. <a href="/bhs/privacy">Read the privacy notice.</a></div>
+<label style="margin-top:16px">Grade to explore<select id="grade"><option value="8">Grade 8 — Preparing for High School</option><option value="9">Grade 9 — Freshman</option><option value="10">Grade 10 — Sophomore</option><option value="11" selected>Grade 11 — Junior</option><option value="12">Grade 12 — Senior</option></select></label>
 <div id="error1" class="error" role="alert"></div>
 </div>
-<div class="photo-box"><div class="photo"><img id="preview" alt="Selected photo preview"><div id="placeholder"><div class="camera-icon" aria-hidden="true">📷</div><strong>Photo preview</strong><br><span class="small">A clear, front-facing photo works best.</span></div></div><button id="next1" class="primary wide" disabled>Chart My Course →</button><div id="photoHelp" class="small" style="text-align:center;margin-top:8px">Choose a clear photo of one person. JPEG, PNG or WebP; under 12 MB.</div></div>
+<div class="start-card"><h3>Your next step starts here.</h3><p>Explore courses available in your selected grade, plan for later courses and prerequisites, and find school programs and practical experiences.</p><button id="next1" class="primary wide">Chart My Course →</button></div>
 </div>
 </section>
 
 <section id="s2" class="panel step">
-<div class="sectionhead"><div><div class="eyebrow">STEP 2 • EXPLORE</div><h2>Chart your course.</h2><p class="lead">Choose a career, a future age, and the kind of path you want to explore. There is no single “right” route.</p></div><div class="stepbadge">OPPORTUNITIES • PATHWAYS</div></div><div class="pathwaybanner"><div><strong>ONE FUTURE YOU COULD BECOME</strong><br><span>See it → understand the pathway → find a first step.</span></div><span>42 CAREERS • 5 GRADE LEVELS • BHS-SPECIFIC OPTIONS</span></div>
+<div class="sectionhead"><div><div class="eyebrow">STEP 2 • EXPLORE</div><h2>Chart your course.</h2><p class="lead">Choose a career and the kind of path you want to explore. There is no single “right” route.</p></div><div class="stepbadge">OPPORTUNITIES • PATHWAYS</div></div><div class="pathwaybanner"><div><strong>ONE FUTURE YOU COULD BECOME</strong><br><span>See it → understand the pathway → find a first step.</span></div><span>42 CAREERS • 5 GRADE LEVELS • BHS-SPECIFIC OPTIONS</span></div>
 <div class="grid">
 <div><label>Career<select id="career">{% for c in careers %}<option value="{{c}}">{% if c == "Teacher" %}General Education Teacher{% else %}{{c}}{% endif %}</option>{% endfor %}</select></label></div>
-<div><label>Future age<select id="age"><option>22</option><option selected>25</option><option>28</option><option>30</option><option>35</option></select></label></div>
 <div><label>Path<select id="path"><option value="employee">Work in the profession</option><option value="owner">Own a business someday</option><option value="explore">Not sure — explore the path</option></select></label>
 <label>What matters most?<select id="priority"><option>Doing work I enjoy</option><option>Helping people</option><option>High income potential</option><option>Creativity</option><option>Job stability</option><option>Being my own boss</option></select></label></div>
 </div>
-<div class="info"><strong>Your choice stays in control:</strong> roadmap-only mode uses the local BHS course index and makes no image request. If you choose a portrait, your photo and selections are sent to the AI image service only when you press Create My Future.</div>
-<p id="roadmapError" role="alert" hidden style="color:#a32626"></p><div class="row" style="justify-content:flex-end"><button class="ghost" onclick="go(1)">Back</button><button class="primary" id="generateBtn">Generate My Future</button></div>
+<div class="info"><strong>Choose what interests you:</strong> this roadmap uses the BHS course catalog and prepared career guidance. It does not assess your ability, check your transcript or guarantee eligibility. Ask your counselor to confirm prerequisites and placement.</div>
+<p id="roadmapError" role="alert" hidden style="color:#a32626"></p><div class="row" style="justify-content:flex-end"><button class="ghost" onclick="go(1)">Back</button><button class="primary" id="generateBtn">Show My Career Roadmap</button></div>
 </section>
 
-<section id="s3" class="panel step">
-<div class="loader"><div><div class="spinner"></div><h2 style="color:white;margin-top:22px">Creating your future…</h2><p style="color:#d3edff;line-height:1.6">Preserving your identity<br>Visualizing your future career<br>Building your roadmap</p><div class="small" style="color:#b9ddf7">A live AI image can take a little while to finish.</div></div></div>
-<div id="error3" class="error" role="alert"></div>
-</section>
-
-<section id="s4" class="panel step">
+<section id="s4" class="panel step roadmap-only" aria-live="polite">
 <div class="eyebrow">YOUR FUTURE IS READY!</div><h2 id="title">Your Future</h2><p class="lead" id="summary"></p>
-<div class="row noprint"><button class="secondary" onclick="window.print()">Save / Print My Future</button><button class="secondary" onclick="downloadPortrait()">Download Portrait</button><button class="primary" onclick="go(2)">Try Another Career</button><button class="ghost" onclick="location.reload()">Start Over</button></div>
+<div class="row noprint"><button class="secondary" onclick="window.print()">Save / Print My Roadmap</button><button class="primary" onclick="go(2)">Try Another Career</button><button class="ghost" id="resetBtn">Start Over</button></div>
 <div class="results">
-<article class="future"><img id="futureImg" alt="AI-generated future-career visualization"><div class="futurecopy"><span class="badge">ILLUSTRATIVE AI VISUALIZATION</span><h3 id="futureCareer"></h3><div id="futureAge"></div><p class="small">This is an imaginative visualization, not a prediction of appearance or career outcome.</p></div></article>
-<article class="roadmap"><div class="roadhead">🧭 MY ROADMAP TO SUCCESS</div><div class="roadintro"><strong>YOUR PERSONAL CAREER ROADMAP</strong><br>A practical path from what you can do in high school through education/training, real experience, credentials and your first career opportunities.</div><div id="road"></div><div class="roadextras"><div class="extrabox"><h4>⏱ ESTIMATED PATH</h4><p id="timeline"></p></div><div class="extrabox"><h4>⭐ KEYS TO SUCCESS</h4><ul id="keys"></ul></div></div></article>
+
+<article class="roadmap"><div class="roadhead">🧭 MY ROADMAP TO SUCCESS</div><div class="roadintro"><strong>YOUR CAREER EXPLORATION ROADMAP</strong><br>A practical path from what you can do in high school through education/training, real experience, credentials and your first career opportunities.</div><div id="road"></div><div class="roadextras"><div class="extrabox"><h4>⏱ ESTIMATED PATH</h4><p id="timeline"></p></div><div class="extrabox"><h4>⭐ KEYS TO SUCCESS</h4><ul id="keys"></ul></div></div></article>
 </div>
-<div id="bhsCard" class="bhscard" style="display:none"><div class="bhshead">⬡ IN THE BHS HIVE • HORNET PATHWAYS</div><div class="bhsbody"><div id="bhsGradeNote" class="info" style="margin:0 0 14px"></div><div class="bhslabel">Strongest Matches to Discuss</div><ul id="bhsCourses" class="bhscourses"></ul><details id="bhsSupportingWrap" class="bhsMore" hidden><summary>Helpful supporting courses <span id="bhsSupportingCount" class="bhsCount"></span></summary><ul id="bhsSupporting" class="bhscourses"></ul></details><details id="bhsFutureWrap" class="bhsMore" hidden><summary>Plan ahead at BHS <span id="bhsFutureCount" class="bhsCount"></span></summary><p class="small">These courses begin in a later grade. Use them to plan prerequisites and future scheduling.</p><ul id="bhsFuture" class="bhscourses"></ul></details><details id="bhsProgramsWrap" class="bhsMore" hidden><summary>BHS programs and real-world opportunities <span id="bhsProgramsCount" class="bhsCount"></span></summary><div id="bhsPrograms"></div></details><div class="bhslabel">Get Real Experience</div><div id="bhsExperience"></div><div id="bhsGood" class="bhsgood" style="display:none"></div><div id="bhsNext" class="bhsnext"></div><div class="bhsnote">Based on the Branford High School 2026–27 Program of Studies. These are ranked options to discuss, not a required checklist. Course availability, prerequisites, placement and programs can change. Confirm choices with your BHS counselor.</div></div></div>
+<div id="bhsCard" class="bhscard" style="display:none"><div class="bhshead">⬡ IN THE BHS HIVE • HORNET PATHWAYS</div><div class="bhsbody"><div id="bhsGradeNote" class="info" style="margin:0 0 14px"></div><div class="bhslabel">Strongest Matches to Discuss</div><ul id="bhsCourses" class="bhscourses"></ul><details id="bhsSupportingWrap" class="bhsMore" hidden><summary>Helpful supporting courses <span id="bhsSupportingCount" class="bhsCount"></span></summary><ul id="bhsSupporting" class="bhscourses"></ul></details><details id="bhsFutureWrap" class="bhsMore" hidden><summary>Plan ahead at BHS <span id="bhsFutureCount" class="bhsCount"></span></summary><p class="small">These courses begin in a later grade. Use them to plan prerequisites and future scheduling.</p><ul id="bhsFuture" class="bhscourses"></ul></details><details id="bhsProgramsWrap" class="bhsMore" hidden><summary>BHS programs and real-world opportunities <span id="bhsProgramsCount" class="bhsCount"></span></summary><div id="bhsPrograms"></div></details><div class="bhslabel">Get Real Experience</div><div id="bhsExperience"></div><div id="bhsGood" class="bhsgood" style="display:none"></div><div id="bhsNext" class="bhsnext"></div><div class="bhsnote">Based on the Branford High School 2026–27 Program of Studies. These are options to discuss, not a required checklist. The app has not reviewed your transcript or verified that you meet prerequisites. Course availability, prerequisites, placement and programs can change. Confirm choices with your BHS counselor.</div></div></div>
 <div class="info" style="margin-top:16px"><strong>Next step:</strong> Discuss this roadmap with a counselor, teacher, family member, mentor or career professional. Education, licensing and hiring requirements can change and should be verified before making decisions.</div>
 </section>
-<div class="schoolPrivacyLink noprint"><a href="/privacy">Privacy &amp; School Use</a></div>
+<p class="small">Catalog review: 2026-27. BHS course information should be reviewed annually with school staff; the displayed catalog year changes only after verified updates. Confirm current options with your counselor.</p>
+<div class="schoolPrivacyLink noprint"><a href="/bhs/privacy">Privacy &amp; School Use</a> · <a href="/bhs/school-review">District Review</a></div>
+<div class="patent-notice"><img src="/static/patent-pending.svg" width="250" height="44" alt="U.S. Patent Pending"></div>
 </main>
-<div class="versionBadge noprint" style="position:fixed;right:16px;bottom:16px;z-index:99;background:#171719;color:white;padding:10px 13px;border-radius:999px;font:800 11px Arial;box-shadow:0 10px 25px #0002;border-bottom:3px solid #c71936">ADMIN PREVIEW • BHS V21 • 42 CAREERS × 5 GRADES</div>
+<div class="versionBadge noprint" style="position:fixed;right:16px;bottom:16px;z-index:99;background:#171719;color:white;padding:10px 13px;border-radius:999px;font:800 11px Arial;box-shadow:0 10px 25px #0002;border-bottom:3px solid #c71936">BHS • NO-PHOTO SCHOOL REVIEW • 42 CAREERS × 5 GRADES</div>
 <script>
-const CSRF_TOKEN={{ csrf_token|tojson }}, PORTRAIT_ENABLED={{ portrait_enabled|tojson }};
-let photoFile=null, previewURL=null;
-function go(n){document.querySelectorAll('.step').forEach(x=>x.classList.remove('active'));document.getElementById('s'+n).classList.add('active');document.getElementById('bar').style.width=(n*25)+'%';const stepText=document.getElementById('stepText');if(stepText)stepText.textContent=n+' OF 4';window.scrollTo({top:0,behavior:'smooth'})}
-const inp=document.getElementById('photoInput'),prev=document.getElementById('preview'),ph=document.getElementById('placeholder'),next=document.getElementById('next1');
-inp.onchange=e=>{if(previewURL){URL.revokeObjectURL(previewURL);previewURL=null;}photoFile=e.target.files[0];if(!photoFile)return;previewURL=URL.createObjectURL(photoFile);prev.src=previewURL;prev.style.display='block';ph.style.display='none';next.disabled=!(document.getElementById('photoConsent').checked&&document.getElementById('privacyAck').checked)}
-next.onclick=()=>go(2);
+const CSRF_TOKEN={{ csrf_token|tojson }}, ROADMAP_ENDPOINT="/api/bhs/roadmap";
+function go(n){
+ document.querySelectorAll('.step').forEach(x=>x.classList.remove('active'));
+ const panel=document.getElementById('s'+n);panel.classList.add('active');
+ const step=n===4?3:n;document.getElementById('bar').style.width=(step/3*100)+'%';
+ document.getElementById('stepText').textContent=step+' OF 3';
+ const heading=panel.querySelector('h1,h2');if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true});}
+ window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+}
+document.getElementById('next1').onclick=()=>go(2);
+const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 function renderBhsResult(d){
-  if(d.image)document.getElementById('futureImg').src=d.image;document.getElementById('futureCareer').textContent=d.career;document.getElementById('futureAge').textContent='Visualized at approximately age '+d.age;document.getElementById('title').textContent='Age '+d.age+': '+d.career;document.getElementById('summary').textContent=d.summary;
+  document.getElementById('title').textContent=(d.career==='Teacher'?'General Education Teacher':d.career)+' — Career Roadmap';document.getElementById('summary').textContent=d.summary;
   const iconFor=(title,i)=>{
    const t=title.toLowerCase();
    if(t.includes('high school'))return '🏫';
@@ -150,10 +146,9 @@ function renderBhsResult(d){
    return ['🎯','📚','🧰','⭐','🚀'][i%5];
   };
   const stageFor=i=>['START HERE','BUILD YOUR FOUNDATION','GET REAL EXPERIENCE','EARN THE CREDENTIALS','LAUNCH YOUR CAREER'][Math.min(i,4)]||'NEXT STEP';
-  const road=document.getElementById('road');road.innerHTML='';const rs=d.rich_steps||d.steps.map(s=>({title:s[0],bullets:[s[1]]}));rs.forEach((s,i)=>{const x=document.createElement('div');x.className='roadstep';const bullets=(s.bullets||[]).map(b=>'<li>'+b+'</li>').join('');x.innerHTML='<div class="roadicon">'+iconFor(s.title,i)+'</div><div class="roadtext"><span class="roadlabel">'+stageFor(i)+'</span><strong>'+(i+1)+'. '+s.title+'</strong><ul class="roadbullets">'+bullets+'</ul></div>';road.appendChild(x)});
-  document.getElementById('timeline').textContent=d.timeline||'Timing varies by pathway.';document.getElementById('keys').innerHTML=(d.keys||[]).map(k=>'<li>'+k+'</li>').join('');
+  const road=document.getElementById('road');road.innerHTML='';const rs=d.rich_steps||d.steps.map(s=>({title:s[0],bullets:[s[1]]}));rs.forEach((s,i)=>{const x=document.createElement('div');x.className='roadstep';const bullets=(s.bullets||[]).map(b=>'<li>'+esc(b)+'</li>').join('');x.innerHTML='<div class="roadicon">'+iconFor(s.title,i)+'</div><div class="roadtext"><span class="roadlabel">'+stageFor(i)+'</span><strong>'+(i+1)+'. '+esc(s.title)+'</strong><ul class="roadbullets">'+bullets+'</ul></div>';road.appendChild(x)});
+  document.getElementById('timeline').textContent=d.timeline||'Timing varies by pathway.';document.getElementById('keys').innerHTML=(d.keys||[]).map(k=>'<li>'+esc(k)+'</li>').join('');
   const b=d.bhs||{},bc=document.getElementById('bhsCard');
-  const esc=v=>String(v||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const courseHTML=c=>'<li class="bhsCourseItem"><strong>'+esc(c.name)+'</strong><div class="bhsMeta"><span>Grades '+esc(c.grades)+'</span><span>'+esc(c.department)+'</span></div><div class="bhsFocus">'+esc(c.focus)+'</div>'+(c.prerequisite?'<div class="bhsPrereq"><strong>Plan first:</strong> '+esc(c.prerequisite)+'</div>':'')+'</li>';
   if((b.course_details&&b.course_details.length)||(b.future_course_details&&b.future_course_details.length)){
     bc.style.display='block';document.getElementById('bhsGradeNote').textContent=b.grade_note||'';
@@ -166,94 +161,31 @@ function renderBhsResult(d){
     document.getElementById('bhsExperience').textContent=b.experience||'';const bg=document.getElementById('bhsGood');if(b.good){bg.style.display='block';bg.innerHTML='<strong>⭐ GOOD TO KNOW:</strong> '+esc(b.good)}else bg.style.display='none';document.getElementById('bhsNext').innerHTML='<strong>🎯 YOUR NEXT STEP:</strong> '+esc(b.next||'Talk with your BHS counselor about the best course or experience to explore this career.');
   }else{bc.style.display='none'};
   if(d.path==='owner'){const x=document.createElement('div');x.className='roadstep';x.innerHTML='<div class="roadicon">📈</div><div class="roadtext"><span class="roadlabel">OPTIONAL FUTURE PATH</span><strong>★ Entrepreneurship / Ownership</strong><p>After gaining field experience, explore business planning, startup costs, insurance, taxes, marketing, staffing, customer service and any required state or local licenses.</p></div>';road.appendChild(x)}
-  setResultMode(d);go(4);
-}
-const sk=document.getElementById('saveKey');
-if(sk)sk.onclick=async()=>{const key=document.getElementById('keyInput').value.trim();sk.disabled=true;const r=await fetch('/api/setup',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':CSRF_TOKEN},body:JSON.stringify({api_key:key})});const d=await r.json();sk.disabled=false;if(d.ok){document.getElementById('setupBox').innerHTML='<strong>✓ API key saved on this laptop.</strong>'; }else alert(d.error)}
-function downloadPortrait(){
- const img=document.getElementById('futureImg');
- if(!img.getAttribute('src'))return;
- const a=document.createElement('a');
- const career=(document.getElementById('futureCareer').textContent||'Future Career').replace(/[^a-z0-9]+/gi,'_');
- a.href=img.src;a.download='Step_Into_Your_Future_'+career+'.png';document.body.appendChild(a);a.click();a.remove();
-}
-document.getElementById('generateBtn').onclick=async()=>{
- if(!portraitSelected()){await requestRoadmap();return;}
- if(!photoFile){go(1);return}
- go(3);document.getElementById('error3').style.display='none';
- const fd=new FormData();fd.append('_csrf_token',CSRF_TOKEN);fd.append('photo',photoFile);fd.append('photo_consent','confirmed');fd.append('privacy_ack','acknowledged');fd.append('career',document.getElementById('career').value);fd.append('grade',document.getElementById('grade').value);fd.append('age',document.getElementById('age').value);fd.append('path',document.getElementById('path').value);fd.append('priority',document.getElementById('priority').value);
- try{
-  const r=await fetch('/api/generate',{method:'POST',body:fd});const d=await r.json();
-  if(!d.ok)throw new Error(d.error||'Image generation failed.');
-  renderBhsResult(d);
- }catch(e){const box=document.getElementById('error3');box.textContent=e.message;box.style.display='block';}
- finally{clearSelectedPhoto();document.getElementById('photoConsent').checked=false;document.getElementById('privacyAck').checked=false;}
-}
-let bhsPrintDetailState=[];
-window.addEventListener('beforeprint',()=>{bhsPrintDetailState=Array.from(document.querySelectorAll('#bhsCard details:not([hidden])')).map(d=>[d,d.open]);bhsPrintDetailState.forEach(([d])=>d.open=true)});
-window.addEventListener('afterprint',()=>{bhsPrintDetailState.forEach(([d,wasOpen])=>d.open=wasOpen);bhsPrintDetailState=[]});
-</script>
-<script>const ROADMAP_SCHOOL="BHS", ROADMAP_ENDPOINT="/api/roadmap";</script>
-<style>
-[hidden]{display:none!important}
-.experience-choice{margin:18px 0;padding:18px;border:2px solid currentColor;border-radius:14px}
-.experience-choice p{margin:10px 0 0;font-size:16px;line-height:1.5}
-.roadmap-only .results,.roadmap-only .simpleResults{grid-template-columns:1fr!important}
-
-.photo-consent{display:flex!important;align-items:flex-start;gap:10px;margin:12px 0 16px;font-weight:700;line-height:1.4}.photo-consent input{width:20px!important;height:20px!important;flex:0 0 20px;margin:2px 0 0!important;padding:0!important}.schoolPrivacyLink{margin:22px 0 8px;text-align:center;font-size:14px}.schoolPrivacyLink a{color:inherit;font-weight:800}
-</style>
-<script>
-function portraitSelected(){return document.getElementById('experienceMode').value==='portrait';}
-function clearSelectedPhoto(){
- const input=document.getElementById('photoInput'),img=document.getElementById('preview');
- if(previewURL){URL.revokeObjectURL(previewURL);previewURL=null;}else{const url=img.getAttribute('src');if(url&&url.startsWith('blob:'))URL.revokeObjectURL(url);}
- input.value='';photoFile=null;img.removeAttribute('src');img.style.display='none';
- document.getElementById('placeholder').style.display='block';
-}
-function setResultMode(d){
- const hasPortrait=!!d.image, img=document.getElementById('futureImg');
- document.getElementById('s4').classList.toggle('roadmap-only',!hasPortrait);
- img.closest('article').hidden=!hasPortrait;
- document.querySelector('[onclick="downloadPortrait()"]').hidden=!hasPortrait;
- if(!hasPortrait){img.removeAttribute('src');document.getElementById('futureAge').textContent='';
- document.getElementById('title').textContent=(d.career==='Teacher'?'General Education Teacher':d.career)+' — Career Roadmap';}
- const commitment=document.querySelector('.commitmentIntro');
- if(commitment)commitment.textContent='School courses build a foundation. Progress also takes practice, experience and any required further training or credentials.'+(hasPortrait?' The future age you chose is an illustration, not a completion deadline.':'');
+  go(4);
 }
 async function requestRoadmap(){
  const chosen={};for(const id of ['career','grade','path','priority'])chosen[id]=document.getElementById(id).value;
  const button=document.getElementById('generateBtn');if(button.disabled)return;
- button.disabled=true;const error=document.getElementById('roadmapError');error.textContent='';error.hidden=true;
- const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),30000);
+ button.disabled=true;button.textContent='Loading your roadmap…';const error=document.getElementById('roadmapError');error.textContent='';error.hidden=true;
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),30000);
  try{
   const r=await fetch(ROADMAP_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':CSRF_TOKEN},credentials:'same-origin',body:JSON.stringify(chosen),signal:controller.signal});
   const d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||'Could not load the roadmap. Please try again.');
-  if(d.career!==chosen.career||d.grade!==chosen.grade||d.school!==ROADMAP_SCHOOL||d.image!==null||d.age!==null)throw new Error('Unexpected roadmap response. Please ask the teacher.');
-  if(ROADMAP_SCHOOL==='GHS')showLiveResult(d);else renderBhsResult(d);
+  if(d.career!==chosen.career||d.grade!==chosen.grade||d.school!=='BHS'||d.image!==null||d.age!==null)throw new Error('Unexpected roadmap response. Please ask the teacher.');
+  renderBhsResult(d);
  }catch(e){error.textContent=e.name==='AbortError'?'The roadmap request timed out. Please try again.':e.message;error.hidden=false;}
- finally{clearTimeout(timer);button.disabled=false;}
+ finally{clearTimeout(timer);button.disabled=false;button.textContent='Show My Career Roadmap';}
 }
-function applyExperienceMode(){
- const usePhoto=portraitSelected();if(!usePhoto)clearSelectedPhoto();
- document.getElementById('photoInput').closest('label').hidden=!usePhoto;
- document.querySelector('#s1 .photo').hidden=!usePhoto;
- document.querySelector('#s1 .privacy').hidden=!usePhoto;
- document.getElementById('photoConsentWrap').hidden=!usePhoto;
- document.querySelectorAll('#s1 .photo-box .small').forEach(x=>x.hidden=!usePhoto);
- document.getElementById('age').closest('label').hidden=!usePhoto;
- document.getElementById('next1').disabled=usePhoto&&(!photoFile||!document.getElementById('photoConsent').checked||!document.getElementById('privacyAck').checked);
- document.getElementById('modeNote').textContent=usePhoto?'Choose an authorized photo. A cleaned copy and portrait selections are sent only when you press Create My Future.':'Explore the complete career roadmap without uploading a photo. No image-generation request is made.';
- document.getElementById('generateBtn').textContent=usePhoto?'Create My Future':'Show My Career Roadmap';
- document.querySelector('#s2 .info').textContent=usePhoto?'Create an illustrative future portrait, then explore your career roadmap and school course options.':'Explore your career roadmap and school course options. No photo or future age is required.';
- document.querySelectorAll('#s3 .loader').forEach(x=>x.hidden=!usePhoto);
- const setup=document.getElementById('setupBox');if(setup)setup.hidden=!usePhoto;
- if(ROADMAP_SCHOOL==='GHS'){updateGenerationState();if(usePhoto)refreshService();}
-}
-function updateConsentState(){document.getElementById('next1').disabled=portraitSelected()&&(!photoFile||!document.getElementById('photoConsent').checked||!document.getElementById('privacyAck').checked);}
-document.getElementById('photoConsent').onchange=updateConsentState;
-document.getElementById('privacyAck').onchange=updateConsentState;
-document.getElementById('experienceMode').onchange=applyExperienceMode;
-applyExperienceMode();
-window.addEventListener('pagehide',()=>{clearSelectedPhoto();const result=document.getElementById('futureImg');if(result)result.removeAttribute('src');});
+document.getElementById('generateBtn').onclick=requestRoadmap;
+document.getElementById('resetBtn').onclick=()=>{window.location.replace('/bhs');};
+let bhsPrintDetailState=[];
+window.addEventListener('beforeprint',()=>{bhsPrintDetailState=Array.from(document.querySelectorAll('#bhsCard details:not([hidden])')).map(d=>[d,d.open]);bhsPrintDetailState.forEach(([d])=>d.open=true)});
+window.addEventListener('afterprint',()=>{bhsPrintDetailState.forEach(([d,wasOpen])=>d.open=wasOpen);bhsPrintDetailState=[]});
 </script>
+<style>
+[hidden]{display:none!important}.roadmap-only .results{grid-template-columns:1fr!important}
+.start-card{border:1px solid #ead4d8;border-radius:16px;padding:20px;background:#fff7f8;align-self:start}.start-card p{line-height:1.6}
+.schoolPrivacyLink{margin:22px 0;text-align:center}.schoolPrivacyLink a{color:inherit;font-weight:800}
+@media print{.bhsMore:not([hidden])>ul,.bhsMore:not([hidden])>div{display:block!important}#s4{display:block!important}}
+</style>
 </body></html>

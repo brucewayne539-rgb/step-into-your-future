@@ -1,3 +1,5 @@
+> HISTORICAL ONLY: Superseded by BHS release 23 on November 4, 2026. Real-student uploads are retired in source. Do not use this form or enable legacy photo flags. Fictional-only previews use the current privacy notice and provider review.
+
 # Optional Portrait Notice and Authorization — District Review Draft
 
 School/district: __________________________  Activity date: ______________

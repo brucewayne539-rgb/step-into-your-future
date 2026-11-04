@@ -1,17 +1,7 @@
-# Accessibility Review Notes — V20
+# Accessibility Review - BHS Release 23
 
-V20 includes semantic headings/landmarks, labels for photo controls, visible focus indicators, keyboard-operable native controls, alert/status regions, skip links, reduced-motion support, descriptive image alternatives, no-photo equivalence, responsive layouts, and print/PDF output.
+The BHS explorer retains semantic landmarks/headings, a skip link, native labeled selects, visible focus styles, error/status announcements, reduced-motion handling and responsive/print layouts. Step changes move keyboard focus to the new heading. Real-photo/camera inputs and photo-only steps are removed. The complete roadmap is available without fictional image generation.
 
-These changes do not establish WCAG conformance. Before school production, test against WCAG 2.1 Level AA with:
+Before district approval, test keyboard-only navigation/focus/order, NVDA/JAWS and VoiceOver, 200-400% zoom/reflow, contrast/forced colors, labels/errors, touch/mobile orientation and print/saved output. The optional preview also needs assistive-technology review. Provide an accessible alternative where needed. Source features and a browser smoke check do not establish WCAG conformance.
 
-- keyboard only (including focus visibility/order and no keyboard traps);
-- NVDA/JAWS on Windows and VoiceOver on iOS/macOS;
-- 200% and 400% zoom/reflow at 320 CSS pixels;
-- automated axe/WAVE plus manual name/role/value and error review;
-- contrast/non-text contrast and forced-colors/high-contrast mode;
-- print/PDF and an accessible text-only result route;
-- common mobile orientations and touch target behavior;
-- generated-image handling for students who cannot perceive or safely use a portrait.
-
-Record tester, browser, assistive technology/version, findings, severity, remediation owner and retest date. District Title II obligations and effective-communication duties remain with the public entity and its contractors.
-
+Record tester/browser/assistive technology, findings, severity, owner, fixes and retest date. District accessibility obligations and effective-communication duties still apply. See docs/BRANFORD_REVIEW_PACKET.md.

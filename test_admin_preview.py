@@ -42,7 +42,7 @@ class AdministratorPreviewTests(unittest.TestCase):
         with patch.object(application, "ACCESS_CODE", "test-demo-code"):
             bhs = self.client.get("/")
             self.assertEqual(bhs.status_code, 200)
-            self.assertIn(b"How would you like to explore?", bhs.data)
+            self.assertIn(b"What grade are you exploring?", bhs.data)
             self.assertNotIn(b"Administrator Preview Access", bhs.data)
 
             ghs = self.client.get("/ghs")
@@ -87,7 +87,6 @@ class AdministratorPreviewTests(unittest.TestCase):
     def test_each_pilot_simulation_uses_normal_student_flow_and_fake_photo_substitution(self, _key):
         self.authorize()
         for path, school_name in (
-            ("/pilot-demo", b"Branford High School"),
             ("/ghs/pilot-demo", b"Guilford High School"),
             ("/chs/pilot-demo", b"Cumberland High School"),
         ):
@@ -105,6 +104,13 @@ class AdministratorPreviewTests(unittest.TestCase):
                     self.assertIn(b"Plan ahead at CHS", response.data)
                     self.assertIn(b"AFTER HIGH SCHOOL: YOUR CAREER ROADMAP", response.data)
                 response.close()
+
+    def test_bhs_legacy_pilot_redirects_to_fictional_only_preview(self):
+        self.authorize()
+        response = self.client.get("/pilot-demo", follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Choose a fictional student.", response.data)
+        self.assertNotIn(b'type="file"', response.data)
 
     def test_armie_pilot_simulation_returns_after_access_code(self):
         with patch.object(application, "ACCESS_CODE", "test-demo-code"):

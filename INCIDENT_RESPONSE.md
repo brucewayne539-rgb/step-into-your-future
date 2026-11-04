@@ -1,33 +1,20 @@
-# Incident Response Quick Plan — V20
+# Incident Response - BHS Review Release 23
 
-This is an operational starting point; the district/operator must assign named people and align it with contractual and legal deadlines.
+For district review, November 4, 2026. Assign operator/district contacts and sign accepted procedures before student use.
 
-## Events covered
+## Contain and assess
 
-Suspected exposure of a photo, API key, access code, session secret, student information, provider account, unauthorized portrait use, public posting, malicious upload, unexpected provider retention, service compromise, or material accessibility failure.
+1. Suspend the affected service or feature; set ADMIN_PREVIEW_ENABLED=0 if fictional image generation is implicated. Real-person routes cannot be enabled in this release. Keep the local roadmap available only if safe.
+2. Preserve minimal timestamps, deployment/version, request/provider ticket references and relevant evidence. Do not copy student records into ordinary logs, email or public issues.
+3. Rotate compromised API/access/session credentials and restrict admin access. Contact Render and, where relevant, OpenAI through approved incident channels.
+4. Determine affected data, people, access, disclosure, time period, provider retention and containment. Distinguish app-held data from host/network and school/device copies.
 
-## Immediate actions
+## Notify and cooperate
 
-1. Stop portrait processing by setting `PORTRAITS_ENABLED=0` and redeploying. Keep the no-photo roadmap available if safe.
-2. Preserve relevant timestamps, Render request IDs, deployment/version, provider ticket IDs, and configuration evidence without copying student photo content into the incident log.
-3. Rotate any exposed `OPENAI_API_KEY`, `DEMO_ACCESS_CODE`, and `SECRET_KEY`.
-4. Restrict access or take the service offline if the no-photo route is also affected.
-5. Notify the designated district privacy/security lead and operator incident lead.
-6. Contact OpenAI/Render through the approved contractual channel when provider investigation, preservation, deletion, or containment is needed.
+Proposed operator-to-district deadline: without unreasonable delay and within 24 hours of discovering suspected unauthorized access/release/disclosure/acquisition of covered student data. Notify before investigation is complete, state uncertainty, and provide updates. Finalize channels, contacts, backups and applicable contractual/legal requirements before execution. These proposed terms do not establish a provider's commitment.
 
-## Assessment
+Connecticut CGS 10-234dd includes contractor/district notification duties, with different outside limits for specified categories; other laws or a signed agreement may be stricter. District counsel determines applicable deadlines and district student/family/website notices. The operator must supply timely facts and cooperation. Do not claim no impact or complete deletion without evidence.
 
-- What data/content was involved, whose data, and how many people?
-- Was the event source-photo, generated-image, metadata, credential, device, browser, log, contract, or accessibility related?
-- When did it begin/end; who accessed it; was it downloaded or disclosed?
-- Which legal/contractual notification timelines apply?
-- Can affected data be deleted, access revoked, or results recalled?
+## Recover
 
-## Communication
-
-Use district-approved notices. State verified facts, actions taken, remaining uncertainty, contact information, and protective steps. Do not claim “no impact” or “fully deleted” without evidence.
-
-## Recovery and lessons
-
-Require written approval before re-enabling portraits. Document root cause, control changes, tests, policy/form updates, provider responses, responsible owner, completion dates, and a follow-up exercise.
-
+Document root cause, mitigation, provider response, actual retention/deletion, corrective controls and retests. Obtain authorized district/operator approval before resuming affected school use. Record lessons and a follow-up exercise. No changes to photo permissions or data collection are part of incident recovery.

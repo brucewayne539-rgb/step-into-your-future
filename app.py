@@ -145,12 +145,16 @@ def env_flag(name, default=False):
 
 HOSTED = bool(os.environ.get("RENDER") or env_flag("HTTPS_ONLY"))
 SECRET_KEY_CONFIGURED = bool((os.environ.get("SECRET_KEY") or "").strip())
-PORTRAITS_ENABLED = env_flag("PORTRAITS_ENABLED", default=not HOSTED)
+# Real-person uploads are retired in this release, including local deployments.
+# Historical environment values cannot re-enable them.
+PORTRAITS_ENABLED = False
 ADMIN_PREVIEW_ENABLED = env_flag("ADMIN_PREVIEW_ENABLED", default=True)
 OPENAI_ZDR_CONFIRMED = env_flag("OPENAI_ZDR_CONFIRMED")
 SCHOOL_PORTRAIT_APPROVED = env_flag("SCHOOL_PORTRAIT_APPROVED")
 PRIVACY_CONTACT_EMAIL = (os.environ.get("PRIVACY_CONTACT_EMAIL") or "").strip()
 OPERATOR_NAME = (os.environ.get("OPERATOR_NAME") or "Step Into Your Future").strip()
+BHS_REVIEW_VERSION = "23-bhs-no-photo"
+BHS_PRIVACY_DATE = "2026-11-04"
 RATE_BUCKETS = defaultdict(deque)
 
 @app.route("/app-icon.png")
@@ -172,8 +176,8 @@ def ghs_manifest():
 def ghs_app_icon():
     return send_from_directory(app.root_path, "ghs-app-icon.png", mimetype="image/png")
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
-app.config["MAX_CONTENT_LENGTH"] = 12 * 1024 * 1024
-app.config["MAX_FORM_MEMORY_SIZE"] = 13 * 1024 * 1024
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024
+app.config["MAX_FORM_MEMORY_SIZE"] = 16 * 1024
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SESSION_COOKIE_NAME"] = "siyf_session"
@@ -382,9 +386,13 @@ def anonymous_client_key():
 
 
 def rate_limited(bucket_name, limit, window_seconds):
+    now = time.monotonic()
+    # Discard idle pseudonymous records after the longest limit window.
+    for key, entries in list(RATE_BUCKETS.items()):
+        if not entries or entries[-1] <= now - 15 * 60:
+            RATE_BUCKETS.pop(key, None)
     if len(RATE_BUCKETS) > 10_000:
         RATE_BUCKETS.clear()
-    now = time.monotonic()
     bucket = RATE_BUCKETS[(bucket_name, anonymous_client_key())]
     while bucket and bucket[0] <= now - window_seconds:
         bucket.popleft()
@@ -395,22 +403,8 @@ def rate_limited(bucket_name, limit, window_seconds):
 
 
 def portrait_gate():
-    """Return a supportable hosted-portrait status without claiming legal approval."""
-    if not PORTRAITS_ENABLED:
-        return False, "Portrait mode is disabled. The no-photo career roadmap remains available."
-    if HOSTED and not SECRET_KEY_CONFIGURED:
-        return False, "Portrait mode requires a configured server session secret."
-    if HOSTED and not ACCESS_CODE:
-        return False, "Portrait mode requires restricted teacher access on a hosted deployment."
-    if HOSTED and not OPENAI_ZDR_CONFIRMED:
-        return False, "Portrait mode is awaiting written confirmation that Zero Data Retention is enabled for the OpenAI project."
-    if HOSTED and not SCHOOL_PORTRAIT_APPROVED:
-        return False, "Portrait mode is awaiting the school's documented privacy and authorization approval."
-    if HOSTED and ("@" not in PRIVACY_CONTACT_EMAIL or len(PRIVACY_CONTACT_EMAIL) > 254):
-        return False, "Portrait mode requires a published privacy contact for family and school requests."
-    if not load_key() or OpenAI is None:
-        return False, "Portrait service setup is incomplete. The no-photo roadmap remains available."
-    return True, "Portrait mode is enabled for this approved deployment."
+    """No environment flag can enable real-person uploads in this release."""
+    return False, "Student photo uploads and real-person portraits are disabled in this release. Use the no-photo career roadmap."
 
 
 def admin_preview_gate():
@@ -424,6 +418,16 @@ def admin_preview_gate():
     if not load_key() or OpenAI is None:
         return False, "The image service setup is incomplete."
     return True, "Administrator Preview is ready for fictional sample students."
+
+
+@app.before_request
+def reject_retired_photo_requests():
+    # Reject before CSRF form parsing or any upload/image/provider processing.
+    if request.path in {"/api/generate", "/api/ghs/generate", "/api/chs/generate", "/api/bhs/generate"}:
+        return jsonify(ok=False, error=portrait_gate()[1]), 403
+    if request.path in {"/api/roadmap", "/api/bhs/roadmap", "/api/ghs/roadmap", "/api/chs/roadmap"} and request.method == "POST":
+        if not request.is_json:
+            return jsonify(ok=False, error="Only the four roadmap selections are accepted. Uploads are disabled."), 400
 
 
 @app.before_request
@@ -1372,17 +1376,27 @@ def school_readiness_headers(response):
     response.headers["Origin-Agent-Cluster"] = "?1"
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
-        "object-src 'none'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; "
-        "img-src 'self' data: blob:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com; font-src 'self'; media-src 'none'"
+        "object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; "
+        "img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; media-src 'none'"
     )
     if request.is_secure or os.environ.get("RENDER") or os.environ.get("HTTPS_ONLY") == "1":
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response
 
 @app.route("/privacy")
+@app.route("/bhs/privacy")
 def privacy_notice():
     return render_template("privacy.html", operator_name=OPERATOR_NAME,
-                           privacy_contact=PRIVACY_CONTACT_EMAIL or "Not yet designated — portrait mode remains blocked")
+                           privacy_contact=PRIVACY_CONTACT_EMAIL or "District review pending: use the school representative who provided this app.",
+                           contact_configured=bool(PRIVACY_CONTACT_EMAIL), review_version=BHS_REVIEW_VERSION,
+                           reviewed_on=BHS_PRIVACY_DATE)
+
+
+@app.route("/bhs/school-review")
+def bhs_school_review():
+    return render_template("bhs_school_review.html", review_version=BHS_REVIEW_VERSION,
+                           reviewed_on=BHS_PRIVACY_DATE,
+                           privacy_contact=PRIVACY_CONTACT_EMAIL or "To be designated before school-directed student use")
 
 
 @app.route("/demo-student/<sample_id>.png")
@@ -1455,6 +1469,9 @@ def admin_preview():
 @app.route("/chs/pilot-demo", defaults={"school": "chs"})
 def school_pilot_demo(school):
     """Normal student-flow simulation backed only by bundled fictional faces."""
+    if school == "bhs":
+        # Old BHS pilot links must never display even a local file picker.
+        return redirect(url_for("admin_preview", school="bhs"))
     if ACCESS_CODE and not session.get("demo_access"):
         session["pending_pilot_school"] = school
         if school == "ghs":
@@ -1580,21 +1597,22 @@ def chs_roadmap():
 @app.route("/healthz")
 def healthz():
     """Minimal health check; never tests or exposes credentials."""
-    return jsonify(ok=True, service="step-into-your-future", version="22", armie_course_revision=ARMY_AUDIT_REVISION)
+    return jsonify(ok=True, service="step-into-your-future", version=BHS_REVIEW_VERSION,
+                   real_student_photos=False, analytics=False, bhs_roadmap_external_ai=False,
+                   armie_course_revision=ARMY_AUDIT_REVISION)
 
 
 @app.errorhandler(413)
 def oversized_photo(error):
-    return jsonify(ok=False, error="Photo is too large. Choose a JPEG, PNG or WebP photo smaller than 12 MB."), 413
+    return jsonify(ok=False, error="Request is too large. This version accepts small roadmap selections, not file uploads."), 413
 
 
 @app.route("/")
+@app.route("/bhs")
+@app.route("/bhs/")
 def home():
-    portrait_enabled, portrait_status = portrait_gate()
-    return render_template("index.html", careers=list(CAREERS.keys()), key_ready=bool(load_key()), hosted=HOSTED,
-                           csrf_token=csrf_token(), portrait_enabled=portrait_enabled, portrait_status=portrait_status,
-                           admin_preview_enabled=ADMIN_PREVIEW_ENABLED,
-                           generations_left=max(0, MAX_GENERATIONS_PER_SESSION-int(session.get("generation_count",0))))
+    return render_template("index.html", careers=list(CAREERS.keys()), csrf_token=csrf_token(),
+                           review_version=BHS_REVIEW_VERSION)
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -1655,6 +1673,7 @@ def setup():
 
 
 @app.route("/api/roadmap", methods=["POST"])
+@app.route("/api/bhs/roadmap", methods=["POST"])
 @app.route("/api/ghs/roadmap", methods=["POST"])
 def roadmap_only():
     """Local course guidance: no photo, provider call, key or portrait quota needed."""
@@ -1718,6 +1737,8 @@ def admin_preview_generate():
     allowed = {"school", "sample_id", "career", "age", "path", "priority", "mode", "grade"}
     if not isinstance(data, dict) or set(data) - allowed:
         return jsonify(ok=False, error="Unexpected preview fields. Refresh the page and try again."), 400
+    if not all(isinstance(value, str) for value in data.values()):
+        return jsonify(ok=False, error="Preview selections must be available menu values."), 400
     school = (data.get("school") or "").lower()
     sample_id = data.get("sample_id")
     career = data.get("career")
@@ -1725,6 +1746,8 @@ def admin_preview_generate():
     path = data.get("path")
     priority = data.get("priority")
     mode = data.get("mode") or "standard"
+    if mode not in {"standard", "army", "jetforce"}:
+        return jsonify(ok=False, error="Choose an available demonstration mode."), 400
     sample = DEMO_STUDENTS.get(sample_id)
     grade = data.get("grade") or (sample["grade"] if sample else "9")
     if school not in {"bhs", "ghs", "chs"} or not sample:
@@ -1782,7 +1805,6 @@ IMPORTANT: This is an administrator demonstration using a synthetic person who d
 
 Career: {info.get("name", career)}
 Setting: {info['scene']}
-Demonstration priority: {priority}
 {business_note}
 
 Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, {lighting}, age-appropriate adult appearance, and a confident but natural expression. Do not add text, captions, logos, readable badges or brand marks. The application will add its own fictional-demonstration watermark. Use realistic generic professional clothing and safety equipment where appropriate.
@@ -1857,202 +1879,16 @@ Composition: polished documentary/editorial photograph, waist-up or three-quarte
 
 @app.route("/api/chs/generate", methods=["POST"])
 @app.route("/api/ghs/generate", methods=["POST"])
+@app.route("/api/bhs/generate", methods=["POST"])
 @app.route("/api/generate", methods=["POST"])
 def generate():
-    if ACCESS_CODE and not session.get("demo_access"):
-        return jsonify({"ok":False,"error":"Please enter the teacher demo access code first."}),401
-    portrait_enabled, portrait_status = portrait_gate()
-    if not portrait_enabled:
-        return jsonify(ok=False, error=portrait_status), 403
-    if rate_limited("portrait", 5, 10 * 60):
-        return jsonify(ok=False, error="Too many portrait requests from this browser. Wait 10 minutes before trying again."), 429
-    count=int(session.get("generation_count",0))
-    if count >= MAX_GENERATIONS_PER_SESSION:
-        return jsonify({"ok":False,"error":f"This demo is limited to {MAX_GENERATIONS_PER_SESSION} AI portraits per browser session to control costs."}),429
-    key=load_key()
-    if not key:
-        return jsonify({"ok":False,"error":"No OpenAI API key is configured yet."}),400
-    if OpenAI is None:
-        return jsonify({"ok":False,"error":"The OpenAI Python package is not installed. Run START_APP.bat again."}),500
-
-    is_ghs = request.path == "/api/ghs/generate"
-    is_chs = request.path == "/api/chs/generate"
-    career_data = GHS_CAREERS if is_ghs else CAREERS
-    photo=request.files.get("photo")
-    career=(request.form.get("career") or "").strip()
-    grade=(request.form.get("grade") or "9").strip()
-    age=(request.form.get("age") or "25").strip()
-    path=(request.form.get("path") or "employee").strip()
-    priority=(request.form.get("priority") or "Doing work I enjoy").strip()
-    photo_consent=(request.form.get("photo_consent") or "").strip()
-    privacy_ack=(request.form.get("privacy_ack") or "").strip()
-    if not photo or not career:
-        return jsonify({"ok":False,"error":"Please provide a photo and choose a career."}),400
-    if photo_consent != "confirmed":
-        return jsonify({"ok":False,"error":"Confirm that the person pictured is age 13 or older and that you are authorized to submit the photo."}),400
-    if privacy_ack != "acknowledged":
-        return jsonify({"ok":False,"error":"Acknowledge the photo-processing and provider-retention notice before creating a portrait."}),400
-    if career not in career_data:
-        return jsonify({"ok":False,"error":"Unknown career selection."}),400
-    if grade not in BHS_GRADE_LABELS:
-        return jsonify({"ok":False,"error":"Please choose your current grade."}),400
-
-    if age not in {"22", "25", "28", "30", "35"}:
-        return jsonify(ok=False, error="Please select one of the available future ages."), 400
-    if path not in {"employee", "owner", "explore"}:
-        return jsonify(ok=False, error="Please select a valid career path."), 400
-    if priority not in {"Doing work I enjoy", "Helping people", "High income potential", "Creativity", "Job stability", "Being my own boss"}:
-        return jsonify(ok=False, error="Please select one of the available priorities."), 400
-    raw=photo.read()
-    if len(raw)>12*1024*1024:
-        return jsonify({"ok":False,"error":"Photo is too large. Please use an image under 12 MB."}),400
-
-    # Decode actual image bytes, correct phone rotation, and strip location/EXIF metadata.
-    cleaned = None
-    try:
-        with Image.open(io.BytesIO(raw)) as source:
-            if source.format not in {"JPEG", "PNG", "WEBP"}:
-                raise ValueError("unsupported image")
-            if source.width * source.height > 24_000_000:
-                raise ValueError("too many pixels")
-            source.load()
-            normalized = ImageOps.exif_transpose(source).convert("RGB")
-            normalized.thumbnail((2048, 2048))
-            cleaned = io.BytesIO()
-            normalized.save(cleaned, format="PNG", optimize=True)
-            cleaned.seek(0)
-    except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
-        if cleaned is not None:
-            cleaned.close()
-        return jsonify(ok=False, error="Choose a valid JPEG, PNG or WebP photo, up to 24 megapixels."), 400
-    finally:
-        # Release the original upload as soon as decoding finishes. Python and
-        # provider infrastructure cannot honestly guarantee a secure memory wipe.
-        raw = b""
-
-    chs_plan = None
-    if is_chs:
-        try:
-            chs_plan = generate_chs_roadmap(career, grade, path=path, priority=priority)
-        except RoadmapUnavailable as error:
-            cleaned.close()
-            return jsonify(ok=False, error=str(error)), 503
-    info=career_data[career]
-    business_note = "The person should look like an established professional and small-business owner." if path=="owner" else ""
-    business_note += "\n" + school_portrait_guidance(career)
-
-    try:
-        future_age = int(age)
-    except (TypeError, ValueError):
-        future_age = 25
-
-    if future_age == 22:
-        age_direction = (
-            "Show believable progression to approximately age 22, a young adult in the early twenties. "
-            "Preserve recognizable identity, with subtle adult facial development and natural grooming. "
-            "Do not age the person to 25, 30 or 35."
-        )
-    elif future_age <= 25:
-        age_direction = (
-            "Show clear but subtle progression from a high-school-age face into a believable young adult around age 25. "
-            "Mature the facial proportions, jaw/cheek structure, skin texture, grooming, posture, and overall professional presence enough that the person no longer looks like a teenager."
-        )
-    elif future_age <= 28:
-        age_direction = (
-            "Show a noticeable progression into the late 20s. Preserve identity, but give the face clearly adult proportions and maturity, with natural changes in facial structure, skin texture, grooming, posture, and professional presence."
-        )
-    elif future_age <= 30:
-        age_direction = (
-            "Show unmistakable progression to approximately age 30. The subject should look like the same person as a fully mature adult, not the current student simply placed in professional clothing. "
-            "Use natural adult facial structure, subtle skin and grooming changes, and a confident established-young-professional presence."
-        )
-    else:
-        age_direction = (
-            "Show clearly visible, believable progression to approximately age 35. The subject should remain unmistakably the same person, but should look meaningfully older and more mature than the original student photo. "
-            "Use natural changes in facial structure, skin texture, grooming, posture, and professional presence appropriate to the mid-30s. Do not exaggerate wrinkles, gray hair, or other signs that would make the person look substantially older than 35."
-        )
-
-    prompt=f"""
-Create a realistic, respectful FUTURE-CAREER VISUALIZATION based on the person in the uploaded photograph.
-
-Preserve the person's recognizable identity, distinctive facial features, and apparent ethnicity/core identity characteristics while applying believable age progression to approximately age {age}. {age_direction}
-
-IMPORTANT: Do not simply copy the current youthful face into adult clothing. The selected future age must be visually apparent, while the result must still clearly look like the SAME PERSON. The result is illustrative, not predictive.
-
-Career: {career}
-Setting: {info['scene']}
-Student priority: {priority}
-{business_note}
-
-Composition: polished documentary/editorial photograph, waist-up or three-quarter portrait, realistic professional environment, natural workplace lighting, age-appropriate adult appearance, confident but natural expression. Preserve recognizable identity without freezing the face at its current age. Do not add text, captions, logos, badges with readable department names, or brand marks. The application will add its own standardized disclaimer after generation. Do not sexualize or glamorize the subject. If work clothing or safety equipment is appropriate, use realistic generic professional attire.
-""".strip()
-
-    bio = None
-    try:
-        client=OpenAI(api_key=key, timeout=150.0, max_retries=0)
-        bio=cleaned
-        bio.name="portrait-reference.png"
-
-        result=client.images.edit(
-            model="gpt-image-2",
-            image=bio,
-            prompt=prompt,
-            size="1024x1536",
-            quality="medium",
-        )
-        item=result.data[0] if result.data else None
-        b64=getattr(item,"b64_json",None)
-        if not b64:
-            return jsonify({"ok":False,"error":"The image service returned no image data."}),502
-        b64=burn_portrait_watermark(b64)
-
-        session["generation_count"] = count + 1
-        rich_steps, timeline, keys = rich_roadmap(career, info["steps"])
-        if is_ghs:
-            timeline, keys = GHS_DATA["meta"][career]
-        if chs_plan is not None:
-            info = {**info, "summary": chs_plan["summary"], "steps": chs_plan["steps"]}
-            rich_steps, timeline, keys = chs_plan["rich_steps"], chs_plan["timeline"], chs_plan["keys"]
-        return jsonify({
-            "ok":True,
-            "image":"data:image/png;base64,"+b64,
-            "career":career,
-            "age":age,
-            "summary":info["summary"],
-            "steps":info["steps"],
-            "rich_steps":rich_steps,
-            "timeline":timeline,
-            "keys":keys,
-            "path":path,
-            "priority":priority,
-            "grade":grade,
-            "school":"CHS" if is_chs else ("GHS" if is_ghs else "BHS"),
-            "generations_left":max(0, MAX_GENERATIONS_PER_SESSION-count-1),
-            **({"chs":chs_plan["chs"]} if is_chs else ({} if is_ghs else {"bhs":bhs_for_grade(career,grade,path)}))
-        })
-    except Exception as e:
-        # Keep provider diagnostics/credentials out of student-facing responses.
-        category = type(e).__name__
-        app.logger.warning("Portrait generation failed (%s)", category)
-        if category in {"AuthenticationError", "PermissionDeniedError"}:
-            msg="The image service is not authorized. Ask the teacher to check the server's API key and model access."
-        elif category == "RateLimitError":
-            msg="The image service has reached a usage or billing limit. Ask the teacher to check the API account."
-        elif category in {"APITimeoutError", "APIConnectionError"}:
-            msg="The image service did not finish the connection in time. No automatic retry was sent; a submitted request may still be billed. Please check with the teacher before trying again."
-        elif category == "BadRequestError":
-            msg="The image service could not use this request. Try a clear individual portrait or ask the teacher to check the image-service settings."
-        else:
-            msg="The portrait could not be completed. Your selections are still here. Please ask the teacher before trying again."
-        return jsonify(ok=False, error=msg), 502
-    finally:
-        if bio is not None:
-            bio.close()
+    """Retired endpoint: do not parse, decode, save or forward uploaded files."""
+    return jsonify(ok=False, error=portrait_gate()[1]), 403
 
 if __name__=="__main__":
     ip=local_ip()
     print("\n" + "="*68)
-    print(" STEP INTO YOUR FUTURE — TODAY!  •  LIVE AI DEMO")
+    print(" STEP INTO YOUR FUTURE — TODAY!  •  BHS NO-PHOTO REVIEW")
     print("="*68)
     print("On THIS laptop:  http://127.0.0.1:5000")
     print(f"On your PHONE (same Wi-Fi):  http://{ip}:5000")

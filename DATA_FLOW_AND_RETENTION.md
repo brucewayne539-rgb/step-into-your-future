@@ -1,43 +1,29 @@
-## Cumberland catalog-backed roadmap — 20 September 2026
+# Data Flow and Retention - BHS Review Release 23
 
-Cumberland uses explicit, grade-specific pathways and the local CHS catalog. The current runtime does not call the OpenAI text API for roadmaps. The historical chs_roadmap module is retained for shared definitions and regression records; its AI planning functions are not used by the current routes. Portrait behavior and privacy gates are unchanged.
+Reviewed November 4, 2026. This file supersedes V20/V21 photo-enablement guidance.
 
-## No-photo roadmap (default)
+## BHS no-photo roadmap
 
-1. The browser sends four selected values: career, current grade, path, and priority.
-2. The Flask app validates each against fixed allowlists.
-3. Local BHS/GHS/CHS catalog data produces the roadmap.
-4. No photo, future age, student name, OpenAI call, profile, or application database record is involved.
+Browser POSTs only career, grade, path and priority to /api/bhs/roadmap (legacy /api/roadmap remains supported). Fixed allowlists reject extra keys and invalid values; non-JSON and uploads are rejected. Local catalog/career functions build the response. No external AI request, account, name, transcript, photo or student-history database is involved. These four selections still warrant a district privacy review when used for school purposes.
 
-## Optional portrait (disabled by default on hosted deployments)
+## Optional fictional preview
 
-1. The browser previews a selected JPEG, PNG, or WebP locally.
-2. The user must acknowledge age/authorization and the photo/provider notice.
-3. The server validates file size, decoded dimensions, and actual image format.
-4. The server rotates the image as required and re-encodes it as PNG, excluding EXIF metadata.
-5. The cleaned image plus a constrained career prompt is sent to the OpenAI image-editing API.
-6. The server burns an AI-generated/not-a-prediction notice into the returned PNG pixels.
-7. The response is shown in the browser. The original file input and preview object URL are cleared after the request; the result is cleared when the page is left.
+The restricted presenter selects a bundled fictional sample and fixed-menu values. The server, not the browser, loads the bundled image and calls OpenAI's image-edit endpoint with a constrained career/age prompt. No personal-image URL, upload or free-text prompt is accepted. Grade and priority are not included in the provider prompt. Results receive a permanent fictional/not-a-prediction watermark. Administrator Preview is optional and requires separate district/provider review. Set ADMIN_PREVIEW_ENABLED=0 to block image generation for a roadmap-only approval; a source-controlled real-photo ban remains in force regardless.
 
-## Administrator Preview (fictional students only)
+## Retired real-person route
 
-1. The signed-in administrator chooses one of two bundled, entirely fictional AI-generated sample students.
-2. The browser sends only the approved sample identifier plus career, future age, path and priority selections. There is no photo-upload control.
-3. The server resolves the identifier to the bundled synthetic image and validates every selection against fixed allowlists.
-4. The bundled image and constrained demonstration prompt are sent to the image-editing API.
-5. The server burns FICTIONAL AI DEMONSTRATION and NOT A REAL STUDENT | NOT A PREDICTION into the returned PNG pixels.
-6. A separate per-session limit, defaulting to six generations, controls demonstration use and cost.
+/api/generate, /api/bhs/generate, /api/ghs/generate and /api/chs/generate reject before CSRF form parsing, image decoding or provider calls. The upload implementation is removed; old PORTRAITS_ENABLED/approval flags cannot restore it. The BHS UI has no file/camera input, including its legacy /pilot-demo link.
 
-The Administrator Preview uses the provider's standard API data controls and is not represented as a Zero Data Retention workflow. It contains no real student image or student record.
+## Inventory and limits
 
-## Retention truth table
+| Location | Handling | Evidence still needed |
+| --- | --- | --- |
+| Browser | First-party signed session cookie for security/admin authorization/counts; no career selections/photos. In-page selections/results remain until navigation/refresh. Saved copies remain locally. | School browser/device controls and saved-record handling. |
+| Flask memory | Requests/results only; no student/choice/photo/result database. IP-derived keyed hashes and timestamps support abuse limits. Idle counters cleared on the next limiter invocation after 15 minutes or on process restart. | Actual process/host controls; no forensic wipe guarantee. |
+| Render | No intentional app logging of selections, content, photos, raw IPs or credentials. Host/network may process request/IP metadata. | Account/region/plan, DPA, security, subprocessors, all log categories/retention, deletion/closeout and incident terms. Dashboard availability does not describe all retention. |
+| OpenAI | Fictional preview only; bundled synthetic image plus career/age scenario. No Zero Data Retention claim. API training excluded by default unless operator opts in. | Actual project settings (training/sharing off), accepted terms, retention/exceptions, subprocessors, incident and deletion channels. |
+| District/device | Downloaded/printed/screenshot results and network records under district/device control. | Retention, access, correction, deletion and family notice. |
 
-| Location | Intentional app storage | What must still be verified |
-|---|---|---|
-| Browser/device | No account/profile. A selected photo and result can remain in memory during the page session. Downloads, prints, screenshots, browser/device backups remain until locally deleted. | District device/browser configuration and deletion procedure. |
-| Flask process | In-memory request handling only; no application photo file/database write. References and buffers are released after the request. | No secure-wipe guarantee; independent test and host memory controls. |
-| OpenAI | V21 blocks real-student hosted portraits until the operator records ZDR confirmation for the project. The fictional Administrator Preview uses standard API controls. | Written approval, effective project/org, supported endpoint/model, exceptions, DPA/security terms, deletion/incident contacts before real-student use. |
-| Render | The app avoids logging student selections, prompts, photo bytes, and raw IPs. | Request/operational metadata, plan-specific 7/14/30-day dashboard log retention, contract/DPA, subprocessors and incident terms. |
-| School | Not controlled by this app. | Paper/electronic authorization records, printed/downloaded results, retention schedule, access, correction, deletion, and records requests. |
+Google Analytics/Tag Manager are removed from shipped HTML and the CSP no longer permits their script/connect domains. Browser connections are same-origin; server-side fictional generation is still an external provider call. No advertising/commercial profiles or student-data training is authorized. See docs/BRANFORD_REVIEW_PACKET.md for proposed terms, not an executed agreement.
 
-Do not describe the system as “zero retention,” “certified compliant,” or “securely wiped.” The supportable statement is narrower: the application does not intentionally create a student/profile/photo database and its hosted portrait route is disabled until specified evidence flags are deliberately enabled.
+Free indefinite permission to Branford does not transfer Bruce Wayne Brailsford's original software/IP or create a promise of permanent hosting/maintenance. Annual BHS catalog review is coordinated with school staff; the 2026-27 label must not change until the new data is verified.

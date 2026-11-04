@@ -77,7 +77,7 @@ class BHSCatalogTests(unittest.TestCase):
                             SCHOOL_PORTRAIT_APPROVED=True, PRIVACY_CONTACT_EMAIL="privacy@example.org"):
             enabled, reason = app.portrait_gate()
         self.assertFalse(enabled)
-        self.assertIn("Zero Data Retention", reason)
+        self.assertIn("disabled in this release", reason)
 
     def test_status_exposes_no_credentials(self):
         client = app.app.test_client()

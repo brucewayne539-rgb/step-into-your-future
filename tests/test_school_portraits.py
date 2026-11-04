@@ -1,4 +1,4 @@
-"""Exercise both image paths for all three schools without provider calls."""
+"""Verify fictional guidance remains available and real uploads stay retired."""
 import io
 import unittest
 from contextlib import ExitStack
@@ -23,7 +23,6 @@ class SchoolPortraitTests(unittest.TestCase):
                     fake.images.edit.return_value = SimpleNamespace(data=[SimpleNamespace(b64_json='mock')])
                     with ExitStack() as stack:
                         for name, value in [('admin_preview_gate', (True, 'Ready')),
-                                            ('portrait_gate', (True, 'Ready')),
                                             ('rate_limited', False), ('load_key', 'local-test'),
                                             ('burn_portrait_watermark', 'mock'), ('OpenAI', fake)]:
                             stack.enter_context(patch.object(app, name, return_value=value))
@@ -40,6 +39,10 @@ class SchoolPortraitTests(unittest.TestCase):
                             response = client.post('/api/generate' if school == 'bhs' else f'/api/{school}/generate',
                                 headers=headers, data=dict(fields, photo=(image, 'test.png'),
                                 photo_consent='confirmed', privacy_ack='acknowledged'))
+                    if not demo:
+                        self.assertEqual(response.status_code, 403, response.get_json())
+                        fake.assert_not_called()
+                        continue
                     self.assertEqual(response.status_code, 200, response.get_json())
                     prompt = fake.images.edit.call_args.kwargs['prompt']
                     self.assertIn(WORKPLACE, prompt)

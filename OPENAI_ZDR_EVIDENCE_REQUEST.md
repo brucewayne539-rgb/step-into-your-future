@@ -1,3 +1,5 @@
+> HISTORICAL ONLY: Superseded by BHS release 23 on November 4, 2026. Real-student uploads are retired in source. Do not use this form or enable legacy photo flags. Fictional-only previews use the current privacy notice and provider review.
+
 # OpenAI Zero Data Retention Evidence Request
 
 Use this as a request template. It is not a waiver and does not itself change OpenAI settings or contractual obligations.

@@ -19,8 +19,8 @@ services:
       # people and can be hidden after a pilot/contract by changing this to 0.
       - key: ADMIN_PREVIEW_ENABLED
         value: "1"
-      # Fail-closed privacy gates. Keep portraits off until the matching
-      # evidence is in the district review file, then explicitly set to "1".
+      # Legacy flags retained for compatibility; real-photo endpoints are retired
+      # in source and cannot be enabled by these values.
       - key: PORTRAITS_ENABLED
         value: "0"
       - key: OPENAI_ZDR_CONFIRMED

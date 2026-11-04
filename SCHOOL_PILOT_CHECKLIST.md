@@ -1,40 +1,21 @@
-# School Pilot Approval Checklist — V20
+# Branford School Review Checklist - Release 23
 
-## Phase 1 — no-photo teacher review
+The offer is free indefinite educational use for Branford Public Schools only; Bruce retains original software/IP. There is no subscription or paid renewal. Use permission does not establish privacy approval.
 
-- [ ] Confirm the app is a teacher-review prototype, not an approved student system.
-- [ ] Test BHS and GHS no-photo roadmaps across grades 8–12.
-- [ ] Counselor validates course names, grades, prerequisites, and disclaimers against the current official catalog.
-- [ ] Curriculum lead approves educational purpose and lesson plan.
-- [ ] Accessibility reviewer tests keyboard-only use, screen reader use, zoom/reflow, contrast, errors, print/PDF alternative, and the no-photo equivalent.
-- [ ] Privacy/security reviewers complete vendor/provider assessment.
+- [ ] Confirm actual operator legal identity and active privacy/security contact; do not assume a previously used LLC remains the operator.
+- [ ] Name district sponsor, curriculum/counselor reviewer, privacy/IT reviewer and authorized decision-maker.
+- [ ] Validate the 2026-27 BHS catalog, grade eligibility, prerequisite language and opportunities. No transcript is read and prerequisites are not automatically verified.
+- [ ] Review the proposed student-data privacy agreement in docs/BRANFORD_REVIEW_PACKET.md or execute the district/state preferred addendum covering CGS 10-234aa through 10-234dd.
+- [ ] Verify Render DPA, account/region, security, subprocessors, metadata/log retention, deletion/closeout and incident terms.
+- [ ] If fictional previews are included, review OpenAI's project/model/endpoint, accepted terms, data-sharing settings, retention/exceptions, subprocessors, deletion and incidents. Keep training/data-sharing opts off. No real student photographs/records may be supplied.
+- [ ] Choose roadmap-only or roadmap plus fictional-preview scope. Disable ADMIN_PREVIEW_ENABLED if previews are not approved. Real photos remain disabled in source.
+- [ ] Test deployed no-photo endpoints, no analytics, request/cookie/CSP behavior, access restrictions and provider-bound fields.
+- [ ] Complete keyboard/screen-reader/contrast/reflow and risk-appropriate security/dependency checks; document remaining conditions and alternatives.
+- [ ] Agree permitted URLs, supervision, district gateway if required, family/student notice, records requests, incident contacts, closeout and support/hosting expectations.
+- [ ] Record explicit district approval and conditions before school-directed use; do not infer approval from a free offer or website availability.
 
-## Phase 2 — controlled no-photo student pilot
+## Annual review
 
-- [ ] Written district approval and named owner.
-- [ ] Approved acceptable-use, family/student notice, support and incident contacts.
-- [ ] District-managed access and device configuration.
-- [ ] No portrait environment flags enabled.
-- [ ] Evaluation measures exclude sensitive profiling and do not become education records unless approved.
-- [ ] Pilot end date, feedback method, deletion/closeout and decision meeting scheduled.
+School staff identify the latest BHS Program of Studies. Coordinate verified course/prerequisite/grade/program updates, run all-grade/career checks, obtain school content review, then update the visible catalog year and change record. Keep the older year visible until verified. This does not promise automatic updates or indefinite unpaid support. Recheck provider terms, permissions, contacts, security and accessibility after material changes.
 
-## Phase 3 — optional portrait consideration
-
-- [ ] District counsel/privacy officer confirms the lawful authorization process and Connecticut/Federal contract requirements.
-- [ ] OpenAI ZDR evidence record is complete for the exact project/model/endpoint.
-- [ ] OpenAI and Render DPAs, security documents, subprocessors, retention/deletion, breach terms and contacts are approved.
-- [ ] Operator privacy/security contacts are published.
-- [ ] Photo authorization form is approved; no-photo choice is equally available.
-- [ ] Under-13 portrait use is prohibited in this build.
-- [ ] Independent security and WCAG 2.1 AA testing is complete; critical/high issues are resolved.
-- [ ] Spending alerts, shared rate limiting, monitoring and incident drill are in place.
-- [ ] Only then set `OPENAI_ZDR_CONFIRMED=1`, `SCHOOL_PORTRAIT_APPROVED=1`, and `PORTRAITS_ENABLED=1`.
-
-## Annual/term review
-
-- [ ] Revalidate school catalog content and career/licensing guidance.
-- [ ] Recheck provider policies, contracts, models, endpoints and subprocessors.
-- [ ] Recheck accessibility after material UI/content changes.
-- [ ] Rotate secrets and review access.
-- [ ] Review incidents, requests, costs, feedback and whether the portrait remains educationally necessary.
-
+Historical V20/V21 instructions about enabling real-person portraits are superseded and must not be followed for this build.
